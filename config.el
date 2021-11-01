@@ -431,9 +431,15 @@ Also, delete any process that is exited or signaled."
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(org-agenda-files
-   '("/Users/jbonini/org/master.org" "/Users/jbonini/org/adv_comp_phys.org" "/Users/jbonini/org/adv_stat_mech.org" "/Users/jbonini/org/archive.org" "/Users/jbonini/org/branch_choice.org" "/Users/jbonini/org/canadaRoadtrip.org" "/Users/jbonini/org/dielectric_slab_model.org" "/Users/jbonini/org/double_perovskite.org" "/Users/jbonini/org/elfeed.org" "/Users/jbonini/org/force_veolcity.org" "/Users/jbonini/org/fromStore.org" "/Users/jbonini/org/gcal.org" "/Users/jbonini/org/get_ORGanized.org" "/Users/jbonini/org/light_matter.org" "/Users/jbonini/org/misc-log.org" "/Users/jbonini/org/multipath_switching.org" "/Users/jbonini/org/music_experiments.org" "/Users/jbonini/org/perovskite_database.org" "/Users/jbonini/org/personal.org" "/Users/jbonini/org/personalfinance.org" "/Users/jbonini/org/post_march_meeting_snowboarding.org" "/Users/jbonini/org/pto_divacancies.org" "/Users/jbonini/org/ridgewayWedding.org" "/Users/jbonini/org/someday.org" "/Users/jbonini/org/thinkpad_configuration.org" "/Users/jbonini/org/topology.org" "/Users/jbonini/org/transparent_conductors.org" "/Users/jbonini/org/wannier_polarization.org" "/Users/jbonini/org/weeklyreview.org"))
- '(safe-local-variable-values
-   '((org-ref-pdf-directory . "/Documents/papers/pto_divacancies/")
+   '("/Users/jbonini/org/master.org" "/Users/jbonini/org/adv_comp_phys.org" "/Users/jbonini/org/adv_stat_mech.org" "/Users/jbonini/org/archive.org"
+     "/Users/jbonini/org/branch_choice.org" "/Users/jbonini/org/canadaRoadtrip.org" "/Users/jbonini/org/dielectric_slab_model.org" "/Users/jbonini/org/double_perovskite.org"
+     "/Users/jbonini/org/elfeed.org" "/Users/jbonini/org/force_veolcity.org" "/Users/jbonini/org/fromStore.org" "/Users/jbonini/org/gcal.org" "/Users/jbonini/org/get_ORGanized.org"
+     "/Users/jbonini/org/light_matter.org" "/Users/jbonini/org/misc-log.org" "/Users/jbonini/org/multipath_switching.org" "/Users/jbonini/org/music_experiments.org"
+     "/Users/jbonini/org/perovskite_database.org" "/Users/jbonini/org/personal.org" "/Users/jbonini/org/personalfinance.org" "/Users/jbonini/org/post_march_meeting_snowboarding.org"
+     "/Users/jbonini/org/pto_divacancies.org" "/Users/jbonini/org/ridgewayWedding.org" "/Users/jbonini/org/someday.org" "/Users/jbonini/org/thinkpad_configuration.org"
+     "/Users/jbonini/org/topology.org" "/Users/jbonini/org/transparent_conductors.org" "/Users/jbonini/org/wannier_polarization.org" "/Users/jbonini/org/weeklyreview.org"))
+ '(safe-local-variable-values '((org-ref-pdf-directory
+ . "/Documents/papers/pto_divacancies/")
      (org-ref-pdf-directory . "~/Documents/papers/wannier_pol/"))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.

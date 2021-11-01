@@ -1,6 +1,7 @@
 ;;; ~/.config/doom/config.el -*- lexical-binding: t; -*-
 (setq doom-font (font-spec :family "Monospace" :size 18))
 
+(setq comp-deferred-compilation t)
 (setq initial-buffer-choice "~/org/master.org")
 
 ;; TODO: it would be a good idea to start all my custom functions with jrb/ or something

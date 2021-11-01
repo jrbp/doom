@@ -1,4 +1,5 @@
 ;;; ~/.config/doom/config.el -*- lexical-binding: t; -*-
+(doom-load-envvars-file "~/.config/doom/myenv")
 (setq doom-font (font-spec :family "Monospace" :size 18))
 
 (setq comp-deferred-compilation t)

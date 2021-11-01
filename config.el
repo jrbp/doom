@@ -2,6 +2,7 @@
 (doom-load-envvars-file "~/.config/doom/myenv")
 (setq doom-font (font-spec :family "Monospace" :size 18))
 
+(setenv "WORKON_HOME" "/Users/jbonini/Library/Caches/pypoetry/virtualenvs")
 (setq comp-deferred-compilation t)
 (setq initial-buffer-choice "~/org/master.org")
 

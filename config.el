@@ -2,7 +2,7 @@
 (doom-load-envvars-file "~/.config/doom/myenv")
 (setq doom-font (font-spec :family "Monospace" :size 18))
 
-(setenv "WORKON_HOME" "/Users/jbonini/Library/Caches/pypoetry/virtualenvs")
+;(setenv "WORKON_HOME" "/Users/jbonini/Library/Caches/pypoetry/virtualenvs")
 ;; bugfix of https://github.com/hlissner/doom-emacs/issues/3185
 (defadvice! no-errors/+org-inline-image-data-fn (_protocol link _description)
   :override #'+org-inline-image-data-fn

@@ -27,7 +27,7 @@
  "EDITOR=/usr/bin/vim"
  "LaunchInstanceID=9BABC67E-83D3-41F6-B301-B77E3700F04A"
  "_=/usr/local/bin/emacs"
- "PATH=/usr/local/sbin:/Users/jbonini/.pyenv/plugins/pyenv-virtualenv/shims:/Users/jbonini/.pyenv/shims:/Users/jbonini/.pyenv/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Library/TeX/texbin:/opt/X11/bin:/Users/jbonini/.local/bin:/Users/jbonini/.emacs.d/bin:/Users/jbonini/bin:/Users/jbonini/.pyenv/versions/anaconda3-5.3.1/condabin"
+ "PATH=/usr/local/sbin:/Users/jbonini/.local/bin:/Users/jbonini/.pyenv/shims:/Users/jbonini/.pyenv/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Library/TeX/texbin:/opt/X11/bin:/Users/jbonini/.emacs.d/bin:/Users/jbonini/bin"
  "_CE_CONDA="
  "PYENV_VIRTUALENV_DISABLE_PROMPT=1"
  "CONDA_EXE=/Users/jbonini/.pyenv/versions/anaconda3-5.3.1/bin/conda"

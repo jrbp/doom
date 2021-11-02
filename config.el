@@ -1,6 +1,7 @@
 ;;; ~/.config/doom/config.el -*- lexical-binding: t; -*-
 (doom-load-envvars-file "~/.config/doom/myenv")
 (setq doom-font (font-spec :family "Monospace" :size 18))
+(setq lsp-python-ms-guess-env 'nil)
 
 ;(setenv "WORKON_HOME" "/Users/jbonini/Library/Caches/pypoetry/virtualenvs")
 ;; bugfix of https://github.com/hlissner/doom-emacs/issues/3185

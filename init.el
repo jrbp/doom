@@ -168,6 +168,7 @@
        ;;purescript        ; javascript, but functional
        (python            ; beautiful is better than ugly
         +lsp
+        +pyright
         ; +conda ; sadly these two seem to conflict
          ;+pyenv
         )

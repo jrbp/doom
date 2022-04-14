@@ -1,5 +1,5 @@
 ;;; ~/.config/doom/config.el -*- lexical-binding: t; -*-
-(doom-load-envvars-file "~/.config/doom/myenv")
+;(doom-load-envvars-file "~/.config/doom/myenv")
 (setq doom-font (font-spec :family "Monospace" :size 18))
 (setq lsp-python-ms-guess-env 'nil)
 
@@ -15,7 +15,7 @@
 (setq initial-buffer-choice "~/org/master.org")
 
 ;; TODO: it would be a good idea to start all my custom functions with jrb/ or something
-(defun insert-file-name (filename &optional args)
+(defun jrb/insert-file-name (filename &optional args)
   "Insert name of file FILENAME into buffer after point.
 
   Prefixed with \\[universal-argument], insert the file name exactly as
@@ -35,6 +35,34 @@
          (insert filename))
         (t
          (insert (expand-file-name filename)))))
+
+(require 'org-element)
+
+(defun jrb/org-file-from-subtree (&optional name)
+  "Cut the subtree currently being edited and create a new file
+from it.
+
+If called with the universal argument, prompt for new filename,
+otherwise use the subtree title."
+  (interactive "P")
+  (org-back-to-heading)
+  (let ((filename (cond
+                   (current-prefix-arg
+                    (expand-file-name
+                     (read-file-name "New file name: ")))
+                   (t
+                    (concat
+                     (expand-file-name
+                      (org-element-property :title
+                                            (org-element-at-point))
+                      default-directory)
+                     ".org")))))
+    (org-cut-subtree)
+    (find-file-noselect filename)
+    (with-temp-file filename
+      (org-mode)
+      (yank))))
+
 
 (defun open-term ()
   ;; currently useless as it always opens in home
@@ -323,7 +351,7 @@
 (map!
  :desc "open copy of current window" :m "go" 'copy-window)
 
-(defun goto-long-line (len)
+(defun jrb/goto-long-line (len)
   "Go to the first line that is at least LEN characters long.
 Use a prefix arg to provide LEN.
 Plain `C-u' (no number) uses `fill-column' as LEN."

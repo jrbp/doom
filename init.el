@@ -84,7 +84,7 @@
        (vterm +vterm)            ; another terminals in Emacs
 
        :checkers
-       spell
+       (spell +aspell)
        syntax ;+childframe)
        ;;grammar           ; tasing grammar mistake every you make
 

@@ -14,7 +14,6 @@
 (setq comp-deferred-compilation t)
 (setq initial-buffer-choice "~/org/master.org")
 
-;; TODO: it would be a good idea to start all my custom functions with jrb/ or something
 (defun jrb/insert-file-name (filename &optional args)
   "Insert name of file FILENAME into buffer after point.
 
@@ -50,6 +49,7 @@ otherwise use the subtree title."
                    (current-prefix-arg
                     (expand-file-name
                      (read-file-name "New file name: ")))
+                   ((not (null name)) name)
                    (t
                     (concat
                      (expand-file-name
@@ -63,6 +63,20 @@ otherwise use the subtree title."
       (org-mode)
       (yank))))
 
+(defun jrb/subtree-to-journal-file ()
+  (interactive)
+  (org-back-to-heading)
+  (jrb/org-file-from-subtree
+   (expand-file-name
+    (concat "./journal_org/"
+            (org-element-property :title
+                                  (org-element-at-point))
+            ".org"))))
+
+(map!
+ :desc "copy subtree to new file" :n "gz" 'jrb/org-file-from-subtree)
+(map!
+ :desc "copy subtree to new journal file" :n "gZ" 'jrb/subtree-to-journal-file)
 
 (defun open-term ()
   ;; currently useless as it always opens in home

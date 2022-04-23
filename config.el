@@ -355,8 +355,7 @@ If on a:
         :desc "Ielm" :n "i" #'ielm
         :desc "elfeed" :n "e" #'elfeed
         :desc "Processes" :n "p" #'list-processes
-        :desc "Jupyter-repl" :n "j" #'jupyter-run-repl
-        :desc "External Ranger" :n "r" #'open-ranger)
+        :desc "Jupyter-repl" :n "j" #'jupyter-run-repl)
       :prefix "m" :desc "schedule" :n "s" #'org-schedule)
 
 (map! :leader

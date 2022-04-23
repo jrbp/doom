@@ -13,13 +13,20 @@
 
 ;;;###autoload
 (defun jrb-sys/set-linux-personal ()
+  (setq jrb-sys/ext-term-command "termite&")
+  (defun open-ranger ()
+    (interactive)
+    (call-process-shell-command "termite -e ranger&" nil 0))
+  (map! :leader
+        (:desc "App" :prefix "a" :desc "External Ranger" :n "r" #'open-ranger))
   (setq comp-deferred-compilation t)
-  (setq jrb-sys/ext-term-command "termite&"))
+  )
 
 ;;;###autoload
 (defun jrb-sys/set-wsl ()
+  (setq jrb-sys/ext-term-command "gnome-terminal")
   (setq comp-deferred-compilation t)
-  (setq jrb-sys/ext-term-command "gnome-terminal"))
+  )
 
 ;;;###autoload
 (defun jrb-sys/open-ext-term ()

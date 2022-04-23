@@ -1,10 +1,6 @@
 ;; ~/.config/doom/config.el -*- lexical-binding: t; -*-
-;(setq enable-local-variables t)
-;(setq enable-local-eval t)
 (setq doom-font (font-spec :family "Monospace" :size 18))
-;
-;pyvenv venv location
-;(setenv "WORKON_HOME" "/home/jbonini/.cache/pypoetry/virtualenvs")
+
 ;(setq comp-deferred-compilation t)
 ;(setq initial-buffer-choice "~/org/master.org")
 
@@ -78,16 +74,6 @@ otherwise use the subtree title."
 ;(setenv "PATH" (concat (getenv "PATH") ":/Library/TeX/texbin"))
 ;(setq exec-path (append exec-path '("/Library/TeX/texbin")))
 
-;; popup rules break esc key in emacs mode within popup terminals
-;; kind of a shame because otherwise the popup rules would be nice
-; JUST USE C-c C-z
-;(after! vterm
-;  (set-popup-rules!
-;    '(("^\\*doom:\\(?:v?term\\|e?shell\\)-popup"  ; editing buffers (interaction required)
-;                                        ; :vslot -5 :size 0.35 :select t :modeline nil :quit nil :ttl nil)
-;       :ignore t)
-;      ("^vterm" :ignore t)
-;      )))
 (set-popup-rules!
   '(("^\\*jupyter.*" :ignore t)))
 
@@ -166,13 +152,9 @@ otherwise use the subtree title."
   (plist-put org-format-latex-options :scale 3)
   (setq org-latex-packages-alist '(("" "braket" t)))
 
-  ; (add-hook! 'org-mode-hook (setq-local display-line-numbers 'nil)) ; for newer version of doom i reverted from
-  ; org was getting slow, disabling some things for speed up here:
   (remove-hook! 'org-mode-hook #'+org|enable-auto-update-cookies)
   (advice-remove #'evil-org-open-below #'+org*evil-org-open-below) ; didn't like this anyway
-  ; realzied there were some bad json dumps in some files, cleaning up the really long lines helped a lot
-  ; see goto-long-line which has been added to this config
-  ;
+
   ; Didn't like that new headings on C-return weren't put in at point
   (setq org-insert-heading-respect-content nil)
   (map! :map evil-org-mode-map
@@ -189,8 +171,6 @@ otherwise use the subtree title."
   (setq org-image-actual-width 700)
   ;; make code look nice even before session started
   (add-to-list 'org-src-lang-modes '("ipython" . python))
-  ;; I like when org opens links in new windows/frames
-  ;no i dont ;; (setf (alist-get 'file org-link-frame-setup) #'find-file-other-window)
   (if (featurep! :private frames-only)
       (setq org-src-window-setup 'other-frame) ;; other-window doesn't close as I'd like on exit
     (setq org-src-window-setup 'other-window)
@@ -381,8 +361,6 @@ If on a:
       (:desc "App" :prefix "a"
         :desc "Ielm" :n "i" #'ielm
         :desc "elfeed" :n "e" #'elfeed
-        ;; :desc "Mail" :n "m" #'=email
-        ;;:desc "Mail" :n "m" #'mu4e
         :desc "Processes" :n "p" #'list-processes
         :desc "Jupyter-repl" :n "j" #'jupyter-run-repl
         :desc "External Ranger" :n "r" #'open-ranger)

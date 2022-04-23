@@ -70,9 +70,6 @@ otherwise use the subtree title."
 (map!
  :desc "copy subtree to new journal file" :n "gZ" 'jrb/subtree-to-journal-file)
 
-;(setenv "PATH" (concat (getenv "PATH") ":/Library/TeX/texbin"))
-;(setq exec-path (append exec-path '("/Library/TeX/texbin")))
-
 (set-popup-rules!
   '(("^\\*jupyter.*" :ignore t)))
 

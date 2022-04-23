@@ -1,7 +1,9 @@
 ;;; private/system-specific/autoload.el -*- lexical-binding: t; -*-
 ;;;###autoload
 (defun jrb-sys/set-mac ()
-  (setq jrb-sys/ext-term-command "open -aiterm&"))
+  (setq jrb-sys/ext-term-command "open -aiterm&")
+  (setenv "PATH" (concat (getenv "PATH") ":/Library/TeX/texbin"))
+  (setq exec-path (append exec-path '("/Library/TeX/texbin"))))
 
 ;;;###autoload
 (defun jrb-sys/set-linux-hpc ()

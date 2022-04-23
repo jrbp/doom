@@ -230,4 +230,5 @@
        ;org-dnd
        super-agenda
        org-ref
+       (system-specific +linux-hpc)
        )

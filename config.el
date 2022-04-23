@@ -75,12 +75,6 @@ otherwise use the subtree title."
 (map!
  :desc "copy subtree to new journal file" :n "gZ" 'jrb/subtree-to-journal-file)
 
-(defun open-term ()
-  ;; currently useless as it always opens in home
-  (interactive)
-  ;(call-process-shell-command "open -aiterm&" nil 0)) ;; mac
-;   (call-process-shell-command "termite&" nil 0)) ;; thinkpad
-   (call-process-shell-command "gnome-terminal" nil 0)) ;; flatiron desktop (needs testing)
 ;(setenv "PATH" (concat (getenv "PATH") ":/Library/TeX/texbin"))
 ;(setq exec-path (append exec-path '("/Library/TeX/texbin")))
 
@@ -391,7 +385,6 @@ If on a:
         ;;:desc "Mail" :n "m" #'mu4e
         :desc "Processes" :n "p" #'list-processes
         :desc "Jupyter-repl" :n "j" #'jupyter-run-repl
-        :desc "External term" :n "t" #'open-term
         :desc "External Ranger" :n "r" #'open-ranger)
       :prefix "m" :desc "schedule" :n "s" #'org-schedule)
 

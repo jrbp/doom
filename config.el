@@ -1,4 +1,4 @@
-;;; ~/.config/doom/config.el -*- lexical-binding: t; -*-
+;; ~/.config/doom/config.el -*- lexical-binding: t; -*-
 ;(setq enable-local-variables t)
 ;(setq enable-local-eval t)
 (setq doom-font (font-spec :family "Monospace" :size 18))

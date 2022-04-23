@@ -8,8 +8,7 @@
   (add-to-list 'lsp-file-watch-ignored-directories "[/\\\\]\\.venv\\'")
   (add-to-list 'lsp-file-watch-ignored-directories "[/\\\\]\\from_materials_cloud\\'"))
 
-;; TODO: it would be a good idea to start all my custom functions with jrb/ or something
-(defun insert-file-name (filename &optional args)
+(defun jrb/insert-file-name (filename &optional args)
   "Insert name of file FILENAME into buffer after point.
 
   Prefixed with \\[universal-argument], insert the file name exactly as
@@ -374,7 +373,7 @@ If on a:
                             (kill-this-buffer) (evil-quit)))
 (map! :desc "store(grab) link" "C-c C-g" #'org-store-link)
 
-(defun copy-window ()
+(defun jrb/copy-window ()
   (interactive)
   (let ((pos (point)))
     (switch-to-buffer-other-window (current-buffer))
@@ -382,7 +381,7 @@ If on a:
   )
 
 (map!
- :desc "open copy of current window" :m "go" 'copy-window)
+ :desc "open copy of current window" :m "go" 'jrb/copy-window)
 
 (after! jupyter
   (defun jupyter-refresh-kernel-env ()
@@ -391,7 +390,7 @@ jupyter kernels after pyenv env is changed"
     (interactive)
     (jupyter-available-kernelspecs t)))
 
-(defun goto-long-line (len)
+(defun jrb/goto-long-line (len)
   "Go to the first line that is at least LEN characters long.
 Use a prefix arg to provide LEN.
 Plain `C-u' (no number) uses `fill-column' as LEN."

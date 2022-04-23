@@ -422,60 +422,6 @@ Plain `C-u' (no number) uses `fill-column' as LEN."
 (advice-add 'evil-org-edit-src-exit :override
             'replace-evil-org-edit-src-exit)
 
-
-;(defun list-processes--refresh ()
-;  "Recompute the list of processes for the Process List buffer.
-;Also, delete any process that is exited or signaled."
-;  (setq tabulated-list-entries nil)
-;  (dolist (p (process-list))
-;    (cond ((memq (process-status p) '(exit signal closed))
-;           (delete-process p))
-;          ((or (not process-menu-query-only)
-;               (process-query-on-exit-flag p))
-;           (let* ((buf (process-buffer p))
-;                  (type (process-type p))
-;                  (pid  (if (process-id p) (format "%d" (process-id p)) "--"))
-;                  (name (process-name p))
-;                  (status (symbol-name (process-status p)))
-;                  (buf-label (if (buffer-live-p buf)
-;                                 `(,(buffer-name buf)
-;                                   face link
-;                                   help-echo ,(format-message
-;                                               "Visit buffer `%s'"
-;                                               (buffer-name buf))
-;                                   follow-link t
-;                                   process-buffer ,buf
-;                                   action process-menu-visit-buffer)
-;                               "--"))
-;                  (tty (or (process-tty-name p) "--"))
-;                  (cmd
-;                   (if (memq type '(network serial))
-;                       (let ((contact (process-contact p t)))
-;                         (if (eq type 'network)
-;                             (format "(%s %s)"
-;                                     (if (plist-get contact :type)
-;                                         "datagram"
-;                                       "network")
-;                                     (if (plist-get contact :server)
-;                                         (format "server on %s"
-;                                                 (or
-;                                                  (plist-get contact :host)
-;                                                  (plist-get contact :local)))
-;                                       (format "connection to %s"
-;                                               (plist-get contact :host))))
-;                           (format "(serial port %s%s)"
-;                                   (or (plist-get contact :port) "?")
-;                                   (let ((speed (plist-get contact :speed)))
-;                                     (if speed
-;                                         (format " at %s b/s" speed)
-;                                       "")))))
-;                     ;; (mapconcat 'identity (process-command p) " "))))
-;                     (if (not (stringp (process-command p))) ""
-;                       (mapconcat 'identity (process-command p) " ")))))
-;             (push (list p (vector name pid status buf-label tty cmd))
-;                   tabulated-list-entries)))))
-;  (tabulated-list-init-header))
-
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

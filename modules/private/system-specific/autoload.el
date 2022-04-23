@@ -2,6 +2,7 @@
 ;;;###autoload
 (defun jrb-sys/set-mac ()
   (setq jrb-sys/ext-term-command "open -aiterm&")
+  (add-to-list 'org-file-apps '("\\.pptx\\'" . "open %s"))
   (setq comp-deferred-compilation t)
   (setenv "PATH" (concat (getenv "PATH") ":/Library/TeX/texbin"))
   (setq exec-path (append exec-path '("/Library/TeX/texbin"))))

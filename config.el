@@ -162,7 +162,6 @@ otherwise use the subtree title."
 
   (add-to-list 'org-file-apps '("\\.vesta\\'" . "VESTA %s"))
   (add-to-list 'org-file-apps '("\\.nb\\'" . "mathematica %s"))
-  ; (add-to-list 'org-file-apps '("\\.pdf\\'" . "open %s"))
   (add-to-list 'org-file-apps '("\\.pdf\\'" . emacs))
   ;(add-to-list 'org-file-apps '("\\.pptx\\'" . "open %s"))
   (add-to-list 'org-file-apps '("\\.odp\\'" . "libreoffice %s"))

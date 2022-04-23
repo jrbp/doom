@@ -227,7 +227,7 @@
 
        :private ;; ~/.config/doom/modules/private/{...}
        ;; frames-only
-       org-dnd
+       ;org-dnd
        super-agenda
        org-ref
        )

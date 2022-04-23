@@ -105,7 +105,6 @@
         +docsets)        ; ...or in Dash docsets locally
        (lsp
         +peek)
-       ;;macos             ; MacOS-specific commands
        magit             ; a git porcelain for Emacs
        ;;make              ; run make tasks from Emacs
        ;;pass              ; password manager for nerds
@@ -225,10 +224,17 @@
        ;; reference for your own modules.
        (default +bindings +snippets +evil-commands)
 
+       :os
+       ;macos
+
        :private ;; ~/.config/doom/modules/private/{...}
+       (system-specific
+        ;+mac)
+        +linux-hpc)
+        ;+linux-personal)
+        ;+wsl)
        ;; frames-only
        ;org-dnd
        super-agenda
        org-ref
-       (system-specific +linux-hpc)
        )

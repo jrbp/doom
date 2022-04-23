@@ -2,8 +2,15 @@
 ;(setq enable-local-variables t)
 ;(setq enable-local-eval t)
 (setq doom-font (font-spec :family "Monospace" :size 18))
-
+;
+;pyvenv venv location
+;(setenv "WORKON_HOME" "/home/jbonini/.cache/pypoetry/virtualenvs")
+;(setq comp-deferred-compilation t)
 ;(setq initial-buffer-choice "~/org/master.org")
+
+(with-eval-after-load 'lsp-mode
+  (add-to-list 'lsp-file-watch-ignored-directories "[/\\\\]\\.venv\\'")
+  (add-to-list 'lsp-file-watch-ignored-directories "[/\\\\]\\from_materials_cloud\\'"))
 
 ;; TODO: it would be a good idea to start all my custom functions with jrb/ or something
 (defun insert-file-name (filename &optional args)

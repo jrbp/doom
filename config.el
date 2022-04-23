@@ -34,6 +34,47 @@
         (t
          (insert (expand-file-name filename)))))
 
+(defun jrb/org-file-from-subtree (&optional name)
+  "Cut the subtree currently being edited and create a new file
+from it.
+
+If called with the universal argument, prompt for new filename,
+otherwise use the subtree title."
+  (interactive "P")
+  (org-back-to-heading)
+  (let ((filename (cond
+                   (current-prefix-arg
+                    (expand-file-name
+                     (read-file-name "New file name: ")))
+                   ((not (null name)) name)
+                   (t
+                    (concat
+                     (expand-file-name
+                      (org-element-property :title
+                                            (org-element-at-point))
+                      default-directory)
+                     ".org")))))
+    (org-cut-subtree)
+    (find-file-noselect filename)
+    (with-temp-file filename
+      (org-mode)
+      (yank))))
+
+(defun jrb/subtree-to-journal-file ()
+  (interactive)
+  (org-back-to-heading)
+  (jrb/org-file-from-subtree
+   (expand-file-name
+    (concat "./journal_org/"
+            (org-element-property :title
+                                  (org-element-at-point))
+            ".org"))))
+
+(map!
+ :desc "copy subtree to new file" :n "gz" 'jrb/org-file-from-subtree)
+(map!
+ :desc "copy subtree to new journal file" :n "gZ" 'jrb/subtree-to-journal-file)
+
 (defun open-term ()
   ;; currently useless as it always opens in home
   (interactive)

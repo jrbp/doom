@@ -1,7 +1,6 @@
 ;; ~/.config/doom/config.el -*- lexical-binding: t; -*-
 (setq doom-font (font-spec :family "Monospace" :size 18))
 
-;(setq comp-deferred-compilation t)
 ;(setq initial-buffer-choice "~/org/master.org")
 
 (with-eval-after-load 'lsp-mode

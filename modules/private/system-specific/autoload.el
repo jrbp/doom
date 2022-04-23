@@ -2,6 +2,7 @@
 ;;;###autoload
 (defun jrb-sys/set-mac ()
   (setq jrb-sys/ext-term-command "open -aiterm&")
+  (setq comp-deferred-compilation t)
   (setenv "PATH" (concat (getenv "PATH") ":/Library/TeX/texbin"))
   (setq exec-path (append exec-path '("/Library/TeX/texbin"))))
 
@@ -11,10 +12,12 @@
 
 ;;;###autoload
 (defun jrb-sys/set-linux-personal ()
+  (setq comp-deferred-compilation t)
   (setq jrb-sys/ext-term-command "termite&"))
 
 ;;;###autoload
 (defun jrb-sys/set-wsl ()
+  (setq comp-deferred-compilation t)
   (setq jrb-sys/ext-term-command "gnome-terminal"))
 
 ;;;###autoload

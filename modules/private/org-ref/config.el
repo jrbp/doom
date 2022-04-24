@@ -50,25 +50,26 @@
    :map bibtex-mode-map
    "C-k" #'org-ref-bibtex-hydra/body)
 
-(defun org-ref-noter-at-point ()
-      "Open the pdf for bibtex key under point if it exists."
-      (interactive)
-      (let* ((results (org-ref-get-bibtex-key-and-file))
-             (key (car results))
-             (pdf-file (funcall org-ref-get-pdf-filename-function key)))
-        (if (file-exists-p pdf-file)
-            (progn
-              (find-file-other-window pdf-file)
-              (org-noter))
-          (message "no pdf found for %s" key))))
+  (defun org-ref-noter-at-point ()
+    "Open the pdf for bibtex key under point if it exists."
+    (interactive)
+    (let* ((results (org-ref-get-bibtex-key-and-file))
+           (key (car results))
+           (pdf-file (funcall org-ref-get-pdf-filename-function key)))
+      (if (file-exists-p pdf-file)
+          (progn
+            (find-file-other-window pdf-file)
+            (org-noter))
+        (message "no pdf found for %s" key))))
 
-(add-to-list 'org-ref-helm-user-candidates
-             '("Org-Noter notes" . org-ref-noter-at-point))
+  ; feature seems to have been removed from org-ref
+  ;(add-to-list 'org-ref-helm-user-candidates
+  ;             '("Org-Noter notes" . org-ref-noter-at-point))
 
 
 ;; adding noter property
-(setq! org-ref-note-title-format
-  "* %y - %t
+  (setq! org-ref-note-title-format
+         "* %y - %t
  :PROPERTIES:
   :Custom_ID: %k
   :NOTER_DOCUMENT: %F
@@ -83,13 +84,11 @@
 
 ")
 
-(setq! bibtex-completion-notes-template-one-file
-       (format "* ${title} - ${year}
+  (setq! bibtex-completion-notes-template-one-file
+         (format "* ${title} - ${year}
 :PROPERTIES:
 :Custom_ID: ${=key=}
 :NOTER_DOCUMENT: %s${=key=}.pdf
 :END:
 " org-ref-pdf-directory))
-
-
 )

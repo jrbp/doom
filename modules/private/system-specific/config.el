@@ -12,7 +12,7 @@
   (jrb-sys/set-linux-personal))
  ((featurep! +wsl)
   ; windows subsystem for linux emacs
-  (jrb/sys-set-wsl))
+  (jrb-sys/set-wsl))
  ; TODO else case that tries to determine automaticly by calling hostname
  ; and/or gives sensible defaults
  )

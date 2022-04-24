@@ -2,6 +2,7 @@
 
 ;;(def-package! org-super-agenda ;def-package! renamed to use-package!
 (use-package! org-super-agenda
+  :after org-agenda
   :config
   ; following defun makes headers dumb, but at least doesn't break evil bindings
   (defun org-super-agenda--make-agenda-header (s)

@@ -36,7 +36,7 @@
     "Transcode a table from Org to a D&D LaTeX table.
   CONTENTS holds the contents of the table.  INFO is a plist holding
   contextual information."
-    (let ((header (first (org-element-property :header table)))
+    (let ((header (car (org-element-property :header table)))
           (align (org-export-read-attribute :attr_dnd table :align))
           (long (org-export-read-attribute :attr_dnd table :long))
           (color (org-export-read-attribute :attr_dnd table :color)))

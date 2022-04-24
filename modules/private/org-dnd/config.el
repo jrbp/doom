@@ -2,6 +2,7 @@
 
 ;;(def-package! ox-dnd ;def-package! renamed to use-package!
 (use-package! ox-dnd
+  :after ox
   :config
   ; allow for dndlongtable (could have just set it in :init instead of replacing)
   (setf (cadr (assoc "dnd" org-latex-classes))

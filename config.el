@@ -143,7 +143,7 @@ otherwise use the subtree title."
 
 
   ;; for inline latex
-  (plist-put org-format-latex-options :scale 3)
+  (plist-put org-format-latex-options :scale 2)
   (setq org-latex-packages-alist '(("" "braket" t)))
 
   (remove-hook! 'org-mode-hook #'+org|enable-auto-update-cookies)

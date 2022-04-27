@@ -121,7 +121,7 @@
 
        :os
        (:if IS-MAC macos)  ; improve compatibility with macOS
-       ;;tty               ; improve the terminal Emacs experience
+       (tty +osc)               ; improve the terminal Emacs experience (clipboard and mouse support even over ssh)
 
        :lang
        ;;agda              ; types of types of types of types...

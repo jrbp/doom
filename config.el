@@ -59,6 +59,11 @@
 (add-hook! 'elfeed-search-mode-hook 'elfeed-update)
 
 (after! org
+  ; fix jupyter output see https://github.com/nnicandro/emacs-jupyter/issues/366
+  (defun display-ansi-colors ()
+    (ansi-color-apply-on-region (point-min) (point-max)))
+  (add-hook 'org-babel-after-execute-hook #'display-ansi-colors)
+
   (after! org-noter
     (setq org-noter-default-notes-file-names '("notes.org"))
     (setq org-noter-notes-search-path '("/Users/jbonini/Dropbox_simons/org/references/misc" "/Users/jbonini/Dropbox_simons/org/"))

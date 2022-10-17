@@ -7,6 +7,14 @@
   (add-to-list 'lsp-file-watch-ignored-directories "[/\\\\]\\.venv\\'")
   (add-to-list 'lsp-file-watch-ignored-directories "[/\\\\]\\from_materials_cloud\\'"))
 
+; non warnings do not show up in lsp (mainly to remove "is not accessed" messages cluttering everything)
+(setf lsp-diagnostic-filter (lambda (param work)
+                              (puthash "diagnostics"
+                                       (cl-remove-if (lambda (diag) (gethash "tags" diag))
+                                                     (gethash "diagnostics" param))
+                                       param)
+                              param))
+
 (defun jrb/insert-file-name (filename &optional args)
   "Insert name of file FILENAME into buffer after point.
 

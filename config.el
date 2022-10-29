@@ -142,6 +142,7 @@ otherwise use the subtree title."
               ".org"))))
 
   (map! :map evil-org-mode-map
+        :desc "sub latex to character (for julia)" :ni "<A-tab>" 'julia-latexsub-or-indent
         :desc "copy subtree to new file" :n "gz" 'jrb/org-file-from-subtree
         :desc "copy subtree to new journal file" :n "gZ" 'jrb/subtree-to-journal-file)
 

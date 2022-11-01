@@ -4,6 +4,8 @@
 ;(setq initial-buffer-choice "~/org/master.org")
 
 (with-eval-after-load 'lsp-mode
+  (setq lsp-julia-default-environment "/mnt/home/jbonini/.julia/environments/v1.7")
+  (setq lsp-julia-package-dir nil)
   (add-to-list 'lsp-file-watch-ignored-directories "[/\\\\]\\.venv\\'")
   (add-to-list 'lsp-file-watch-ignored-directories "[/\\\\]\\from_materials_cloud\\'"))
 

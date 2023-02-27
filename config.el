@@ -160,7 +160,7 @@ otherwise use the subtree title."
 
   ;; for inline latex
   (plist-put org-format-latex-options :scale 2)
-  (setq org-latex-packages-alist '(("" "braket" t)))
+  (setq org-latex-packages-alist '(("" "braket" t) ("" "amsmath" t) ("bb=dsserif" "mathalpha" t)))
 
   (remove-hook! 'org-mode-hook #'+org|enable-auto-update-cookies)
   (advice-remove #'evil-org-open-below #'+org*evil-org-open-below) ; didn't like this anyway

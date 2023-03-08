@@ -1,8 +1,7 @@
 # -*- mode: snippet -*-
 # name: equation
 # key: eqn
-# condition: t
 # --
-\begin{equation}
-    $0
-\end{equation}
+\begin{equation$2}
+    `%`$1$0
+\end{equation$2}

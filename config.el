@@ -9,7 +9,7 @@
   (add-to-list 'lsp-file-watch-ignored-directories "[/\\\\]\\.venv\\'")
   (add-to-list 'lsp-file-watch-ignored-directories "[/\\\\]\\from_materials_cloud\\'"))
 
-; non warnings do not show up in lsp (mainly to remove "is not accessed" messages cluttering everything)
+;; non warnings do not show up in lsp (mainly to remove "is not accessed" messages cluttering everything)
 (setf lsp-diagnostic-filter (lambda (param work)
                               (puthash "diagnostics"
                                        (cl-remove-if (lambda (diag) (gethash "tags" diag))
@@ -41,14 +41,14 @@
 (set-popup-rules!
   '(("^\\*jupyter.*" :ignore t)))
 
-; temp fix attachment bug invalid base64 data bug, see https://github.com/hlissner/doom-emacs/issues/3185
+;; temp fix attachment bug invalid base64 data bug, see https://github.com/hlissner/doom-emacs/issues/3185
 (defadvice! no-errors/+org-inline-image-data-fn (_protocol link _description)
   :override #'+org-inline-image-data-fn
   "Interpret LINK as base64-encoded image data. Ignore all errors."
   (ignore-errors
     (base64-decode-string link)))
 
-; make it so that by default ESC is sent to vterm
+;; make it so that by default ESC is sent to vterm
 (add-hook! 'vterm-mode-hook #'evil-collection-vterm-toggle-send-escape)
 
 ; never did the google developers steps
@@ -69,7 +69,7 @@
 (add-hook! 'elfeed-search-mode-hook 'elfeed-update)
 
 (after! org
-  ; fix jupyter output see https://github.com/nnicandro/emacs-jupyter/issues/366
+  ;; fix jupyter output see https://github.com/nnicandro/emacs-jupyter/issues/366
   (defun display-ansi-colors ()
     (ansi-color-apply-on-region (point-min) (point-max)))
   (add-hook 'org-babel-after-execute-hook #'display-ansi-colors)
@@ -165,7 +165,7 @@ otherwise use the subtree title."
   (remove-hook! 'org-mode-hook #'+org|enable-auto-update-cookies)
   (advice-remove #'evil-org-open-below #'+org*evil-org-open-below) ; didn't like this anyway
 
-  ; Didn't like that new headings on C-return weren't put in at point
+  ;; Didn't like that new headings on C-return weren't put in at point
   (setq org-insert-heading-respect-content nil)
   (map! :map evil-org-mode-map
         :desc "New header at point"

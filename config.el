@@ -1,7 +1,7 @@
 ;; ~/.config/doom/config.el -*- lexical-binding: t; -*-
 (setq doom-font (font-spec :family "Monospace" :size 18))
 
-;(setq initial-buffer-choice "~/org/master.org")
+                                        ;(setq initial-buffer-choice "~/org/master.org")
 
 (with-eval-after-load 'lsp-mode
   (setq lsp-julia-default-environment "/mnt/home/jbonini/.julia/environments/v1.7")
@@ -51,21 +51,21 @@
 ;; make it so that by default ESC is sent to vterm
 (add-hook! 'vterm-mode-hook #'evil-collection-vterm-toggle-send-escape)
 
-; never did the google developers steps
-; (defun my-open-calendar ()
-;   (interactive)
-;   (cfw:open-calendar-buffer
-;    :contents-sources
-;    (list
-;     (cfw:org-create-source "Green")  ; orgmode source
-;     ;; (cfw:ical-create-source "gcal" "https://..../basic.ics" "IndianRed") ; google calendar ICS
-;    )))
-;
-; (defun cfw:open-org-calendar-with-cal1 ()
-;   (interactive)
-;   (let ((org-agenda-files '("/Users/jbonini/Dropbox_simons/org/gcal.org"))) ;;can use directory
-;     (call-interactively #'+calendar/open-calendar)))
-;
+                                        ; never did the google developers steps
+                                        ; (defun my-open-calendar ()
+                                        ;   (interactive)
+                                        ;   (cfw:open-calendar-buffer
+                                        ;    :contents-sources
+                                        ;    (list
+                                        ;     (cfw:org-create-source "Green")  ; orgmode source
+                                        ;     ;; (cfw:ical-create-source "gcal" "https://..../basic.ics" "IndianRed") ; google calendar ICS
+                                        ;    )))
+                                        ;
+                                        ; (defun cfw:open-org-calendar-with-cal1 ()
+                                        ;   (interactive)
+                                        ;   (let ((org-agenda-files '("/Users/jbonini/Dropbox_simons/org/gcal.org"))) ;;can use directory
+                                        ;     (call-interactively #'+calendar/open-calendar)))
+                                        ;
 (add-hook! 'elfeed-search-mode-hook 'elfeed-update)
 
 (after! org
@@ -190,61 +190,61 @@ otherwise use the subtree title."
     )
 
   (add-to-list 'org-file-apps '("\\.xoj\\'" . "xournal %s"))
- (setq org-refile-targets (quote (("master.org" :maxlevel . 1)
-                                  ("archive.org" :maxlevel . 1)
-                                  (org-agenda-files :maxlevel . 1))))
- ; default agenda view is just today
- (setq org-agenda-span 'day)
- (setq org-agenda-start-day nil)
- (setq org-agenda-overriding-columns-format "%25ITEM %TODO %EFFORT %CLOCKSUM %JOBID %JOBCLUST %JOBDIR")
- (setq org-agenda-custom-commands '(("j" "HPC jobs" tags-todo "HPCJOB") ("n" "Agenda and all TODOs" ((agenda "") (alltodo "")))))
+  (setq org-refile-targets (quote (("master.org" :maxlevel . 1)
+                                   ("archive.org" :maxlevel . 1)
+                                   (org-agenda-files :maxlevel . 1))))
+                                        ; default agenda view is just today
+  (setq org-agenda-span 'day)
+  (setq org-agenda-start-day nil)
+  (setq org-agenda-overriding-columns-format "%25ITEM %TODO %EFFORT %CLOCKSUM %JOBID %JOBCLUST %JOBDIR")
+  (setq org-agenda-custom-commands '(("j" "HPC jobs" tags-todo "HPCJOB") ("n" "Agenda and all TODOs" ((agenda "") (alltodo "")))))
 
- (defun esf/execute-startup-block ()
-   (interactive)
-   (org-babel-goto-named-src-block "startup")
-   (org-babel-execute-src-block)
-   (beginning-of-buffer)
-   (org-overview))
+  (defun esf/execute-startup-block ()
+    (interactive)
+    (org-babel-goto-named-src-block "startup")
+    (org-babel-execute-src-block)
+    (beginning-of-buffer)
+    (org-overview))
 
- (setq org-tag-persistent-alist '((:startgroup . nil)
-                                  ("@work" . ?w) ("@personal" . ?h)
-                                  (:endgroup . nil)
-                                  ("reading" . ?r)
-                                  ("coding" . ?c)
-                                  ("investigating" . ?i)
-                                  ("organizing" . ?o)
-                                  ("writing/preparing" . ?p)
-                                  ("calculations" . ?s)))
- (setq org-todo-keywords
-       '((sequence "TODO" "IN-PROGRESS" "WAITING" "|" "CANCELED" "DEFERRED" "DONE")))
- (setq org-capture-templates
-       '(("t" "TODO" entry (file+headline "~/org/master.org" "Tasks")
-          "* TODO %?\n  %i %a %U")
-         ("l" "Log (misc)" entry (file+headline "~/org/misc-log.org" "Tasks")
-          "* %?\n  %i %a %U")
-         ("s" "Someday" entry (file+headline "~/org/someday.org" "Tasks")
-          "* TODO %?\n  %i %a %U")
-         ("a" "Appointments" entry (file+headline "~/org/master.org" "Appointments")
-          "* %?\n  %i %a %U")
-         ("n" "Notes" entry (file+headline "~/org/master.org" "Notes")
-          "* %?\n  %i %a %U")
-         ))
+  (setq org-tag-persistent-alist '((:startgroup . nil)
+                                   ("@work" . ?w) ("@personal" . ?h)
+                                   (:endgroup . nil)
+                                   ("reading" . ?r)
+                                   ("coding" . ?c)
+                                   ("investigating" . ?i)
+                                   ("organizing" . ?o)
+                                   ("writing/preparing" . ?p)
+                                   ("calculations" . ?s)))
+  (setq org-todo-keywords
+        '((sequence "TODO" "IN-PROGRESS" "WAITING" "|" "CANCELED" "DEFERRED" "DONE")))
+  (setq org-capture-templates
+        '(("t" "TODO" entry (file+headline "~/org/master.org" "Tasks")
+           "* TODO %?\n  %i %a %U")
+          ("l" "Log (misc)" entry (file+headline "~/org/misc-log.org" "Tasks")
+           "* %?\n  %i %a %U")
+          ("s" "Someday" entry (file+headline "~/org/someday.org" "Tasks")
+           "* TODO %?\n  %i %a %U")
+          ("a" "Appointments" entry (file+headline "~/org/master.org" "Appointments")
+           "* %?\n  %i %a %U")
+          ("n" "Notes" entry (file+headline "~/org/master.org" "Notes")
+           "* %?\n  %i %a %U")
+          ))
 
- ;; don't want return to execute src blocks
- (defun jrb/is-org-src-block (&optional arg)
-   (interactive "P")
-   (member (org-element-type (org-element-context)) (list `src-block `inline-src-block)))
- (advice-add '+org/dwim-at-point :before-until #'jrb/is-org-src-block)
+  ;; don't want return to execute src blocks
+  (defun jrb/is-org-src-block (&optional arg)
+    (interactive "P")
+    (member (org-element-type (org-element-context)) (list `src-block `inline-src-block)))
+  (advice-add '+org/dwim-at-point :before-until #'jrb/is-org-src-block)
 
- ) ; end after! org
+  ) ; end after! org
 
 ;; key binds
 (map! :leader
       (:desc "App" :prefix "a"
-        :desc "Ielm" :n "i" #'ielm
-        :desc "elfeed" :n "e" #'elfeed
-        :desc "Processes" :n "p" #'list-processes
-        :desc "Jupyter-repl" :n "j" #'jupyter-run-repl)
+       :desc "Ielm" :n "i" #'ielm
+       :desc "elfeed" :n "e" #'elfeed
+       :desc "Processes" :n "p" #'list-processes
+       :desc "Jupyter-repl" :n "j" #'jupyter-run-repl)
       :prefix "m" :desc "schedule" :n "s" #'org-schedule)
 
 (map! :leader
@@ -301,7 +301,7 @@ jupyter kernels after pyenv env is changed"
 ;; fixing where this was broken used to use evil-write instead of save-buffer
 ;; it used to be that I could just redefine here, but that seems to not work
 ;; renaming my functiona and putting in as advice instead
-; (defun evil-org-edit-src-exit ()
+                                        ; (defun evil-org-edit-src-exit ()
 (defun replace-evil-org-edit-src-exit ()
   "Save then `evil-edit-src-exit'."
   (interactive)

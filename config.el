@@ -196,14 +196,15 @@ otherwise use the subtree title."
                                         ; default agenda view is just today
   (setq org-agenda-span 'day)
   (setq org-agenda-start-day nil)
-  (setq org-agenda-overriding-columns-format "%25ITEM %TODO %EFFORT %CLOCKSUM %JOBID %JOBCLUST %JOBDIR")
+  ;;obsolete (setq org-agenda-overriding-columns-format "%25ITEM %TODO %EFFORT %CLOCKSUM %JOBID %JOBCLUST %JOBDIR")
+  (setq org-overriding-columns-format "%25ITEM %TODO %EFFORT %CLOCKSUM %JOBID %JOBCLUST %JOBDIR")
   (setq org-agenda-custom-commands '(("j" "HPC jobs" tags-todo "HPCJOB") ("n" "Agenda and all TODOs" ((agenda "") (alltodo "")))))
 
   (defun esf/execute-startup-block ()
     (interactive)
     (org-babel-goto-named-src-block "startup")
     (org-babel-execute-src-block)
-    (beginning-of-buffer)
+    (goto-char (point-min)) ;(beginning-of-buffer)
     (org-overview))
 
   (setq org-tag-persistent-alist '((:startgroup . nil)

@@ -272,13 +272,13 @@ jupyter kernels after pyenv env is changed"
     (interactive)
     (jupyter-available-kernelspecs t)))
 
-(defun jrb/goto-long-line (len)
+(defun jrb/goto-long-line (&optional arg)
   "Go to the first line that is at least LEN characters long.
-Use a prefix arg to provide LEN.
-Plain `C-u' (no number) uses `fill-column' as LEN."
+        Use a prefix arg to provide LEN.
+        no prefix uses `fill-column' as LEN."
   (interactive "P")
-  (setq len  (if (consp len) fill-column (prefix-numeric-value len)))
-  (let ((start-line                 (line-number-at-pos))
+  (let ((len (if arg (prefix-numeric-value arg) fill-column))
+        (start-line                 (line-number-at-pos))
         (len-found                  0)
         (found                      nil)
         (inhibit-field-text-motion  t))
@@ -286,11 +286,9 @@ Plain `C-u' (no number) uses `fill-column' as LEN."
       (forward-line 1)
       (setq found  (< len (setq len-found  (- (line-end-position) (point))))))
     (if found
-        (when (interactive-p)
-          (message "Line %d: %d chars" (line-number-at-pos) len-found))
-      (goto-line start-line)
+        (message "Line %d: %d chars" (line-number-at-pos) len-found)
+      (forward-line (- start-line (line-number-at-pos))) ;(goto-line start-line)
       (message "Not found"))))
-
 
 (if (featurep! :private frames-only)
     (setq org-src-window-setup 'other-frame) ;; other-window doesn't close as I'd like on exit

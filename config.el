@@ -166,6 +166,11 @@ otherwise use the subtree title."
     (let ((scale  (if arg (prefix-numeric-value arg) 2)))
       (message "latex scale set to %s" scale)
       (plist-put org-format-latex-options :scale scale)))
+  (defun jrb/org-latex-yas ()
+    "Activate org and LaTeX yas expansion in org-mode buffers."
+    (yas-minor-mode-on)
+    (yas-activate-extra-mode 'latex-mode))
+  (add-hook 'org-mode-hook #'jrb/org-latex-yas)
 
   (remove-hook! 'org-mode-hook #'+org|enable-auto-update-cookies)
   (advice-remove #'evil-org-open-below #'+org*evil-org-open-below) ; didn't like this anyway

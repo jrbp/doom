@@ -3,6 +3,9 @@
 
                                         ;(setq initial-buffer-choice "~/org/master.org")
 
+;; disable doom splash image
+(setq +doom-dashboard-functions (cdr +doom-dashboard-functions))
+
 (with-eval-after-load 'lsp-mode
   (setq lsp-julia-default-environment "/mnt/home/jbonini/.julia/environments/v1.7")
   (setq lsp-julia-package-dir nil)

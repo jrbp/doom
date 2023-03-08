@@ -41,13 +41,6 @@
 (set-popup-rules!
   '(("^\\*jupyter.*" :ignore t)))
 
-;; temp fix attachment bug invalid base64 data bug, see https://github.com/hlissner/doom-emacs/issues/3185
-(defadvice! no-errors/+org-inline-image-data-fn (_protocol link _description)
-  :override #'+org-inline-image-data-fn
-  "Interpret LINK as base64-encoded image data. Ignore all errors."
-  (ignore-errors
-    (base64-decode-string link)))
-
 ;; make it so that by default ESC is sent to vterm
 (add-hook! 'vterm-mode-hook #'evil-collection-vterm-toggle-send-escape)
 
@@ -73,6 +66,13 @@
   (defun display-ansi-colors ()
     (ansi-color-apply-on-region (point-min) (point-max)))
   (add-hook 'org-babel-after-execute-hook #'display-ansi-colors)
+  ;; temp fix attachment bug invalid base64 data bug, see https://github.com/hlissner/doom-emacs/issues/3185
+  (defadvice! no-errors/+org-inline-image-data-fn (_protocol link _description)
+    :override #'+org-inline-image-data-fn
+    "Interpret LINK as base64-encoded image data. Ignore all errors."
+    (ignore-errors
+      (base64-decode-string link)))
+
 
   (after! org-noter
     (setq org-noter-default-notes-file-names '("notes.org"))

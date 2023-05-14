@@ -184,7 +184,7 @@ otherwise use the subtree title."
 
 
   ;; for inline latex
-  (setq org-latex-packages-alist '(("" "braket" t) ("" "amsmath" t) ("bb=dsserif" "mathalpha" t)))
+  (setq org-latex-packages-alist '(("" "braket" t) ("" "amsmath" t) ("bb=dsserif" "mathalpha" t) ("" "hyperref" t)))
   (plist-put org-format-latex-options :scale 2)
   (defun jrb/org-scale-latex (&optional arg)
     (interactive "P")

@@ -216,10 +216,10 @@ otherwise use the subtree title."
     )
 
   (add-to-list 'org-file-apps '("\\.xoj\\'" . "xournal %s"))
-  (setq org-refile-targets (quote (("master.org" :maxlevel . 1)
-                                   ("archive.org" :maxlevel . 1)
-                                   (org-agenda-files :maxlevel . 1))))
-                                        ; default agenda view is just today
+  ;(setq org-refile-targets (quote (("master.org" :maxlevel . 1)
+  ;                                 ("archive.org" :maxlevel . 1)
+  ;                                 (org-agenda-files :maxlevel . 1))))
+  ;                                      ; default agenda view is just today
   (setq org-agenda-span 'day)
   (setq org-agenda-start-day nil)
   ;;obsolete (setq org-agenda-overriding-columns-format "%25ITEM %TODO %EFFORT %CLOCKSUM %JOBID %JOBCLUST %JOBDIR")

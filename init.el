@@ -25,12 +25,12 @@
          ;+childframe
          )
         ;)
-       (helm             ; the *other* search engine for love and life
-        +fuzzy)          ; enable fuzzy search backend for helm
+       ;(helm             ; the *other* search engine for love and life
+       ; +fuzzy)          ; enable fuzzy search backend for helm
        ;;ido               ; the other *other* search engine...
        ;;(ivy              ; a search engine for love and life
        ;; +fuzzy)          ; enable fuzzy search backend for ivy
-       ;; vertico
+       vertico
 
        :ui
        ;;deft              ; notational velocity for Emacs

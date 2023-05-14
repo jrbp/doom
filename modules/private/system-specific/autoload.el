@@ -18,7 +18,7 @@
     (interactive)
     (call-process-shell-command "termite -e ranger&" nil 0))
   (map! :leader
-        (:desc "App" :prefix "a" :desc "External Ranger" :n "r" #'open-ranger))
+        (:desc "App" :prefix "A" :desc "External Ranger" :n "r" #'open-ranger))
   (setq comp-deferred-compilation t)
   )
 

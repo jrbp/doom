@@ -17,4 +17,4 @@
  ; and/or gives sensible defaults
  )
 
-(map! :leader (:desc "App" :prefix "a" (:desc "External term" :n "t" #'jrb-sys/open-ext-term)))
+(map! :leader (:desc "App" :prefix "A" (:desc "External term" :n "t" #'jrb-sys/open-ext-term)))

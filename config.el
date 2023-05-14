@@ -271,7 +271,7 @@ otherwise use the subtree title."
 
 ;; key binds
 (map! :leader
-      (:desc "App" :prefix "a"
+      (:desc "App" :prefix "A"
        :desc "Ielm" :n "i" #'ielm
        :desc "elfeed" :n "e" #'elfeed
        :desc "Processes" :n "p" #'list-processes

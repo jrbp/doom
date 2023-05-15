@@ -1,16 +1,16 @@
 ;;; private/system-specific/config.el -*- lexical-binding: t; -*-
 
 (cond
- ((featurep! +mac)
+ ((modulep! +mac)
   ; my macbook
   (jrb-sys/set-mac))
- ((featurep! +linux-hpc)
+ ((modulep! +linux-hpc)
   ; cluster environment eg rusty
   (jrb-sys/set-linux-hpc))
- ((featurep! +linux-personal)
+ ((modulep! +linux-personal)
   ; for example my thinkpad
   (jrb-sys/set-linux-personal))
- ((featurep! +wsl)
+ ((modulep! +wsl)
   ; windows subsystem for linux emacs
   (jrb-sys/set-wsl))
  ; TODO else case that tries to determine automaticly by calling hostname

@@ -210,7 +210,7 @@ otherwise use the subtree title."
   (setq org-image-actual-width 700)
   ;; make code look nice even before session started
   (add-to-list 'org-src-lang-modes '("ipython" . python))
-  (if (featurep! :private frames-only)
+  (if (modulep! :private frames-only)
       (setq org-src-window-setup 'other-frame) ;; other-window doesn't close as I'd like on exit
     (setq org-src-window-setup 'other-window)
     )
@@ -317,7 +317,7 @@ jupyter kernels after pyenv env is changed"
       (forward-line (- start-line (line-number-at-pos))) ;(goto-line start-line)
       (message "Not found"))))
 
-(if (featurep! :private frames-only)
+(if (modulep! :private frames-only)
     (setq org-src-window-setup 'other-frame) ;; other-window doesn't close as I'd like on exit
   (setq org-src-window-setup 'other-window)
   (after!  persp-mode

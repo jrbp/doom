@@ -30,7 +30,8 @@
        ;;ido               ; the other *other* search engine...
        ;;(ivy              ; a search engine for love and life
        ;; +fuzzy)          ; enable fuzzy search backend for ivy
-       vertico
+       (vertico
+        +icons)
 
        :ui
        ;;deft              ; notational velocity for Emacs

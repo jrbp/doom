@@ -59,10 +59,13 @@
                                  (end-of-line)
                                  (point))))))
     (let ((buf (current-buffer)))
-      (unless (get-buffer vterm-buffer-name)
-        (vterm))
-      (display-buffer vterm-buffer-name t)
-      (switch-to-buffer-other-window vterm-buffer-name)
+      (if-let (vwin (get-buffer-window
+                      (format "*doom:vterm-popup:%s*"
+                              (if (bound-and-true-p persp-mode)
+                                  (safe-persp-name (get-current-persp))
+                                "main"))))
+          (select-window vwin)
+        (+vterm/toggle nil))
       (vterm--goto-line -1)
       (message command)
       (vterm-send-string command)

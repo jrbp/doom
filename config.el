@@ -248,7 +248,7 @@ otherwise use the subtree title."
         '((sequence "TODO" "IN-PROGRESS" "WAITING" "|" "CANCELED" "DEFERRED" "DONE")))
   (setq org-capture-templates
         '(("t" "TODO" entry (file+headline "~/org/master.org" "Tasks")
-           "* TODO %?\n  %i %a %U")
+           "* TODO %?\n  %i %a %U" :prepend t)
           ("l" "Log (misc)" entry (file+headline "~/org/misc-log.org" "Tasks")
            "* %?\n  %i %a %U")
           ("s" "Someday" entry (file+headline "~/org/someday.org" "Tasks")

@@ -49,6 +49,3 @@
 ;; ...Or *all* packages (NOT RECOMMENDED; will likely break things)
 ;(unpin! t)
 ;;
-(when (modulep! :tools magit)
-    (package! magit-section)
-      (package! orgit :pin "e7cddf39e301c87c36c7de13e429dee74874d5c8"))

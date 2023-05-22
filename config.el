@@ -219,14 +219,12 @@ otherwise use the subtree title."
     )
 
   (add-to-list 'org-file-apps '("\\.xoj\\'" . "xournal %s"))
-  ;                                      ; default agenda view is just today
   (setq org-refile-targets (quote ((nil :maxlevel . 3)
                                    (org-agenda-files :maxlevel . 3)
                                    ("someday.org" :maxlevel . 3)
                                    ("archive.org" :maxlevel . 3))))
   (setq org-agenda-span 'day)
   (setq org-agenda-start-day nil)
-  ;;obsolete (setq org-agenda-overriding-columns-format "%25ITEM %TODO %EFFORT %CLOCKSUM %JOBID %JOBCLUST %JOBDIR")
   (setq org-overriding-columns-format "%25ITEM %TODO %EFFORT %CLOCKSUM %JOBID %JOBCLUST %JOBDIR")
   (setq org-agenda-custom-commands '(("j" "HPC jobs" tags-todo "HPCJOB") ("n" "Agenda and all TODOs" ((agenda "") (alltodo "")))))
 

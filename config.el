@@ -6,9 +6,15 @@
 ;; disable doom splash image
 (setq +doom-dashboard-functions (cdr +doom-dashboard-functions))
 
+(after! lsp-julia
+  (setq lsp-julia-default-environment "~/.julia/environments/v1.7")
+  (setq lsp-julia-package-dir nil))
+
+(after! (:and julia-repl vterm inheritenv)
+  (inheritenv-add-advice 'julia-repl-inferior-buffer)
+  (julia-repl-set-terminal-backend 'vterm))
+
 (with-eval-after-load 'lsp-mode
-  (setq lsp-julia-default-environment "/mnt/home/jbonini/.julia/environments/v1.7")
-  (setq lsp-julia-package-dir nil)
   (add-to-list 'lsp-file-watch-ignored-directories "[/\\\\]\\.venv\\'")
   (add-to-list 'lsp-file-watch-ignored-directories "[/\\\\]\\from_materials_cloud\\'"))
 
@@ -42,7 +48,8 @@
          (insert (expand-file-name filename)))))
 
 (set-popup-rules!
-  '(("^\\*jupyter.*" :ignore t)))
+  '(("^\\*jupyter.*" :ignore t)
+    ("^\\*julia.*" :ignore t)))
 
 ;; make it so that by default ESC is sent to vterm
 (add-hook! 'vterm-mode-hook #'evil-collection-vterm-toggle-send-escape)
@@ -172,9 +179,11 @@ otherwise use the subtree title."
               ".org"))))
 
   (map! :map evil-org-mode-map
-        :desc "sub latex to character (for julia)" :ni "<A-tab>" 'julia-latexsub-or-indent
         :desc "copy subtree to new file" :n "gz" 'jrb/org-file-from-subtree
         :desc "copy subtree to new journal file" :n "gZ" 'jrb/subtree-to-journal-file)
+
+  (map! :map jupyter-org-interaction-mode-map
+        :desc "sub latex to character (for julia)" :ni "<A-tab>" 'julia-latexsub-or-indent)
 
   ;; so that in inspect buffer we can sort of go to the definition (at least the file)
   (map! :mode help-mode

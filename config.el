@@ -10,11 +10,31 @@
   (setq lsp-julia-default-environment "~/.julia/environments/v1.7")
   (setq lsp-julia-package-dir nil))
 
-(after! (:and julia-repl vterm inheritenv)
+(after! (:and julia-repl inheritenv)
+  (inheritenv-add-advice 'julia-repl-inferior-buffer))
+
+(after! julia-repl
   (set-popup-rules!
     '(("^\\*julia.*" :ignore t)))
-  (inheritenv-add-advice 'julia-repl-inferior-buffer)
-  (julia-repl-set-terminal-backend 'vterm))
+  (julia-repl-set-terminal-backend 'vterm)
+  (when (modulep! :ui workspaces)
+    ;(advice-remove '+julia--namespace-repl-buffer-to-workspace-a #'julia-repl--inferior-buffer-name)
+    (defadvice! +julia--namespace-repl-buffer-to-workspace-a (&optional executable-key suffix)
+      "Name for a Julia REPL inferior buffer. Uses workspace name (or non-nil suffix) for doom emacs"
+      :override #'julia-repl--inferior-buffer-name
+      (concat julia-repl-inferior-buffer-name-base ":" (or suffix (+workspace-current-name)))))
+  )
+
+(after! org
+  (defadvice! +ob-julia-execute-in-repl (body params)
+    :override #'org-babel-execute:julia
+    (interactive)
+    (let* ((session (cdr (assq :session params)))
+           (julia-repl-inferior-buffer-name-suffix (pcase session
+                                                     ("none" nil)
+                                                     (_ session))))
+           (julia-repl--send-string
+            (org-babel-expand-body:julia body params)))))
 
 (with-eval-after-load 'lsp-mode
   (add-to-list 'lsp-file-watch-ignored-directories "[/\\\\]\\.venv\\'")
@@ -182,14 +202,6 @@ otherwise use the subtree title."
   (map! :map evil-org-mode-map
         :desc "copy subtree to new file" :n "gz" 'jrb/org-file-from-subtree
         :desc "copy subtree to new journal file" :n "gZ" 'jrb/subtree-to-journal-file)
-
-(defun org-babel-execute:julia (body params)
-    (interactive)
-    (setq
-     julia-repl-inferior-buffer-name-suffix
-     (intern (cdr (assoc :session params))))
-    (julia-repl--send-string
-     (org-babel-expand-body:julia body params)))
 
   (map! :map jupyter-org-interaction-mode-map
         :when (-contains? minor-mode-list 'julia-repl-mode )

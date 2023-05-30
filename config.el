@@ -11,6 +11,8 @@
   (setq lsp-julia-package-dir nil))
 
 (after! (:and julia-repl vterm inheritenv)
+  (set-popup-rules!
+    '(("^\\*julia.*" :ignore t)))
   (inheritenv-add-advice 'julia-repl-inferior-buffer)
   (julia-repl-set-terminal-backend 'vterm))
 
@@ -48,8 +50,7 @@
          (insert (expand-file-name filename)))))
 
 (set-popup-rules!
-  '(("^\\*jupyter.*" :ignore t)
-    ("^\\*julia.*" :ignore t)))
+  '(("^\\*jupyter.*" :ignore t)))
 
 ;; make it so that by default ESC is sent to vterm
 (add-hook! 'vterm-mode-hook #'evil-collection-vterm-toggle-send-escape)

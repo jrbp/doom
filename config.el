@@ -191,7 +191,12 @@ otherwise use the subtree title."
      (org-babel-expand-body:julia body params)))
 
   (map! :map jupyter-org-interaction-mode-map
-        :desc "sub latex to character (for julia)" :ni "<A-tab>" 'julia-latexsub-or-indent)
+        :when (-contains? minor-mode-list 'julia-repl-mode )
+        (:desc "sub latex to character" :ni "<A-tab>" 'julia-latexsub-or-indent
+         :desc "repl @edit"  :n "gd" 'julia-repl-edit
+         :desc "repl @doc"  :n "gk" 'julia-repl-doc
+         :desc "repl expand macro"  :n "gM" 'julia-repl-macroexpand
+         :desc "repl list methods" :n    "gm" 'julia-repl-list-methods))
 
   ;; so that in inspect buffer we can sort of go to the definition (at least the file)
   (map! :mode help-mode

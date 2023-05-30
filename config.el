@@ -50,6 +50,14 @@
   (add-to-list 'lsp-file-watch-ignored-directories "[/\\\\]\\.venv\\'")
   (add-to-list 'lsp-file-watch-ignored-directories "[/\\\\]\\from_materials_cloud\\'"))
 
+(map! :map evil-org-mode-map
+      :after julia-repl
+      :desc "sub latex to character" :ni "<A-tab>" 'julia-latexsub-or-indent
+      :desc "repl @edit"  :n "gd" 'julia-repl-edit
+      :desc "repl @doc"  :n "gk" 'julia-repl-doc
+      :desc "repl expand macro"  :n "gM" 'julia-repl-macroexpand
+      :desc "repl list methods" :n    "gm" 'julia-repl-list-methods)
+
 ;; non warnings do not show up in lsp (mainly to remove "is not accessed" messages cluttering everything)
 (setf lsp-diagnostic-filter (lambda (param work)
                               (puthash "diagnostics"
@@ -212,14 +220,6 @@ otherwise use the subtree title."
   (map! :map evil-org-mode-map
         :desc "copy subtree to new file" :n "gz" 'jrb/org-file-from-subtree
         :desc "copy subtree to new journal file" :n "gZ" 'jrb/subtree-to-journal-file)
-
-  (map! :map jupyter-org-interaction-mode-map
-        :when (-contains? minor-mode-list 'julia-repl-mode )
-        (:desc "sub latex to character" :ni "<A-tab>" 'julia-latexsub-or-indent
-         :desc "repl @edit"  :n "gd" 'julia-repl-edit
-         :desc "repl @doc"  :n "gk" 'julia-repl-doc
-         :desc "repl expand macro"  :n "gM" 'julia-repl-macroexpand
-         :desc "repl list methods" :n    "gm" 'julia-repl-list-methods))
 
   ;; so that in inspect buffer we can sort of go to the definition (at least the file)
   (map! :mode help-mode

@@ -182,6 +182,14 @@ otherwise use the subtree title."
         :desc "copy subtree to new file" :n "gz" 'jrb/org-file-from-subtree
         :desc "copy subtree to new journal file" :n "gZ" 'jrb/subtree-to-journal-file)
 
+(defun org-babel-execute:julia (body params)
+    (interactive)
+    (setq
+     julia-repl-inferior-buffer-name-suffix
+     (intern (cdr (assoc :session params))))
+    (julia-repl--send-string
+     (org-babel-expand-body:julia body params)))
+
   (map! :map jupyter-org-interaction-mode-map
         :desc "sub latex to character (for julia)" :ni "<A-tab>" 'julia-latexsub-or-indent)
 

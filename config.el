@@ -29,12 +29,22 @@
   (defadvice! +ob-julia-execute-in-repl (body params)
     :override #'org-babel-execute:julia
     (interactive)
-    (let* ((session (cdr (assq :session params)))
-           (julia-repl-inferior-buffer-name-suffix (pcase session
+    ;(let* ((session (cdr (assq :session params)))
+    ;       (julia-repl-inferior-buffer-name-suffix (pcase session
+    ;                                                 ("none" nil)
+    ;                                                 (_ session))))
+    ;       (julia-repl--send-string
+    ;        (org-babel-expand-body:julia body params)))
+    ; HACK
+    ; just setting global var when evaluating so that e.g. julia-repl-edit etc work in that session
+    ; better way would be to add babel block aware advice to those
+    (let ((session (cdr (assq :session params))))
+      (setq julia-repl-inferior-buffer-name-suffix (pcase session
                                                      ("none" nil)
-                                                     (_ session))))
-           (julia-repl--send-string
-            (org-babel-expand-body:julia body params)))))
+                                                     (_ session)))
+      (julia-repl--send-string
+       (org-babel-expand-body:julia body params)))
+    ))
 
 (with-eval-after-load 'lsp-mode
   (add-to-list 'lsp-file-watch-ignored-directories "[/\\\\]\\.venv\\'")

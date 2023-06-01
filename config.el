@@ -54,10 +54,19 @@
       :after julia-repl
       :desc "sub latex to character" :ni "<A-tab>" 'julia-latexsub-or-indent
       :desc "repl run line"  :n "gl" 'julia-repl-send-line
-      :desc "repl @edit"  :n "gd" 'julia-repl-edit
+      :desc "repl @edit"  :n "ge" 'julia-repl-edit
       :desc "repl @doc"  :n "gk" 'julia-repl-doc
       :desc "repl expand macro"  :n "gM" 'julia-repl-macroexpand
       :desc "repl list methods" :n    "gm" 'julia-repl-list-methods)
+
+(map! :map julia-repl-mode-map
+      :after julia-repl
+      :desc "repl run line"  :n "gl" 'julia-repl-send-line
+      :desc "repl @edit"  :n "ge" 'julia-repl-edit
+      :desc "repl @doc"  :n "gk" 'julia-repl-doc
+      :desc "repl expand macro"  :n "gM" 'julia-repl-macroexpand
+      :desc "repl list methods" :n    "gm" 'julia-repl-list-methods)
+
 
 ;; non warnings do not show up in lsp (mainly to remove "is not accessed" messages cluttering everything)
 (setf lsp-diagnostic-filter (lambda (param work)

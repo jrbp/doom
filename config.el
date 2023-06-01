@@ -53,6 +53,7 @@
 (map! :map evil-org-mode-map
       :after julia-repl
       :desc "sub latex to character" :ni "<A-tab>" 'julia-latexsub-or-indent
+      :desc "repl run line"  :n "gl" 'julia-repl-send-line
       :desc "repl @edit"  :n "gd" 'julia-repl-edit
       :desc "repl @doc"  :n "gk" 'julia-repl-doc
       :desc "repl expand macro"  :n "gM" 'julia-repl-macroexpand

@@ -34,6 +34,7 @@ Then run FUN with ARGS."
     (apply fun args)))
 (advice-add 'TeX-pdf-tools-sync-view :around #'jrb/framesMenus-display-buffer-use-some-frame)
 (advice-add 'pdf-sync-backward-search-mouse :around #'jrb/framesMenus-display-buffer-use-some-frame)
+(advice-add 'pdf-isearch-sync-backward :around #'jrb/framesMenus-display-buffer-use-some-frame)
 
 
 (after! org

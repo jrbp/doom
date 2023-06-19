@@ -25,6 +25,17 @@
       (concat julia-repl-inferior-buffer-name-base ":" (or suffix (+workspace-current-name)))))
   )
 
+;; auctex with pdf+src in different frames, from https://emacs.stackexchange.com/questions/55395/auctex-and-pdf-tools-in-2-separate-frames-for-dual-monitor-setup
+;; in pdf window use SPC o f to open in new frame, delete old pdf window
+(defun jrb/framesMenus-display-buffer-use-some-frame (fun &rest args)
+  "Use `display-buffer-use-some-frame' as `display-buffer-overriding-action'.
+Then run FUN with ARGS."
+  (let ((display-buffer-overriding-action '(display-buffer-use-some-frame)))
+    (apply fun args)))
+(advice-add 'TeX-pdf-tools-sync-view :around #'jrb/framesMenus-display-buffer-use-some-frame)
+(advice-add 'pdf-sync-backward-search-mouse :around #'jrb/framesMenus-display-buffer-use-some-frame)
+
+
 (after! org
   (defadvice! +ob-julia-execute-in-repl (body params)
     :override #'org-babel-execute:julia

@@ -1,11 +1,12 @@
 ;;; private/system-specific/autoload.el -*- lexical-binding: t; -*-
 ;;;###autoload
 (defun jrb-sys/set-mac ()
-  (setq jrb-sys/ext-term-command "open -aiterm&")
+  (setq jrb-sys/ext-term-command "kitty --single-instance")
   (after! org (add-to-list 'org-file-apps '("\\.pptx\\'" . "open %s")))
-  (setq comp-deferred-compilation t)
-  (setenv "PATH" (concat (getenv "PATH") ":/Library/TeX/texbin"))
-  (setq exec-path (append exec-path '("/Library/TeX/texbin"))))
+  ;(setq comp-deferred-compilation t)
+  ;(setenv "PATH" (concat (getenv "PATH") ":/Library/TeX/texbin"))
+  ;(setq exec-path (append exec-path '("/Library/TeX/texbin")))
+  )
 
 ;;;###autoload
 (defun jrb-sys/set-linux-hpc ()

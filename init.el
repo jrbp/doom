@@ -160,7 +160,7 @@
        ;;lean
        ;;factor
        ;;ledger            ; an accounting system in Emacs
-       ;;lua               ; one-based indices? one-based indices
+       lua               ; one-based indices? one-based indices
        markdown
        ;; (markdown
        ;;  +pandoc)          ; writing docs for people to ignore

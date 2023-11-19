@@ -1,5 +1,9 @@
 ;; ~/.config/doom/config.el -*- lexical-binding: t; -*-
-(setq doom-font (font-spec :family "Monospace" :size 18))
+;(setq doom-font (font-spec :family "Hack Nerd Font" :size 18))
+(setq doom-font (font-spec :family "Fira Mono" :size 20)
+      doom-variable-pitch-font (font-spec :family "Fira Sans")
+      doom-symbol-font (font-spec :family "JuliaMono")
+      doom-big-font (font-spec :family "Fira Mono" :size 22))
 
                                         ;(setq initial-buffer-choice "~/org/master.org")
 

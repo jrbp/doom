@@ -177,6 +177,9 @@ Then run FUN with ARGS."
 (add-hook! 'elfeed-search-mode-hook 'elfeed-update)
 
 (after! org
+  (setq org-agenda-files '("~/Dropbox/org/master.org"
+                           "~/Dropbox/org/thinkpadNix.org"
+                           ))
   ;; fix jupyter output see https://github.com/nnicandro/emacs-jupyter/issues/366
   (defun display-ansi-colors ()
     (ansi-color-apply-on-region (point-min) (point-max)))

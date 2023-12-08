@@ -10,9 +10,9 @@
 ;; disable doom splash image
 (setq +doom-dashboard-functions (cdr +doom-dashboard-functions))
 
+(setq lsp-julia-package-dir nil)
 (after! lsp-julia
-  (setq lsp-julia-default-environment "~/.julia/environments/v1.7")
-  (setq lsp-julia-package-dir nil))
+  (setq lsp-julia-default-environment "~/.julia/environments/v1.9"))
 
 (after! (:and julia-repl inheritenv)
   (inheritenv-add-advice 'julia-repl-inferior-buffer))

@@ -57,8 +57,9 @@ Then run FUN with ARGS."
   (advice-remove 'TeX-pdf-tools-sync-view #'jrb/framesMenus-display-buffer-use-some-frame)
   (advice-remove 'pdf-sync-backward-search-mouse #'jrb/framesMenus-display-buffer-use-some-frame))
 
-(map-put! apheleia-formatters 'alejandra '("alejandra"))
-(map-put! apheleia-mode-alist 'nix-mode 'alejandra)
+(after! apheleia
+  (map-put! apheleia-formatters 'alejandra '("alejandra"))
+  (map-put! apheleia-mode-alist 'nix-mode 'alejandra))
 
 (after! org
   (defadvice! +ob-julia-execute-in-repl (body params)

@@ -62,6 +62,7 @@ Then run FUN with ARGS."
   (map-put! apheleia-mode-alist 'nix-mode 'alejandra))
 
 (after! org
+  (+org-babel-load-jupyter-h 'jupyter-python) ;;https://discourse.doomemacs.org/t/override-built-in-src-blocks-with-emacs-jupyter/3185/2
   (defadvice! +ob-julia-execute-in-repl (body params)
     :override #'org-babel-execute:julia
     (interactive)
@@ -186,6 +187,7 @@ Then run FUN with ARGS."
                            "~/Dropbox/org/thinkpadNix.org"
                            ))
   ;; fix jupyter output see https://github.com/nnicandro/emacs-jupyter/issues/366
+  ;; https://github.com/emacs-jupyter/jupyter/issues/380
   (defun display-ansi-colors ()
     (ansi-color-apply-on-region (point-min) (point-max)))
   (add-hook 'org-babel-after-execute-hook #'display-ansi-colors)
@@ -199,7 +201,7 @@ Then run FUN with ARGS."
 
   (after! org-noter
     (setq org-noter-default-notes-file-names '("notes.org"))
-    (setq org-noter-notes-search-path '("/Users/jbonini/Dropbox_simons/org/references/misc" "/Users/jbonini/Dropbox_simons/org/"))
+    (setq org-noter-notes-search-path '("/Users/jbonini/Dropbox/org/references/misc" "/Users/jbonini/Dropbox/org/"))
     (map! :mode pdf-view-mode
           :desc "insert a note"
           :n "i" ))

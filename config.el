@@ -58,8 +58,8 @@ Then run FUN with ARGS."
   (advice-remove 'pdf-sync-backward-search-mouse #'jrb/framesMenus-display-buffer-use-some-frame))
 
 (after! apheleia
-  (map-put! apheleia-formatters 'alejandra '("alejandra"))
-  (map-put! apheleia-mode-alist 'nix-mode 'alejandra))
+  (setq apheleia-formatters (map-insert apheleia-formatters 'alejandra '("alejandra")))
+  (setq apheleia-mode-alist (map-insert apheleia-mode-alist 'nix-mode 'alejandra)))
 
 (after! org
   (+org-babel-load-jupyter-h 'jupyter-python) ;;https://discourse.doomemacs.org/t/override-built-in-src-blocks-with-emacs-jupyter/3185/2

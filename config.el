@@ -12,7 +12,7 @@
 
 (setq lsp-julia-package-dir nil)
 (after! lsp-julia
-  (setq lsp-julia-default-environment "~/.julia/environments/v1.9"))
+  (setq lsp-julia-default-environment "~/.julia/environments/v1.10"))
 
 (after! (:and julia-repl inheritenv)
   (inheritenv-add-advice 'julia-repl-inferior-buffer))

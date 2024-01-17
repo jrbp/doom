@@ -11,6 +11,7 @@
 (setq +doom-dashboard-functions (cdr +doom-dashboard-functions))
 
 (setq lsp-julia-package-dir nil)
+;; TODO can precompile image if too slow: https://github.com/gdkrmr/lsp-julia
 (after! lsp-julia
   (setq lsp-julia-default-environment "~/.julia/environments/v1.10"))
 

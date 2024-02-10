@@ -13,7 +13,7 @@
 (setq lsp-julia-package-dir nil)
 ;; TODO can precompile image if too slow: https://github.com/gdkrmr/lsp-julia
 (after! lsp-julia
-  (setq lsp-julia-default-environment "~/.julia/environments/v1.10"))
+  (setq lsp-julia-default-environment nil))
 
 (after! (:and julia-repl inheritenv)
   (inheritenv-add-advice 'julia-repl-inferior-buffer))

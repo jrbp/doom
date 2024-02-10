@@ -10,10 +10,17 @@
 ;; disable doom splash image
 (setq +doom-dashboard-functions (cdr +doom-dashboard-functions))
 
+(add-hook 'julia-snail-mode-hook
+  (lambda ()
+    (remove-hook 'completion-at-point-functions #'julia-snail-company-capf t)
+    (remove-hook 'completion-at-point-functions #'julia-snail-repl-completion-at-point t)
+    (remove-function (local 'eldoc-documentation-function) #'julia-snail-eldoc)
+    (remove-hook 'xref-backend-functions #'julia-snail-xref-backend t)))
+
 (setq lsp-julia-package-dir nil)
 ;; TODO can precompile image if too slow: https://github.com/gdkrmr/lsp-julia
-(after! lsp-julia
-  (setq lsp-julia-default-environment nil))
+;(after! lsp-julia
+;  (setq lsp-julia-default-environment "~/.julia/environments/v1.10"))
 
 (after! (:and julia-repl inheritenv)
   (inheritenv-add-advice 'julia-repl-inferior-buffer))
@@ -63,26 +70,26 @@ Then run FUN with ARGS."
   (setq apheleia-mode-alist (map-insert apheleia-mode-alist 'nix-mode 'alejandra)))
 
 (after! org
-  (+org-babel-load-jupyter-h 'jupyter-python) ;;https://discourse.doomemacs.org/t/override-built-in-src-blocks-with-emacs-jupyter/3185/2
-  (defadvice! +ob-julia-execute-in-repl (body params)
-    :override #'org-babel-execute:julia
-    (interactive)
-    ;(let* ((session (cdr (assq :session params)))
-    ;       (julia-repl-inferior-buffer-name-suffix (pcase session
-    ;                                                 ("none" nil)
-    ;                                                 (_ session))))
-    ;       (julia-repl--send-string
-    ;        (org-babel-expand-body:julia body params)))
-    ; HACK
-    ; just setting global var when evaluating so that e.g. julia-repl-edit etc work in that session
-    ; better way would be to add babel block aware advice to those
-    (let ((session (cdr (assq :session params))))
-      (setq julia-repl-inferior-buffer-name-suffix (pcase session
-                                                     ("none" nil)
-                                                     (_ session)))
-      (julia-repl--send-string
-       (org-babel-expand-body:julia body params)))
-    ))
+  ;; (defadvice! +ob-julia-execute-in-repl (body params)
+  ;;   :override #'org-babel-execute:julia
+  ;;   (interactive)
+  ;;   ;(let* ((session (cdr (assq :session params)))
+  ;;   ;       (julia-repl-inferior-buffer-name-suffix (pcase session
+  ;;   ;                                                 ("none" nil)
+  ;;   ;                                                 (_ session))))
+  ;;   ;       (julia-repl--send-string
+  ;;   ;        (org-babel-expand-body:julia body params)))
+  ;;   ; HACK
+  ;;   ; just setting global var when evaluating so that e.g. julia-repl-edit etc work in that session
+  ;;   ; better way would be to add babel block aware advice to those
+  ;;   (let ((session (cdr (assq :session params))))
+  ;;     (setq julia-repl-inferior-buffer-name-suffix (pcase session
+  ;;                                                    ("none" nil)
+  ;;                                                    (_ session)))
+  ;;     (julia-repl--send-string
+  ;;      (org-babel-expand-body:julia body params))))
+  ;;https://discourse.doomemacs.org/t/override-built-in-src-blocks-with-emacs-jupyter/3185/2
+  (+org-babel-load-jupyter-h 'jupyter-python))
 
 (with-eval-after-load 'lsp-mode
   (add-to-list 'lsp-file-watch-ignored-directories "[/\\\\]\\.venv\\'")

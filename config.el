@@ -17,10 +17,12 @@
     (remove-function (local 'eldoc-documentation-function) #'julia-snail-eldoc)
     (remove-hook 'xref-backend-functions #'julia-snail-xref-backend t)))
 
-(setq lsp-julia-package-dir nil)
-;; TODO can precompile image if too slow: https://github.com/gdkrmr/lsp-julia
-;(after! lsp-julia
-;  (setq lsp-julia-default-environment "~/.julia/environments/v1.10"))
+;; TODO is there a better way to do this?
+;; TODO also, can precompile image if too slow: https://github.com/gdkrmr/lsp-julia
+(setq lsp-julia-package-dir "/home/john/.config/emacs/.local/straight/repos/lsp-julia/languageserver")
+(after! lsp-julia
+  (setq lsp-julia-default-environment "/home/john/.config/emacs/.local/straight/repos/lsp-julia/languageserver"))
+
 
 (after! (:and julia-repl inheritenv)
   (inheritenv-add-advice 'julia-repl-inferior-buffer))

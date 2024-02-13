@@ -17,6 +17,8 @@
     (remove-function (local 'eldoc-documentation-function) #'julia-snail-eldoc)
     (remove-hook 'xref-backend-functions #'julia-snail-xref-backend t)))
 
+(setq julia-snail-extensions '(ob-julia))
+
 ;; TODO could precompile image if too slow: https://github.com/gdkrmr/lsp-julia
 ;(setq lsp-julia-package-dir "/home/john/.config/emacs/.local/straight/repos/lsp-julia/languageserver")
 ;       1) the default lsp-julia-package-dir is in a sense preferable so leave it (latest version w/o incompatability with project)
@@ -93,8 +95,10 @@ Then run FUN with ARGS."
   ;;                                                    (_ session)))
   ;;     (julia-repl--send-string
   ;;      (org-babel-expand-body:julia body params))))
+
   ;;https://discourse.doomemacs.org/t/override-built-in-src-blocks-with-emacs-jupyter/3185/2
-  (+org-babel-load-jupyter-h 'jupyter-python))
+  ;(+org-babel-load-jupyter-h 'jupyter-python)
+  )
 
 (with-eval-after-load 'lsp-mode
   (add-to-list 'lsp-file-watch-ignored-directories "[/\\\\]\\.venv\\'")

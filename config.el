@@ -74,6 +74,7 @@ Then run FUN with ARGS."
   (setq apheleia-mode-alist (map-insert apheleia-mode-alist 'nix-mode 'alejandra)))
 
 (after! org
+  (add-to-list '+org-babel-mode-alist '(julia . julia-snail))
   ;; (defadvice! +ob-julia-execute-in-repl (body params)
   ;;   :override #'org-babel-execute:julia
   ;;   (interactive)

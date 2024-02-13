@@ -17,12 +17,14 @@
     (remove-function (local 'eldoc-documentation-function) #'julia-snail-eldoc)
     (remove-hook 'xref-backend-functions #'julia-snail-xref-backend t)))
 
-;; TODO is there a better way to do this?
-;; TODO also, can precompile image if too slow: https://github.com/gdkrmr/lsp-julia
-(setq lsp-julia-package-dir "/home/john/.config/emacs/.local/straight/repos/lsp-julia/languageserver")
+;; TODO could precompile image if too slow: https://github.com/gdkrmr/lsp-julia
+;(setq lsp-julia-package-dir "/home/john/.config/emacs/.local/straight/repos/lsp-julia/languageserver")
+;       1) the default lsp-julia-package-dir is in a sense preferable so leave it (latest version w/o incompatability with project)
+; but   2) you may need to go to that directory and instantiate things
+; also  3) default-env below doesn't matter if in a project, to use outside: =] activate --shared default=
+;       4) for some reason using dftk as a library seems to not work with the languageserver
 (after! lsp-julia
-  (setq lsp-julia-default-environment "/home/john/.config/emacs/.local/straight/repos/lsp-julia/languageserver"))
-
+  (setq lsp-julia-default-environment "/home/john/.julia/environments/default"))
 
 (after! (:and julia-repl inheritenv)
   (inheritenv-add-advice 'julia-repl-inferior-buffer))

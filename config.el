@@ -1,5 +1,5 @@
 ;; ~/.config/doom/config.el -*- lexical-binding: t; -*-
-;(setq doom-font (font-spec :family "Hack Nerd Font" :size 18))
+                                        ;(setq doom-font (font-spec :family "Hack Nerd Font" :size 18))
 (setq doom-font (font-spec :family "Fira Mono" :size 20)
       doom-variable-pitch-font (font-spec :family "Fira Sans")
       doom-symbol-font (font-spec :family "JuliaMono")
@@ -10,23 +10,43 @@
 ;; disable doom splash image
 (setq +doom-dashboard-functions (cdr +doom-dashboard-functions))
 
-(add-hook 'julia-snail-mode-hook
-  (lambda ()
-    (remove-hook 'completion-at-point-functions #'julia-snail-company-capf t)
-    (remove-hook 'completion-at-point-functions #'julia-snail-repl-completion-at-point t)
-    (remove-function (local 'eldoc-documentation-function) #'julia-snail-eldoc)
-    (remove-hook 'xref-backend-functions #'julia-snail-xref-backend t)))
+
+(setq +tree-sitter-hl-enabled-modes '(not web-mode typescript-tsx-mode julia-mode)) ; tree-sitter highlighting worse than julia-mode
 
 (setq julia-snail-extensions '(ob-julia))
+; lsp-mode needs to CHILL, allow snail to run as backup
+(set-lookup-handlers! '(julia-snail-mode)
+  :definition '(xref-find-definitions)
+  :documentation '(julia-snail-doc-lookup))
+(setq lsp-enable-xref nil)
+(defun jrb/lsp-nil-ifnotfound (&rest arg)
+  "Advice for lsp--info so that alternate lookup-handlers are tried when it can't find symbol"
+  (if (equal (car arg) "No content at point.")
+      (error "LSP can't find it") ; returning nil apparently doesn't work, throw error instead
+    t))
+(advice-add 'lsp--info :before-while #'jrb/lsp-nil-ifnotfound)
+(add-hook 'julia-mode-hook
+          (lambda ()
+            (remove-hook 'completion-at-point-functions #'julia-mode-latexsub-completion-at-point-around t)
+            (remove-hook 'completion-at-point-functions #'julia-mode-latexsub-completion-at-point-before t)
+            (remove-hook 'completion-at-point-functions #'lsp-completion-at-point t)
+            (remove-hook 'completion-at-point-functions #'julia-snail-completions-doc-capf t)
+            (remove-hook 'completion-at-point-functions #'julia-snail-repl-completion-at-point t)
+            (add-hook 'completion-at-point-functions #'julia-mode-latexsub-completion-at-point-around -30 t)
+            (add-hook 'completion-at-point-functions #'julia-mode-latexsub-completion-at-point-before -30 t)
+            (add-hook 'completion-at-point-functions #'julia-snail-completions-doc-capf -2 t)
+            (add-hook 'completion-at-point-functions #'julia-snail-repl-completion-at-point -2 t)
+            (add-hook 'completion-at-point-functions #'lsp-completion-at-point -1 t) ; I'd let it be higher than snail if it would still let snail run
+            ))
 
 ;; TODO could precompile image if too slow: https://github.com/gdkrmr/lsp-julia
-;(setq lsp-julia-package-dir "/home/john/.config/emacs/.local/straight/repos/lsp-julia/languageserver")
-;       1) the default lsp-julia-package-dir is in a sense preferable so leave it (latest version w/o incompatability with project)
-; but   2) you may need to go to that directory and instantiate things
-; also  3) default-env below doesn't matter if in a project, to use outside: =] activate --shared default=
-;       4) for some reason using dftk as a library seems to not work with the languageserver
-(after! lsp-julia
-  (setq lsp-julia-default-environment "/home/john/.julia/environments/default"))
+                                        ;(setq lsp-julia-package-dir "/home/john/.config/emacs/.local/straight/repos/lsp-julia/languageserver")
+                                        ;       1) the default lsp-julia-package-dir is in a sense preferable so leave it (latest version w/o incompatability with project)
+                                        ; but   2) you may need to go to that directory and instantiate things
+                                        ; also  3) default-env below doesn't matter if in a project, to use outside: =] activate --shared default=
+                                        ;       4) for some reason using dftk as a library seems to not work with the languageserver
+                                        ;(after! lsp-julia
+                                        ;  (setq lsp-julia-default-environment "/home/john/.julia/environments/default"))
 
 (after! (:and julia-repl inheritenv)
   (inheritenv-add-advice 'julia-repl-inferior-buffer))
@@ -36,7 +56,7 @@
     '(("^\\*julia.*" :ignore t)))
   (julia-repl-set-terminal-backend 'vterm)
   (when (modulep! :ui workspaces)
-    ;(advice-remove '+julia--namespace-repl-buffer-to-workspace-a #'julia-repl--inferior-buffer-name)
+                                        ;(advice-remove '+julia--namespace-repl-buffer-to-workspace-a #'julia-repl--inferior-buffer-name)
     (defadvice! +julia--namespace-repl-buffer-to-workspace-a (&optional executable-key suffix)
       "Name for a Julia REPL inferior buffer. Uses workspace name (or non-nil suffix) for doom emacs"
       :override #'julia-repl--inferior-buffer-name
@@ -54,13 +74,13 @@ Then run FUN with ARGS."
   "Run in auctex pdf window to move it to it's own frame"
   (interactive)
   (let (
-        ;(start-frame (selected-frame))
+                                        ;(start-frame (selected-frame))
         (start-win (selected-window)))
     (make-frame '((name . "*tex-pdf*")))
     (advice-add 'TeX-pdf-tools-sync-view :around #'jrb/framesMenus-display-buffer-use-some-frame)
     (advice-add 'pdf-sync-backward-search-mouse :around #'jrb/framesMenus-display-buffer-use-some-frame)
     (advice-add 'pdf-isearch-sync-backward :around #'jrb/framesMenus-display-buffer-use-some-frame)
-    ;(select-frame start-frame)
+                                        ;(select-frame start-frame)
     (quit-window nil start-win)
     ))
 
@@ -97,7 +117,7 @@ Then run FUN with ARGS."
   ;;      (org-babel-expand-body:julia body params))))
 
   ;;https://discourse.doomemacs.org/t/override-built-in-src-blocks-with-emacs-jupyter/3185/2
-  ;(+org-babel-load-jupyter-h 'jupyter-python)
+                                        ;(+org-babel-load-jupyter-h 'jupyter-python)
   )
 
 (with-eval-after-load 'lsp-mode
@@ -170,10 +190,10 @@ Then run FUN with ARGS."
                                  (point))))))
     (let ((buf (current-buffer)))
       (if-let (vwin (get-buffer-window
-                      (format "*doom:vterm-popup:%s*"
-                              (if (bound-and-true-p persp-mode)
-                                  (safe-persp-name (get-current-persp))
-                                "main"))))
+                     (format "*doom:vterm-popup:%s*"
+                             (if (bound-and-true-p persp-mode)
+                                 (safe-persp-name (get-current-persp))
+                               "main"))))
           (select-window vwin)
         (+vterm/toggle nil))
       (vterm--goto-line -1)

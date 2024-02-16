@@ -120,7 +120,7 @@
        ;;taskrunner        ; taskrunner for all your projects
        ;;terraform         ; infrastructure as code
        ;;tmux              ; an API for interacting with tmux
-       (:if IS-MAC tree-sitter)       ; (until other systems go to v29) syntax and parsing, sitting in a tree...
+       tree-sitter         ;  syntax and parsing, sitting in a tree...
        ;;upload            ; map local to remote projects via ssh/ftp
 
        :os
@@ -151,10 +151,13 @@
        ;;(haskell +intero) ; a language that's lazier than I am
        ;;hy                ; readability of scheme w/ speed of python
        ;;idris             ;
-       ;;json              ; At least it ain't XML
+       json              ; At least it ain't XML
        ;;(java +meghanada) ; the poster child for carpal tunnel syndrome
        (javascript +lsp)        ; all(hope(abandon(ye(who(enter(here))))))
-       (julia +lsp +snail)             ; a better, faster MATLAB
+       (julia
+        +lsp
+        +tree-sitter
+        +snail)             ; a better, faster MATLAB
        ;;kotlin            ; a better, slicker Java(Script)
        (latex
         +latexmk)    ; writing papers in Emacs has never been so fun
@@ -169,18 +172,19 @@
        nix               ; I hereby declare "nix geht mehr!"
        ;;ocaml             ; an objective camel
        (org              ; organize your plain life in plain text
-        +noter
-        +attach          ; custom attachment system
-        +babel           ; running code in org
-        ;; +ipython           ; ob-ipython
-        +capture         ; org-capture in and outside of Emacs
-        +export          ; Exporting org to whatever you want
         +dragndrop       ; drag & drop files/images into org buffers
         ;;+hugo            ; use Emacs for hugo blogging
         +jupyter        ; ipython/jupyter support for babel
-        ;;+pandoc          ; export-with-pandoc support
+        +noter
+        +pandoc          ; export-with-pandoc support
         ;;+pomodoro        ; be fruitful with the tomato technique
-        +present)        ; Emacs for presentations
+        +pretty        ; Emacs for presentations
+        +present
+        ; are following deprecated settings?
+        +attach          ; custom attachment system
+        +babel           ; running code in org
+        +capture         ; org-capture in and outside of Emacs
+        +export)          ; Exporting org to whatever you want
        ;;perl              ; write code no one else can comprehend
        ;;php               ; perl's insecure younger brother
        ;;plantuml          ; diagrams for confusing people more

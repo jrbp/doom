@@ -259,4 +259,5 @@
        ;org-dnd
        super-agenda
        org-ref
+       plutojl-mode
        )

@@ -1,8 +1,5 @@
 ;; ~/.config/doom/config.el -*- lexical-binding: t; -*-
                                         ;(setq doom-font (font-spec :family "Hack Nerd Font" :size 18))
-;
-;(load-library "~/.config/doom/secrets.el.gpg")
-;(setq! gptel-api-key (alist-get 'openai llm-apikey-alist))
 
 (setq doom-font (font-spec :family "Fira Mono" :size 20)
       doom-variable-pitch-font (font-spec :family "Fira Sans")
@@ -23,7 +20,7 @@
   :documentation '(julia-snail-doc-lookup))
 (setq lsp-enable-xref nil)
 (defun jrb/lsp-nil-ifnotfound (&rest arg)
-  "Advice for lsp--info so that alternate lookup-handlers are tried when it can't find symbol"
+  "alternate lookup-handlers are tried when it can't find symbol"
   (if (equal (car arg) "No content at point.")
       (error "LSP can't find it") ; returning nil apparently doesn't work, throw error instead
     t))

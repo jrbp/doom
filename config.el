@@ -221,9 +221,7 @@ Then run FUN with ARGS."
 (add-hook! 'elfeed-search-mode-hook 'elfeed-update)
 
 (after! org
-  (setq org-agenda-files '("~/Dropbox/org/master.org"
-                           "~/Dropbox/org/thinkpadNix.org"
-                           ))
+  (setq org-agenda-files '("~/org/master.org"))
   ;; fix jupyter output see https://github.com/nnicandro/emacs-jupyter/issues/366
   ;; https://github.com/emacs-jupyter/jupyter/issues/380
   (defun display-ansi-colors ()

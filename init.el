@@ -260,5 +260,5 @@
        super-agenda
        org-ref
        plutojl-mode
-       llms
+       gptel
        )

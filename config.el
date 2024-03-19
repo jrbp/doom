@@ -1,5 +1,9 @@
 ;; ~/.config/doom/config.el -*- lexical-binding: t; -*-
                                         ;(setq doom-font (font-spec :family "Hack Nerd Font" :size 18))
+;
+;(load-library "~/.config/doom/secrets.el.gpg")
+;(setq! gptel-api-key (alist-get 'openai llm-apikey-alist))
+
 (setq doom-font (font-spec :family "Fira Mono" :size 20)
       doom-variable-pitch-font (font-spec :family "Fira Sans")
       doom-symbol-font (font-spec :family "JuliaMono")
@@ -9,7 +13,6 @@
 
 ;; disable doom splash image
 (setq +doom-dashboard-functions (cdr +doom-dashboard-functions))
-
 
 (setq +tree-sitter-hl-enabled-modes '(not web-mode typescript-tsx-mode julia-mode)) ; tree-sitter highlighting worse than julia-mode
 

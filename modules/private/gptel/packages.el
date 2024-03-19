@@ -1,4 +1,4 @@
 ;; -*- no-byte-compile: t; -*-
-;;; private/llms/packages.el
+;;; private/gptel/packages.el
 
 (package! gptel)

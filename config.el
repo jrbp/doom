@@ -19,6 +19,7 @@
   :definition '(xref-find-definitions)
   :documentation '(julia-snail-doc-lookup))
 (setq lsp-enable-xref nil)
+(setq lsp-julia-lint-missingrefs "none") ; until it becomes usable
 (defun jrb/lsp-nil-ifnotfound (&rest arg)
   "alternate lookup-handlers are tried when it can't find symbol"
   (if (equal (car arg) "No content at point.")

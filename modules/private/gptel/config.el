@@ -7,6 +7,9 @@
   (setq! gptel-default-mode 'org-mode)
   (setq! gptel-api-key (alist-get 'openai llm-apikey-alist))
   (set-popup-rules!
-    '(("^\\*ChatGPT.*" :ignore t)))
+    '(("^\\*ChatGPT.*" :ignore t)
+      ("^\\*Gemini.*" :ignore t)
+      ("^\\*Claude.*" :ignore t)))
   (gptel-make-gemini "Gemini" :key (alist-get 'gemini llm-apikey-alist) :stream t)
-  )
+  (gptel-make-anthropic "Claude" :stream t :key (alist-get 'claude llm-apikey-alist))
+  (add-hook 'gptel-post-response-functions 'gptel-end-of-response))

@@ -223,7 +223,7 @@ Then run FUN with ARGS."
 (add-hook! 'elfeed-search-mode-hook 'elfeed-update)
 
 (after! org
-  (setq org-agenda-files '("~/org/master.org"))
+  (setq org-agenda-files '("~/org/roam/20240326123755-tasks.org" "20240326123840-someday.org" "20240326123910-appointments.org" "20240326124519-log.org"))
   ;; fix jupyter output see https://github.com/nnicandro/emacs-jupyter/issues/366
   ;; https://github.com/emacs-jupyter/jupyter/issues/380
   (defun display-ansi-colors ()
@@ -380,18 +380,17 @@ otherwise use the subtree title."
                                    ("calculations" . ?s)))
   (setq org-todo-keywords
         '((sequence "TODO" "IN-PROGRESS" "WAITING" "|" "CANCELED" "DEFERRED" "DONE")))
-  (setq org-capture-templates
-        '(("t" "TODO" entry (file+headline "~/org/master.org" "Tasks")
+  (setq org-capture-templates ;TODO switch to org-roam-capture
+        '(("t" "TODO" entry (file "~/org/roam/20240326123755-tasks.org")
            "* TODO %?\n  %i %a %U" :prepend t)
-          ("l" "Log (misc)" entry (file+headline "~/org/misc-log.org" "Tasks")
+          ("l" "Log (misc)" entry (file "20240326124519-log.org")
            "* %?\n  %i %a %U")
-          ("s" "Someday" entry (file+headline "~/org/someday.org" "Tasks")
+          ("s" "Someday" entry (file "20240326123840-someday.org")
            "* TODO %?\n  %i %a %U")
-          ("a" "Appointments" entry (file+headline "~/org/master.org" "Appointments")
+          ("a" "Appointments" entry (file "20240326123910-appointments.org")
            "* %?\n  %i %a %U")
-          ("n" "Notes" entry (file+headline "~/org/master.org" "Notes")
-           "* %?\n  %i %a %U")
-          ))
+          ("n" "Notes" plain (function org-roam-capture)
+           "%?" :immediate-finish t)))
 
   ;; don't want return to execute src blocks
   (defun jrb/is-org-src-block (&optional arg)

@@ -262,4 +262,5 @@
        org-ref
        plutojl-mode
        gptel
+       roam-extra
        )

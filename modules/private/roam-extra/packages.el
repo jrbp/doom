@@ -3,7 +3,7 @@
 
 (package! org-ql
   :recipe (:host github
-           :repo "luggages/org-ql"
+           :repo "alphapapa/org-ql"
            :files (:defaults (:exclude "helm-org-ql.el"))))
 
 (unpin! org-roam)

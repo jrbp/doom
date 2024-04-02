@@ -1,7 +1,6 @@
 ;;; private/roam-extra/config.el -*- lexical-binding: t; -*-
 
 (after! org-roam
-  (add-hook 'find-file-hook #'roam-extra:update-todo-tag)
   (add-hook 'before-save-hook #'roam-extra:update-todo-tag)
   (advice-add 'org-agenda :before #'roam-extra:update-todo-files))
 

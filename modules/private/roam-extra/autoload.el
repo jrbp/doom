@@ -31,10 +31,11 @@ tasks."
 (defun roam-extra:todo-files ()
   "Return a list of roam files containing todo tag."
   (org-roam-db-sync)
-  (let ((todo-nodes (seq-filter (lambda (n)
-                                  (seq-contains-p (org-roam-node-tags n) "todo"))
-                                (org-roam-node-list))))
-    (seq-uniq (seq-map #'org-roam-node-file todo-nodes))))
+  (seq-uniq (mapcar 'car
+                    (org-roam-db-query
+                     [:select [nodes:file]
+                      :from nodes
+                      :inner :join tags :on (like tags:tag "todo") :and (= tags:node-id nodes:id)]))))
 ;;;###autoload
 (defun roam-extra:update-todo-files (&rest _)
   "Update the value of `org-agenda-files'."

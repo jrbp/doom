@@ -380,6 +380,18 @@ otherwise use the subtree title."
                                    ("calculations" . ?s)))
   (setq org-todo-keywords
         '((sequence "TODO" "IN-PROGRESS" "WAITING" "|" "CANCELED" "DEFERRED" "DONE")))
+  (setq org-roam-capture-templates
+        '(
+          ("d" "default" plain "%?" :target
+           (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n")
+           :unnarrowed t)
+          ("t" "task" entry "* TODO ${title}%?\n%U\n" :target
+           (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n∈ [[id:678c0cf6-54fc-408c-ba0e-b4da26c8791d][tasks]]\n#+filetags: :todo:\n")
+           :unnarrowed t)
+          ("s" "someday" entry "* TODO [#C] ${title}%?\n%U\n" :target
+           (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n∈ [[id:521a6dfa-58a1-49a7-9a5e-e107f3e26562][someday]]\n#+filetags: :todo:\n")
+           :unnarrowed t)
+          ))
   (setq org-capture-templates ;TODO switch to org-roam-capture
         '(("t" "TODO" entry (file "~/org/roam/20240326123755-tasks.org")
            "* TODO %?\n  %i %a %U" :prepend t)

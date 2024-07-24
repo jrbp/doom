@@ -16,15 +16,18 @@
 ;;      directory (for easy access to its source code).
 
 
-(doom! :feature
-       ;;debugger          ; FIXME stepping through code, to help you add bugs
+(doom! :input
+       ;;bidi              ; (tfel ot) thgir etirw uoy gnipleh
+       ;;chinese
+       ;;japanese
+       ;;layout            ; auie,ctsrnm is the superior home row
 
        :completion
        (company          ; the ultimate code completion backend
-         +auto           ; as-you-type code completion
          ;+childframe
          )
         ;)
+       ;(corfu +orderless)  ; complete with cap(f), cape and a flying feather!
        ;(helm             ; the *other* search engine for love and life
        ; +fuzzy)          ; enable fuzzy search backend for helm
        ;;ido               ; the other *other* search engine...
@@ -39,9 +42,9 @@
        doom-dashboard    ; a nifty splash screen for Emacs
        doom-quit         ; DOOM quit-message prompts when you quit Emacs
        ;;(emoji +unicode)  ; 🙂
-       ;;fill-column       ; a `fill-column' indicator
+       ;;;fill-column       ; a `fill-column' indicator
        hl-todo           ; highlight TODO/FIXME/NOTE tags
-       ;;hydra
+       ;;;hydra
        indent-guides     ; highlighted indent columns
        ligatures         ; ligatures and symbols to make your code pretty again
                                         ;Error in a Doom module: /data/john/git/doomemacs/modules/ui/ligatures/config.el, (file-missing Cannot open load file No such file or directory ligature)
@@ -53,11 +56,11 @@
        (popup            ; tame sudden yet inevitable temporary windows
         +all             ; catch all popups that start with an asterix
         +defaults)       ; default popup rules
-       ;;pretty-code       ; replace bits of code with pretty symbols
+       ;;;pretty-code       ; replace bits of code with pretty symbols
        ;;tabs              ; an tab bar for Emacs
        treemacs          ; a project drawer, like neotree but cooler
        ;;unicode           ; extended unicode support for various languages
-       vc-gutter         ; vcs diff in the fringe
+       (vc-gutter +pretty) ; vcs diff in the fringe
        vi-tilde-fringe   ; fringe tildes to mark beyond EOB
        window-select     ; visually switch windows
        workspaces        ; tab emulation, persistence & separate workspaces
@@ -78,9 +81,8 @@
        ;;word-wrap         ; soft wrapping with language-aware indent
 
        :emacs
-       (dired +ranger)            ; making dired pretty [functional]
+       (dired +icons +ranger)            ; making dired pretty [functional]
        electric          ; smarter, keyword-based electric-indent
-       ;; imenu doesn't seem to be loaded anymore, maybe in core??            ; an imenu sidebar and searchable code index
        ;;ibuffer           ; interactive buffer management
        vc                ; version-control and Emacs, sitting in a tree
        undo
@@ -100,6 +102,8 @@
 
        :tools
        ;;ansible
+       biblio            ; Writes a PhD for you (citation needed)
+       ;;collab            ; buffers with friends
        ;;debugger          ; FIXME stepping through code, to help you add bugs
        direnv
        ;;docker
@@ -108,7 +112,8 @@
        eval              ; run code, run (also, repls)
        ;;gist              ; interacting with github gists
        (lookup           ; helps you navigate your code and documentation
-        +docsets)        ; ...or in Dash docsets locally
+        ;+docsets
+        )        ; ...or in Dash docsets locally
        (lsp
         +peek)
        magit             ; a git porcelain for Emacs
@@ -116,8 +121,8 @@
        ;;pass              ; password manager for nerds
        pdf               ; pdf enhancements
        ;;prodigy           ; FIXME managing external services & code builders
-       ;;rgb               ; creating color strings
-       ;;taskrunner        ; taskrunner for all your projects
+       ;;;rgb               ; creating color strings
+       ;;;taskrunner        ; taskrunner for all your projects
        ;;terraform         ; infrastructure as code
        ;;tmux              ; an API for interacting with tmux
        tree-sitter         ;  syntax and parsing, sitting in a tree...
@@ -129,7 +134,8 @@
 
        :lang
        ;;agda              ; types of types of types of types...
-       ;;assembly          ; assembly for fun or debugging
+       ;;;assembly          ; assembly for fun or debugging
+       ;;beancount         ; mind the GAAP
        (cc +lsp); C/C++/Obj-C madness
        ;;clojure           ; java with a lisp
        ;;common-lisp       ; if you've seen one lisp, you've seen them all
@@ -138,16 +144,20 @@
        ;;csharp            ; unity, .NET, and mono shenanigans
        data              ; config/data formats
        ;;(dart +flutter)   ; paint ui and not much else
+       ;;dhall
        ;;elixir            ; erlang done right
        ;;elm               ; care for a cup of TEA?
        emacs-lisp        ; drown in parentheses
        ;;erlang            ; an elegant language for a more civilized age
        ;;ess               ; emacs speaks statistics
+       ;;factor
        ;;faust             ; dsp, but you get to keep your soul
+       ;(fortran +lsp)           ; in FORTRAN, GOD is REAL (unless declared INTEGER)
        ;;fsharp           ; ML stands for Microsoft's Language
        ;;fstar             ; (dependent) types and (monadic) effects and Z3
        ;;gdscript          ; the language you waited for
        ;;go                ; the hipster dialect
+       ;;(graphql +lsp)    ; Give queries a REST
        ;;(haskell +intero) ; a language that's lazier than I am
        ;;hy                ; readability of scheme w/ speed of python
        ;;idris             ;
@@ -160,16 +170,13 @@
         +snail)             ; a better, faster MATLAB
        ;;kotlin            ; a better, slicker Java(Script)
        (latex
-        +latexmk)    ; writing papers in Emacs has never been so fun
+        +fold)    ; writing papers in Emacs has never been so fun
        ;;lean
-       ;;factor
        ;;ledger            ; an accounting system in Emacs
        lua               ; one-based indices? one-based indices
-       markdown
-       ;; (markdown
-       ;;  +pandoc)          ; writing docs for people to ignore
+       (markdown +grip)
        ;;nim               ; python + lisp at the speed of c
-       nix               ; I hereby declare "nix geht mehr!"
+       (nix +tree-sitter)               ; I hereby declare "nix geht mehr!"
        ;;ocaml             ; an objective camel
        (org              ; organize your plain life in plain text
         +dragndrop       ; drag & drop files/images into org buffers
@@ -186,7 +193,7 @@
         +babel           ; running code in org
         +capture         ; org-capture in and outside of Emacs
         +export)          ; Exporting org to whatever you want
-       ;;perl              ; write code no one else can comprehend
+       ;;;perl              ; write code no one else can comprehend
        ;;php               ; perl's insecure younger brother
        ;;plantuml          ; diagrams for confusing people more
        ;;purescript        ; javascript, but functional
@@ -214,6 +221,7 @@
        ;;terra             ; Earth and Moon in alignment for performance.
        ;;web               ; the tubes
        ;;yaml              ; JSON, but readable
+       ;;zig               ; C, but simpler
 
        ;; Applications are complex and opinionated modules that transform Emacs
        ;; toward a specific purpose. They may have additional dependencies and
@@ -230,14 +238,14 @@
        ;;everywhere        ; *leave* Emacs!? You must be joking
        ;;irc               ; how neckbeards socialize
        (rss +org)        ; emacs as an RSS reader
-       ;;twitter           ; twitter client https://twitter.com/vnought
-       ;;(write            ; emacs as a word processor (latex + org + markdown)
+       ;;;twitter           ; twitter client https://twitter.com/vnought
+       ;;;(write            ; emacs as a word processor (latex + org + markdown)
        ;; +wordnut         ; wordnet (wn) search
        ;; +langtool)       ; a proofreader (grammar/style check) for Emacs
 
        :collab
-       ;;floobits          ; peer programming for a price
-       ;;impatient-mode    ; show off code over HTTP
+       ;;;floobits          ; peer programming for a price
+       ;;;impatient-mode    ; show off code over HTTP
 
        :config
        ;; For literate config users. This will tangle+compile a config.org
@@ -251,7 +259,7 @@
        (default +bindings +snippets +evil-commands)
 
        :private ;; ~/.config/doom/modules/private/{...}
-       (system-specific
+       (system-specific ;Do I still use these?
         ;+mac)
         +linux-hpc)
         ;+linux-personal)
@@ -259,7 +267,7 @@
        ;; frames-only
        ;org-dnd
        super-agenda
-       org-ref
+       ;;org-ref ;trying biblio instead?
        plutojl-mode
        gptel
        roam-extra

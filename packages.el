@@ -26,6 +26,7 @@
 ;(package! builtin-package :disable t)
 
 (package! pdf-tools :built-in 'prefer) ; use nix installed pdf-tools
+(package! treesit-auto) ; because of https://github.com/marienz/nix-doom-emacs-unstraightened/issues/7
 
 ;; You can override the recipe of a built in package without having to specify
 ;; all the properties for `:recipe'. These will inherit the rest of its recipe

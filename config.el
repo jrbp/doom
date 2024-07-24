@@ -482,3 +482,6 @@ jupyter kernels after pyenv env is changed"
   (mapc #'call-interactively '(save-buffer org-edit-src-exit)))
 (advice-add 'evil-org-edit-src-exit :override
             'replace-evil-org-edit-src-exit)
+(use-package treesit-auto
+  :config
+  (global-treesit-auto-mode))

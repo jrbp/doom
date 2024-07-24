@@ -125,7 +125,7 @@
        ;;;taskrunner        ; taskrunner for all your projects
        ;;terraform         ; infrastructure as code
        ;;tmux              ; an API for interacting with tmux
-       tree-sitter         ;  syntax and parsing, sitting in a tree...
+       ;tree-sitter         ;  syntax and parsing, sitting in a tree... https://github.com/marienz/nix-doom-emacs-unstraightened/issues/7
        ;;upload            ; map local to remote projects via ssh/ftp
 
        :os
@@ -166,7 +166,7 @@
        (javascript +lsp)        ; all(hope(abandon(ye(who(enter(here))))))
        (julia
         +lsp
-        +tree-sitter
+        ;+tree-sitter
         +snail)             ; a better, faster MATLAB
        ;;kotlin            ; a better, slicker Java(Script)
        (latex
@@ -176,7 +176,9 @@
        lua               ; one-based indices? one-based indices
        (markdown +grip)
        ;;nim               ; python + lisp at the speed of c
-       (nix +tree-sitter)               ; I hereby declare "nix geht mehr!"
+       (nix
+        ;+tree-sitter
+        )               ; I hereby declare "nix geht mehr!"
        ;;ocaml             ; an objective camel
        (org              ; organize your plain life in plain text
         +dragndrop       ; drag & drop files/images into org buffers

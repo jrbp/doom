@@ -344,7 +344,7 @@ otherwise use the subtree title."
   (add-to-list 'org-file-apps '("\\.pdf\\'" . emacs))
   (add-to-list 'org-file-apps '("\\.odp\\'" . "libreoffice %s"))
   (setq org-export-with-sub-superscripts (quote {}))
-  (setq org-image-actual-width 700)
+  (setq org-image-actual-width (list 700))
   ;; make code look nice even before session started
   (add-to-list 'org-src-lang-modes '("ipython" . python))
   (if (modulep! :private frames-only)

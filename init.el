@@ -237,7 +237,7 @@
        ;;(wanderlust +gmail)
 
        :app
-       ;calendar   ;TODO fix gcal, currently has aio issue (at least with unstraightened)?
+       calendar
        ;;emms
        ;;everywhere        ; *leave* Emacs!? You must be joking
        ;;irc               ; how neckbeards socialize

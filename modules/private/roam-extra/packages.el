@@ -6,5 +6,5 @@
            :repo "alphapapa/org-ql"
            :files (:defaults (:exclude "helm-org-ql.el"))))
 
-;(unpin! org-roam)
+(unpin! org-roam)
 (package! org-roam-ui)

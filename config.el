@@ -13,10 +13,13 @@
 
 (setq +tree-sitter-hl-enabled-modes '(not web-mode typescript-tsx-mode julia-mode)) ; tree-sitter highlighting worse than julia-mode
 
-;; snail popup gets slow for large output, more trouble than worht
-;; This appears to be reset when snail loads, FIXME
-(setq julia-snail-popup-display-eval-results nil)
 (setq julia-snail-extensions '(ob-julia))
+;; snail popup gets slow for large output, more trouble than worht
+;; setq alone only works if ran after snail loads
+(add-hook 'julia-snail-mode-hook
+          (lambda ()
+            (setq julia-snail-popup-display-eval-results nil) ; TODO: verify this works on fresh start
+            ))
                                         ; lsp-mode needs to CHILL, allow snail to run as backup
 (set-lookup-handlers! '(julia-snail-mode)
   :definition '(xref-find-definitions)

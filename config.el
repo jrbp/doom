@@ -18,7 +18,8 @@
 ;; setq alone only works if ran after snail loads
 (add-hook 'julia-snail-mode-hook
           (lambda ()
-            (setq julia-snail-popup-display-eval-results nil) ; TODO: verify this works on fresh start
+            (setq julia-snail-popup-display-eval-results nil)
+            (inheritenv-add-advice 'julia-snail--start)   ; enable using julia version from direnv
             ))
                                         ; lsp-mode needs to CHILL, allow snail to run as backup
 (set-lookup-handlers! '(julia-snail-mode)

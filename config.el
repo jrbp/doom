@@ -11,43 +11,51 @@
 ;; disable doom splash image
 (setq +doom-dashboard-functions (cdr +doom-dashboard-functions))
 
-(setq +tree-sitter-hl-enabled-modes '(not web-mode typescript-tsx-mode julia-mode)) ; tree-sitter highlighting worse than julia-mode
+(progn ;;julia config
+  (progn ;;julia-snail
+    (setq julia-snail-extensions '(ob-julia))
+    ;; setq alone only works if ran after snail loads
+    (add-hook 'julia-snail-mode-hook
+              (lambda ()
+                ;; snail popup gets slow for large output, more trouble than worht
+                (setq julia-snail-popup-display-eval-results nil)
+                ;; enable using julia version from direnv
+                (inheritenv-add-advice 'julia-snail--start)
+                ))
+    (after! org
+      (add-to-list '+org-babel-mode-alist '(julia . julia-snail))))
+  (progn ;; lsp-julia
+    )
+  )
+;; Disabling a bunch of older julia things I did in the past and don't understand
+;; move them above above as needed
+                                        ;(setq +tree-sitter-hl-enabled-modes '(not web-mode typescript-tsx-mode julia-mode))
+                                        ;(set-lookup-handlers! '(julia-snail-mode)
+                                        ;  :definition '(xref-find-definitions)
+                                        ;  :documentation '(julia-snail-doc-lookup))
+                                        ;(setq lsp-enable-xref nil)
+                                        ;(setq lsp-julia-lint-missingrefs "none") ; until it becomes usable
+                                        ;(defun jrb/lsp-nil-ifnotfound (&rest arg)
 
-(setq julia-snail-extensions '(ob-julia))
-;; snail popup gets slow for large output, more trouble than worht
-;; setq alone only works if ran after snail loads
-(add-hook 'julia-snail-mode-hook
-          (lambda ()
-            (setq julia-snail-popup-display-eval-results nil)
-            (inheritenv-add-advice 'julia-snail--start)   ; enable using julia version from direnv
-            ))
-                                        ; lsp-mode needs to CHILL, allow snail to run as backup
-(set-lookup-handlers! '(julia-snail-mode)
-  :definition '(xref-find-definitions)
-  :documentation '(julia-snail-doc-lookup))
-(setq lsp-enable-xref nil)
-(setq lsp-julia-lint-missingrefs "none") ; until it becomes usable
-(defun jrb/lsp-nil-ifnotfound (&rest arg)
-  "alternate lookup-handlers are tried when it can't find symbol"
-  (if (equal (car arg) "No content at point.")
-      (error "LSP can't find it") ; returning nil apparently doesn't work, throw error instead
-    t))
-(advice-add 'lsp--info :before-while #'jrb/lsp-nil-ifnotfound)
-(add-hook 'julia-mode-hook
-          (lambda ()
-            (remove-hook 'completion-at-point-functions #'julia-mode-latexsub-completion-at-point-around t)
-            (remove-hook 'completion-at-point-functions #'julia-mode-latexsub-completion-at-point-before t)
-            (remove-hook 'completion-at-point-functions #'lsp-completion-at-point t)
-            (remove-hook 'completion-at-point-functions #'julia-snail-completions-doc-capf t)
-            (remove-hook 'completion-at-point-functions #'julia-snail-repl-completion-at-point t)
-            (add-hook 'completion-at-point-functions #'julia-mode-latexsub-completion-at-point-around -30 t)
-            (add-hook 'completion-at-point-functions #'julia-mode-latexsub-completion-at-point-before -30 t)
-            (add-hook 'completion-at-point-functions #'julia-snail-completions-doc-capf -2 t)
-            (add-hook 'completion-at-point-functions #'julia-snail-repl-completion-at-point -2 t)
-            (add-hook 'completion-at-point-functions #'lsp-completion-at-point -1 t) ; I'd let it be higher than snail if it would still let snail run
-            ))
+                                        ;  "alternate lookup-handlers are tried when it can't find symbol"
+                                        ;  (if (equal (car arg) "No content at point.")
+                                        ;      (error "LSP can't find it") ; returning nil apparently doesn't work, throw error instead
+                                        ;    t))
+                                        ;(advice-add 'lsp--info :before-while #'jrb/lsp-nil-ifnotfound)
+                                        ;(add-hook 'julia-mode-hook
+                                        ;          (lambda ()
+                                        ;            (remove-hook 'completion-at-point-functions #'julia-mode-latexsub-completion-at-point-around t)
+                                        ;            (remove-hook 'completion-at-point-functions #'julia-mode-latexsub-completion-at-point-before t)
+                                        ;            (remove-hook 'completion-at-point-functions #'lsp-completion-at-point t)
+                                        ;            (remove-hook 'completion-at-point-functions #'julia-snail-completions-doc-capf t)
+                                        ;            (remove-hook 'completion-at-point-functions #'julia-snail-repl-completion-at-point t)
+                                        ;            (add-hook 'completion-at-point-functions #'julia-mode-latexsub-completion-at-point-around -30 t)
+                                        ;            (add-hook 'completion-at-point-functions #'julia-mode-latexsub-completion-at-point-before -30 t)
+                                        ;            (add-hook 'completion-at-point-functions #'julia-snail-completions-doc-capf -2 t)
+                                        ;            (add-hook 'completion-at-point-functions #'julia-snail-repl-completion-at-point -2 t)
+                                        ;            (add-hook 'completion-at-point-functions #'lsp-completion-at-point -1 t) ; I'd let it be higher than snail if it would still let snail run
+                                        ;            ))
 
-;; TODO could precompile image if too slow: https://github.com/gdkrmr/lsp-julia
                                         ;(setq lsp-julia-package-dir "/home/john/.config/emacs/.local/straight/repos/lsp-julia/languageserver")
                                         ;       1) the default lsp-julia-package-dir is in a sense preferable so leave it (latest version w/o incompatability with project)
                                         ; but   2) you may need to go to that directory and instantiate things
@@ -55,21 +63,60 @@
                                         ;       4) for some reason using dftk as a library seems to not work with the languageserver
                                         ;(after! lsp-julia
                                         ;  (setq lsp-julia-default-environment "/home/john/.julia/environments/default"))
+                                        ; (after! (:and julia-repl inheritenv)
+                                        ;   (inheritenv-add-advice 'julia-repl-inferior-buffer))
+                                        ;
+                                        ; (after! julia-repl
+                                        ;   (set-popup-rules!
+                                        ;     '(("^\\*julia.*" :ignore t)))
+                                        ;   (julia-repl-set-terminal-backend 'vterm)
+                                        ;   (when (modulep! :ui workspaces)
+                                        ;                                         ;(advice-remove '+julia--namespace-repl-buffer-to-workspace-a #'julia-repl--inferior-buffer-name)
+                                        ;     (defadvice! +julia--namespace-repl-buffer-to-workspace-a (&optional executable-key suffix)
+                                        ;       "Name for a Julia REPL inferior buffer. Uses workspace name (or non-nil suffix) for doom emacs"
+                                        ;       :override #'julia-repl--inferior-buffer-name
+                                        ;       (concat julia-repl-inferior-buffer-name-base ":" (or suffix (+workspace-current-name)))))
+                                        ;   )
+                                        ;(after! org
+                                        ; (defadvice! +ob-julia-execute-in-repl (body params)
+                                        ;   :override #'org-babel-execute:julia
+                                        ;   (interactive)
+                                        ;   ;(let* ((session (cdr (assq :session params)))
+                                        ;   ;       (julia-repl-inferior-buffer-name-suffix (pcase session
+                                        ;   ;                                                 ("none" nil)
+                                        ;   ;                                                 (_ session))))
+                                        ;   ;       (julia-repl--send-string
+                                        ;   ;        (org-babel-expand-body:julia body params)))
+                                        ;   ; HACK
+                                        ;   ; just setting global var when evaluating so that e.g. julia-repl-edit etc work in that session
+                                        ;   ; better way would be to add babel block aware advice to those
+                                        ;   (let ((session (cdr (assq :session params))))
+                                        ;     (setq julia-repl-inferior-buffer-name-suffix (pcase session
+                                        ;                                                    ("none" nil)
+                                        ;                                                    (_ session)))
+                                        ;     (julia-repl--send-string
+                                        ;      (org-babel-expand-body:julia body params))))
 
-(after! (:and julia-repl inheritenv)
-  (inheritenv-add-advice 'julia-repl-inferior-buffer))
+                                        ;https://discourse.doomemacs.org/t/override-built-in-src-blocks-with-emacs-jupyter/3185/2
+                                        ;(+org-babel-load-jupyter-h 'jupyter-python)
 
-(after! julia-repl
-  (set-popup-rules!
-    '(("^\\*julia.*" :ignore t)))
-  (julia-repl-set-terminal-backend 'vterm)
-  (when (modulep! :ui workspaces)
-                                        ;(advice-remove '+julia--namespace-repl-buffer-to-workspace-a #'julia-repl--inferior-buffer-name)
-    (defadvice! +julia--namespace-repl-buffer-to-workspace-a (&optional executable-key suffix)
-      "Name for a Julia REPL inferior buffer. Uses workspace name (or non-nil suffix) for doom emacs"
-      :override #'julia-repl--inferior-buffer-name
-      (concat julia-repl-inferior-buffer-name-base ":" (or suffix (+workspace-current-name)))))
-  )
+                                        ;)
+                                        ; (map! :map evil-org-mode-map
+                                        ;       :after julia-repl
+                                        ;       :desc "sub latex to character" :ni "<A-tab>" 'julia-latexsub-or-indent
+                                        ;       :desc "repl run line"  :n "gl" 'julia-repl-send-line
+                                        ;       :desc "repl @edit"  :n "ge" 'julia-repl-edit
+                                        ;       :desc "repl @doc"  :n "gk" 'julia-repl-doc
+                                        ;       :desc "repl expand macro"  :n "gM" 'julia-repl-macroexpand
+                                        ;       :desc "repl list methods" :n    "gm" 'julia-repl-list-methods)
+                                        ;
+                                        ; (map! :map julia-repl-mode-map
+                                        ;       :after julia-repl
+                                        ;       :desc "repl run line"  :n "gl" 'julia-repl-send-line
+                                        ;       :desc "repl @edit"  :n "ge" 'julia-repl-edit
+                                        ;       :desc "repl @doc"  :n "gk" 'julia-repl-doc
+                                        ;       :desc "repl expand macro"  :n "gM" 'julia-repl-macroexpand
+                                        ;       :desc "repl list methods" :n    "gm" 'julia-repl-list-methods)
 
 ;; auctex with pdf+src in different frames, adapted from https://emacs.stackexchange.com/questions/55395/auctex-and-pdf-tools-in-2-separate-frames-for-dual-monitor-setup
 (defun jrb/framesMenus-display-buffer-use-some-frame (fun &rest args)
@@ -103,53 +150,10 @@ Then run FUN with ARGS."
   (setq apheleia-formatters (map-insert apheleia-formatters 'alejandra '("alejandra")))
   (setq apheleia-mode-alist (map-insert apheleia-mode-alist 'nix-mode 'alejandra)))
 
-(after! org
-  (setq org-roam-directory (file-truename "~/org/roam"))
-  (setq org-export-with-toc nil)
-  (add-to-list '+org-babel-mode-alist '(julia . julia-snail))
-  ;; (defadvice! +ob-julia-execute-in-repl (body params)
-  ;;   :override #'org-babel-execute:julia
-  ;;   (interactive)
-  ;;   ;(let* ((session (cdr (assq :session params)))
-  ;;   ;       (julia-repl-inferior-buffer-name-suffix (pcase session
-  ;;   ;                                                 ("none" nil)
-  ;;   ;                                                 (_ session))))
-  ;;   ;       (julia-repl--send-string
-  ;;   ;        (org-babel-expand-body:julia body params)))
-  ;;   ; HACK
-  ;;   ; just setting global var when evaluating so that e.g. julia-repl-edit etc work in that session
-  ;;   ; better way would be to add babel block aware advice to those
-  ;;   (let ((session (cdr (assq :session params))))
-  ;;     (setq julia-repl-inferior-buffer-name-suffix (pcase session
-  ;;                                                    ("none" nil)
-  ;;                                                    (_ session)))
-  ;;     (julia-repl--send-string
-  ;;      (org-babel-expand-body:julia body params))))
-
-  ;;https://discourse.doomemacs.org/t/override-built-in-src-blocks-with-emacs-jupyter/3185/2
-                                        ;(+org-babel-load-jupyter-h 'jupyter-python)
-  )
-
 (with-eval-after-load 'lsp-mode
   (add-to-list 'lsp-file-watch-ignored-directories "[/\\\\]\\.venv\\'")
   (add-to-list 'lsp-file-watch-ignored-directories "[/\\\\]\\from_materials_cloud\\'"))
 
-(map! :map evil-org-mode-map
-      :after julia-repl
-      :desc "sub latex to character" :ni "<A-tab>" 'julia-latexsub-or-indent
-      :desc "repl run line"  :n "gl" 'julia-repl-send-line
-      :desc "repl @edit"  :n "ge" 'julia-repl-edit
-      :desc "repl @doc"  :n "gk" 'julia-repl-doc
-      :desc "repl expand macro"  :n "gM" 'julia-repl-macroexpand
-      :desc "repl list methods" :n    "gm" 'julia-repl-list-methods)
-
-(map! :map julia-repl-mode-map
-      :after julia-repl
-      :desc "repl run line"  :n "gl" 'julia-repl-send-line
-      :desc "repl @edit"  :n "ge" 'julia-repl-edit
-      :desc "repl @doc"  :n "gk" 'julia-repl-doc
-      :desc "repl expand macro"  :n "gM" 'julia-repl-macroexpand
-      :desc "repl list methods" :n    "gm" 'julia-repl-list-methods)
 
 
 ;; non warnings do not show up in lsp (mainly to remove "is not accessed" messages cluttering everything)
@@ -230,6 +234,8 @@ Then run FUN with ARGS."
 (add-hook! 'elfeed-search-mode-hook 'elfeed-update)
 
 (after! org
+  (setq org-roam-directory (file-truename "~/org/roam"))
+  (setq org-export-with-toc nil)
   (setq org-agenda-files '("~/org/roam/20240326123755-tasks.org" "20240326123840-someday.org" "20240326123910-appointments.org" "20240326124519-log.org"))
   ;; fix jupyter output see https://github.com/nnicandro/emacs-jupyter/issues/366
   ;; https://github.com/emacs-jupyter/jupyter/issues/380

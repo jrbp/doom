@@ -25,6 +25,9 @@
     (after! org
       (add-to-list '+org-babel-mode-alist '(julia . julia-snail))))
   (progn ;; lsp-julia
+    ;; I have nix make a separate, wrapped executable + sysimage
+    (setq! lsp-julia-command "julia-ls")
+    (setq! lsp-julia-package-dir 'nil) ; shouldn't matter (set in julia-ls script)
     )
   )
 ;; Disabling a bunch of older julia things I did in the past and don't understand

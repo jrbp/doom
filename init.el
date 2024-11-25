@@ -200,11 +200,13 @@
        ;;plantuml          ; diagrams for confusing people more
        ;;purescript        ; javascript, but functional
        (python            ; beautiful is better than ugly
-        ; +conda ; sadly these two seem to conflict
-         ;+poetry
+         ; +conda
+         ; +cpython
          +lsp
-         +pyright
+         ;+poetry
          ;+pyenv
+         +pyright
+         +tree-sitter
         )
        ;;qt                ; the 'cutest' gui framework ever
        ;;racket            ; a DSL for DSLs

@@ -29,6 +29,8 @@
     (setq! lsp-julia-command "julia-ls")
     (setq! lsp-julia-package-dir 'nil) ; shouldn't matter (set in julia-ls script)
     )
+  (set-popup-rules!
+    '(("^\\*julia.*" :ignore t)))
   )
 ;; Disabling a bunch of older julia things I did in the past and don't understand
 ;; move them above above as needed

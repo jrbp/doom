@@ -166,7 +166,7 @@
        (javascript +lsp)        ; all(hope(abandon(ye(who(enter(here))))))
        (julia
         +lsp
-        ;+tree-sitter
+        +tree-sitter
         +snail)             ; a better, faster MATLAB
        ;;kotlin            ; a better, slicker Java(Script)
        (latex

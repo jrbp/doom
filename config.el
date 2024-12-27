@@ -17,10 +17,12 @@
     ;; setq alone only works if ran after snail loads
     (add-hook 'julia-snail-mode-hook
               (lambda ()
-                ;; snail popup gets slow for large output, more trouble than worht
-                (setq julia-snail-popup-display-eval-results nil)
                 ;; enable using julia version from direnv
                 (inheritenv-add-advice 'julia-snail--start)
+                ;; snail popup gets slow for large output, more trouble than worht
+                (setq julia-snail-popup-display-eval-results nil)
+                ;; do not treat repl as popup
+                (set-popup-rules! '(("^\\*julia.*" :ignore t)))
                 ))
     (after! org
       (add-to-list '+org-babel-mode-alist '(julia . julia-snail))))
@@ -29,8 +31,6 @@
     (setq! lsp-julia-command "julia-ls")
     (setq! lsp-julia-package-dir 'nil) ; shouldn't matter (set in julia-ls script)
     )
-  (set-popup-rules!
-    '(("^\\*julia.*" :ignore t)))
   )
 ;; Disabling a bunch of older julia things I did in the past and don't understand
 ;; move them above above as needed

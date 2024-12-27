@@ -399,6 +399,10 @@ otherwise use the subtree title."
           ("s" "someday" entry "* TODO [#C] ${title}%?\n%U\n" :target
            (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n∈ [[id:521a6dfa-58a1-49a7-9a5e-e107f3e26562][someday]]\n#+filetags: :todo:\n")
            :unnarrowed t)
+          ("e" "encrypted" plain "%?"
+           :target (file+head "${slug}.org.gpg"
+                              "#+title: ${title}\n")
+           :unnarrowed t)
           ))
   (setq org-capture-templates ;TODO switch to org-roam-capture
         '(("t" "TODO" entry (file "~/org/roam/20240326123755-tasks.org")

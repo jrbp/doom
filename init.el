@@ -277,5 +277,5 @@
        plutojl-mode
        gptel
        roam-extra
-       ;;secrets
+       secrets
        )

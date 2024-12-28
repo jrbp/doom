@@ -389,7 +389,7 @@ otherwise use the subtree title."
   (setq org-todo-keywords
         '((sequence "TODO" "IN-PROGRESS" "WAITING" "|" "CANCELED" "DEFERRED" "DONE")))
   (setq org-roam-capture-templates
-        '(
+        `(
           ("d" "default" plain "%?" :target
            (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n")
            :unnarrowed t)
@@ -399,11 +399,19 @@ otherwise use the subtree title."
           ("s" "someday" entry "* TODO [#C] ${title}%?\n%U\n" :target
            (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n∈ [[id:521a6dfa-58a1-49a7-9a5e-e107f3e26562][someday]]\n#+filetags: :todo:\n")
            :unnarrowed t)
-          ("e" "encrypted" plain "%?"
-           :target (file+head "${slug}.org.gpg"
-                              "#+title: ${title}\n")
-           :unnarrowed t)
+          ("e" "encrypted" plain ,(concat "%?Hit C-c C-c now if you want to use below id \n\n;; Local Variables:\n;;  epa-file-encrypt-to: (" (format "%S" jrb/secret-identity) ")\n;; End:\n")
+           :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org.gpg" "#+title: ${title}")
+           ;; Want the local var applied, but can only seem to do so after reloading file
+           :immediate-finish t ;; doesn't seem to work? ideally would not even allow editing
+           :kill-buffer t      ;; kill buffer after C-c C-c
+           :jump-to-captured t ;; reload file after killed
+           :unnarrowed t
+           )
           ))
+  ;; below would ideally apply the local vars before saving, but I couldn't get it to work
+  ;; making the above encrypted thing way smoother, but it doesn't seem to work
+  ;; (add-hook 'org-roam-capture-new-node-hook #'hack-local-variables)
+
   (setq org-capture-templates ;TODO switch to org-roam-capture
         '(("t" "TODO" entry (file "~/org/roam/20240326123755-tasks.org")
            "* TODO %?\n  %i %a %U" :prepend t)

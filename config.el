@@ -369,6 +369,10 @@ otherwise use the subtree title."
   (setq org-agenda-start-day nil)
   (setq org-overriding-columns-format "%25ITEM %TODO %EFFORT %CLOCKSUM %JOBID %JOBCLUST %JOBDIR")
   (setq org-agenda-custom-commands '(("j" "HPC jobs" tags-todo "HPCJOB") ("n" "Agenda and all TODOs" ((agenda "") (alltodo "")))))
+  (setq org-agenda-prefix-format '((agenda . " %i %?-12t% s")
+                                  (todo . " %i")
+                                  (tags . " %i %-12:c")
+                                  (search . " %i %-12:c")))
 
   (defun esf/execute-startup-block ()
     (interactive)

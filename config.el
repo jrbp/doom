@@ -415,6 +415,15 @@ otherwise use the subtree title."
   ;; below would ideally apply the local vars before saving, but I couldn't get it to work
   ;; making the above encrypted thing way smoother, but it doesn't seem to work
   ;; (add-hook 'org-roam-capture-new-node-hook #'hack-local-variables)
+  ;;
+  ;; We also need the presence of unreadable files to not break agenda on systems without the key
+  (defun jrb/can-read-gpg-file (&optional file)
+    (let ((path (or file (buffer-file-name (buffer-base-buffer))))
+          (epa-suppress-error-buffer t))
+      (if (string-match-p "\\.gpg$" path) ;; just return true for non gpg
+          (not (null (ignore-errors (kill-buffer (find-file-noselect path)))))
+        t)))
+  (advice-add 'org-roam-file-p :after-while 'jrb/can-read-gpg-file)
 
   (setq org-capture-templates ;TODO switch to org-roam-capture
         '(("t" "TODO" entry (file "~/org/roam/20240326123755-tasks.org")

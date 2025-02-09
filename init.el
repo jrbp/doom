@@ -183,7 +183,7 @@
        (org              ; organize your plain life in plain text
         +dragndrop       ; drag & drop files/images into org buffers
         +roam2
-        ;;+hugo            ; use Emacs for hugo blogging
+        +hugo            ; use Emacs for hugo blogging
         +jupyter        ; ipython/jupyter support for babel
         +noter
         +pandoc          ; export-with-pandoc support
@@ -278,4 +278,6 @@
        gptel
        roam-extra
        secrets
+       tera-mode
+       ox-zola
        )

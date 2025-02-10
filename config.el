@@ -392,6 +392,19 @@ otherwise use the subtree title."
                                    ("calculations" . ?s)))
   (setq org-todo-keywords
         '((sequence "TODO" "IN-PROGRESS" "WAITING" "|" "CANCELED" "DEFERRED" "DONE")))
+  (defun org-zola-new-subtree-post-capture-template ()
+    "Returns `org-capture' template string for new Zola post.
+See `org-capture-templates' for more information."
+    (let* ((title (read-from-minibuffer "Post Title: ")) ;Prompt to enter the post title
+           (fname (org-hugo-slug title)))
+      (mapconcat #'identity
+                 `(
+                   ,(concat "* TODO " title)
+                   ":PROPERTIES:"
+                   ,(concat ":EXPORT_FILE_NAME: " fname)
+                   ":END:"
+                   "%?\n")          ;Place the cursor here finally
+                   "\n")))
   (setq org-roam-capture-templates
         `(
           ("d" "default" plain "%?" :target
@@ -435,7 +448,10 @@ otherwise use the subtree title."
           ("a" "Appointments" entry (file "20240326123910-appointments.org")
            "* %?\n  %i %a %U")
           ("n" "Notes" plain (function org-roam-capture)
-           "%?" :immediate-finish t)))
+           "%?" :immediate-finish t)
+          ("z" "Zola post" entry (file+olp "all-posts.org" "Misc Posts")
+                 (function org-zola-new-subtree-post-capture-template))
+          ))
 
   ;; don't want return to execute src blocks
   (defun jrb/is-org-src-block (&optional arg)

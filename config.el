@@ -155,6 +155,12 @@ Then run FUN with ARGS."
   (setq apheleia-formatters (map-insert apheleia-formatters 'alejandra '("alejandra")))
   (setq apheleia-mode-alist (map-insert apheleia-mode-alist 'nix-mode 'alejandra)))
 
+(with-eval-after-load 'lsp-mode
+  (lsp-register-client
+   (make-lsp-client :new-connection (lsp-stdio-connection "nixd")
+                    :major-modes '(nix-mode)
+                    :priority 0
+                    :server-id 'nixd)))
 ;; (with-eval-after-load 'lsp-mode
 ;;   (add-to-list 'lsp-file-watch-ignored-directories "[/\\\\]\\.venv\\'")
 ;;   (add-to-list 'lsp-file-watch-ignored-directories "[/\\\\]\\from_materials_cloud\\'"))

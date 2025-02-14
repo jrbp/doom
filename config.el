@@ -449,7 +449,7 @@ See `org-capture-templates' for more information."
            "* %?\n  %i %a %U")
           ("n" "Notes" plain (function org-roam-capture)
            "%?" :immediate-finish t)
-          ("z" "Zola post" entry (file+olp "all-posts.org" "Misc Posts")
+          ("z" "Zola post" entry (file+olp "~/git/mysite/content-org/all-posts.org" "Misc Posts")
                  (function org-zola-new-subtree-post-capture-template))
           ))
 

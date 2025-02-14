@@ -177,7 +177,8 @@
        (markdown +grip)
        ;;nim               ; python + lisp at the speed of c
        (nix
-        ;+tree-sitter
+        +tree-sitter
+        +lsp
         )               ; I hereby declare "nix geht mehr!"
        ;;ocaml             ; an objective camel
        (org              ; organize your plain life in plain text

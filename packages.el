@@ -41,7 +41,9 @@
 
 ;; Use `:pin' to specify a particular commit to install.
 ;(package! builtin-package :pin "1a2b3c4d5e")
-
+;; 
+;; FIXME: https://github.com/doomemacs/doomemacs/issues/8286#issuecomment-2679513787
+(package! package-lint :pin "21edc6d0d0eadd2d0a537f422fb9b7b8a3ae6991")
 
 ;; Doom's packages are pinned to a specific commit and updated from release to
 ;; release. The `unpin!' macro allows you to unpin single packages...

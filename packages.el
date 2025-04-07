@@ -45,6 +45,9 @@
 ;; FIXME: https://github.com/doomemacs/doomemacs/issues/8286#issuecomment-2679513787
 (package! package-lint :pin "21edc6d0d0eadd2d0a537f422fb9b7b8a3ae6991")
 
+;; Disabling esc behavior on 'jk' see https://discourse.doomemacs.org/t/typing-jk-deletes-j-and-returns-to-normal-mode
+(package! evil-escape :disable t)
+
 ;; Doom's packages are pinned to a specific commit and updated from release to
 ;; release. The `unpin!' macro allows you to unpin single packages...
 ;(unpin! pinned-package)

@@ -237,7 +237,6 @@ Then run FUN with ARGS."
 (after! org
   (setq org-roam-directory (file-truename "~/org/roam"))
   (setq org-export-with-toc nil)
-  (setq org-agenda-files '("~/org/roam/20240326123755-tasks.org" "20240326123840-someday.org" "20240326123910-appointments.org" "20240326124519-log.org"))
   ;; fix jupyter output see https://github.com/nnicandro/emacs-jupyter/issues/366
   ;; https://github.com/emacs-jupyter/jupyter/issues/380
   (defun display-ansi-colors ()

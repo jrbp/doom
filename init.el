@@ -46,7 +46,7 @@
        hl-todo           ; highlight TODO/FIXME/NOTE tags
        ;;;hydra
        indent-guides     ; highlighted indent columns
-       ligatures         ; ligatures and symbols to make your code pretty again
+       (ligatures +extra)         ; ligatures and symbols to make your code pretty again
                                         ;Error in a Doom module: /data/john/git/doomemacs/modules/ui/ligatures/config.el, (file-missing Cannot open load file No such file or directory ligature)
        ;;minimap           ; show a map of the code on the side
        modeline ; replaces doom-modeline in the future         ; snazzy, Atom-inspired modeline, plus API

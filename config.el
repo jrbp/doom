@@ -1,12 +1,10 @@
 ;; ~/.config/doom/config.el -*- lexical-binding: t; -*-
-                                        ;(setq doom-font (font-spec :family "Hack Nerd Font" :size 18))
 
-(setq doom-font (font-spec :family "Fira Mono" :size 20)
-      doom-variable-pitch-font (font-spec :family "Fira Sans")
-      doom-symbol-font (font-spec :family "JuliaMono")
-      doom-big-font (font-spec :family "Fira Mono" :size 22))
-
-                                        ;(setq initial-buffer-choice "~/org/master.org")
+(setq doom-font (font-spec :family "Fira Code Nerd Font" :size 20)
+      doom-variable-pitch-font (font-spec :family "DejaVu Sans" :size 22)
+      doom-symbol-font (font-spec :family "JetBrainsMono Nerd Font")
+      )
+(setq nerd-icons-font-names '("SymbolsNerdFontMono-Regular.ttf"))
 
 ;; disable doom splash image
 (setq +doom-dashboard-functions (cdr +doom-dashboard-functions))
@@ -33,11 +31,9 @@
     )
   (after! julia-mode
     (set-ligatures! 'julia-mode
-      :return "->"
       :def "function"
       :src_block "begin"
       :src_block_end "end"
-      :map "do"
       )))
 ;; Disabling a bunch of older julia things I did in the past and don't understand
 ;; move them above above as needed

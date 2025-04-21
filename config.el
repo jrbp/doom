@@ -31,15 +31,14 @@
     (setq! lsp-julia-command "julia-ls")
     (setq! lsp-julia-package-dir 'nil) ; shouldn't matter (set in julia-ls script)
     )
-  (after! 'julia-mode
+  (after! julia-mode
     (set-ligatures! 'julia-mode
       :return "->"
       :def "function"
       :src_block "begin"
       :src_block_end "end"
       :map "do"
-      ))
-  )
+      )))
 ;; Disabling a bunch of older julia things I did in the past and don't understand
 ;; move them above above as needed
                                         ;(setq +tree-sitter-hl-enabled-modes '(not web-mode typescript-tsx-mode julia-mode))

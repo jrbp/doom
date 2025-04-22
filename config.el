@@ -9,6 +9,11 @@
 ;; disable doom splash image
 (setq +doom-dashboard-functions (cdr +doom-dashboard-functions))
 
+;; I like tree-sitter text objects
+;; TODO: re-enable/configure tree-sitter after the following is resolved
+;;  https://github.com/doomemacs/doomemacs/issues/7623
+;; (setq +tree-sitter-hl-enabled-modes '(not web-mode typescript-tsx-mode julia-mode nix-mode))
+
 (progn   ;;julia config
   (progn ;;julia-snail
     (setq julia-snail-extensions '(ob-julia))

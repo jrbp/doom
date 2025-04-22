@@ -125,8 +125,15 @@
        ;;;taskrunner        ; taskrunner for all your projects
        ;;terraform         ; infrastructure as code
        ;;tmux              ; an API for interacting with tmux
-       ;tree-sitter         ;  syntax and parsing, sitting in a tree... https://github.com/marienz/nix-doom-emacs-unstraightened/issues/7
-       ;;upload            ; map local to remote projects via ssh/ftp
+       ;; tree-sitter         ;  syntax and parsing, sitting in a tree...
+       ;; having a number of issues with this tree-sitter module, disabling for now.
+       ;; https://github.com/marienz/nix-doom-emacs-unstraightened/issues/7
+       ;; there is a workaround for the above in the readme
+       ;; though even without unstraightened I didin't like a lot of what it was doing
+       ;; I will reexamine when doom changes to using the builtin tree-sitter
+       ;; see: https://github.com/doomemacs/doomemacs/issues/7623
+       ;; Does seem to be being worked on though (it's one of the 2 things in triage for the next release)
+       ;; ;;upload            ; map local to remote projects via ssh/ftp
 
        :os
        (:if IS-MAC macos)  ; improve compatibility with macOS
@@ -173,7 +180,10 @@
         +fold)    ; writing papers in Emacs has never been so fun
        ;;lean
        ;;ledger            ; an accounting system in Emacs
-       lua               ; one-based indices? one-based indices
+       (lua                             ; one-based indices? one-based indices
+        ;; +lsp ;; TODO install lsp
+        ;; +tree-sitter
+        +fennel)
        (markdown +grip)
        ;;nim               ; python + lisp at the speed of c
        (nix
@@ -182,15 +192,21 @@
         )               ; I hereby declare "nix geht mehr!"
        ;;ocaml             ; an objective camel
        (org              ; organize your plain life in plain text
+        ;; +brain
+        ;; +contacts
         +dragndrop       ; drag & drop files/images into org buffers
-        +roam2
+        ;; +crypt ;; TODO  Do I want this, it already works?
+        ;; + gnuplot
         +hugo            ; use Emacs for hugo blogging
+        ;; +journal
         +jupyter        ; ipython/jupyter support for babel
         +noter
         +pandoc          ; export-with-pandoc support
+        ;; passwords
         ;;+pomodoro        ; be fruitful with the tomato technique
-        +pretty        ; Emacs for presentations
-        +present
+        +present        ; Emacs for presentations
+        +pretty
+        +roam2
         ; are following deprecated settings?
         +attach          ; custom attachment system
         +babel           ; running code in org

@@ -1,10 +1,10 @@
 ;; ~/.config/doom/config.el -*- lexical-binding: t; -*-
 
-(setq doom-font (font-spec :family "JetBrainsMono Nerd Font" :size 20)
-      doom-variable-pitch-font (font-spec :family "DejaVu Sans" :size 22)
-      doom-symbol-font (font-spec :family "Fira Code Nerd Font")
-      )
-(setq nerd-icons-font-names '("SymbolsNerdFontMono-Regular.ttf"))
+(when (not (string-equal system-type "android"))
+  (setq doom-font (font-spec :family "JetBrainsMono Nerd Font" :size 20)
+        doom-variable-pitch-font (font-spec :family "DejaVu Sans" :size 22)
+        doom-symbol-font (font-spec :family "Fira Code Nerd Font"))
+  (setq nerd-icons-font-names '("SymbolsNerdFontMono-Regular.ttf")))
 
 ;; disable doom splash image
 (setq +doom-dashboard-functions (cdr +doom-dashboard-functions))
@@ -15,13 +15,14 @@
 ;; (setq +tree-sitter-hl-enabled-modes '(not web-mode typescript-tsx-mode julia-mode nix-mode))
 
 (when (string-equal system-type "android")
-  (setq! touch-screen-display-keyboard 't)
-  (setq! tool-bar-position 'bottom)
-  ;(setq! tool-bar-position 'top)
-  (menu-bar-mode nil)
-  (modifier-bar-mode nil)
-  (tool-bar-mode nil)
-  ;(tool-bar-add-item "" DEF KEY &rest PROPS)
+  (setq overriding-text-conversion-style '())
+  (setq! touch-screen-display-keyboard t)
+  (setq! vterm-shell "/data/data/com.termux/files/usr/bin/bash")
+  ;; (tool-bar-add-item "" DEF KEY &rest PROPS)
+  ;; (menu-bar-mode y)
+  ;; (tool-bar-mode y)
+  ;; (modifier-bar-mode 'y)
+  ;; (setq! tool-bar-position 'bottom)
   )
 
 (progn   ;;julia config

@@ -23,8 +23,7 @@
     (setenv "PATH" (format "%s:%s" termuxpath
 		       (getenv "PATH")))
     (push termuxpath exec-path)
-    (push "~/.config/emacs/bin" exec-path))
-    (setq overriding-text-conversion-style 'nil))
+    (push "~/.config/emacs/bin" exec-path)))
 
 (doom! :input
        ;;bidi              ; (tfel ot) thgir etirw uoy gnipleh

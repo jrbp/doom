@@ -14,6 +14,16 @@
 ;;  https://github.com/doomemacs/doomemacs/issues/7623
 ;; (setq +tree-sitter-hl-enabled-modes '(not web-mode typescript-tsx-mode julia-mode nix-mode))
 
+(when (string-equal system-type "android")
+  (setq! touch-screen-display-keyboard 't)
+  (setq! tool-bar-position 'bottom)
+  ;(setq! tool-bar-position 'top)
+  (menu-bar-mode nil)
+  (modifier-bar-mode nil)
+  (tool-bar-mode nil)
+  ;(tool-bar-add-item "" DEF KEY &rest PROPS)
+  )
+
 (progn   ;;julia config
   (progn ;;julia-snail
     (setq julia-snail-extensions '(ob-julia))

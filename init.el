@@ -15,6 +15,16 @@
 ;;      Alternatively, press 'gd' (or 'C-c g d') on a module to browse its
 ;;      directory (for easy access to its source code).
 
+(when (string-equal system-type "android")
+  ;; Add Termux binaries to PATH environment
+  ;; It is important that termuxpath is prepended, not appended.
+  ;; Otherwise we will get Androids incompatible diff executable, instead of the one in Termux.
+  (let ((termuxpath "/data/data/com.termux/files/usr/bin"))
+    (setenv "PATH" (format "%s:%s" termuxpath
+		       (getenv "PATH")))
+    (push termuxpath exec-path)
+    (push "~/.config/emacs/bin" exec-path))
+    (setq overriding-text-conversion-style 'nil))
 
 (doom! :input
        ;;bidi              ; (tfel ot) thgir etirw uoy gnipleh

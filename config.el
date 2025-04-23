@@ -450,10 +450,19 @@ See `org-capture-templates' for more information."
                   result))
           t)))
     (defun jrb/attempt-read-gpg-file (path)
-      (let ((epa-suppress-error-buffer t))
-        (not (null (ignore-errors (kill-buffer (find-file-noselect path)))))))
-    (advice-add 'org-roam-file-p :after-while 'jrb/can-read-gpg-file)
-    )
+      (let ((epa-suppress-error-buffer t)
+            (filename (abbreviate-file-name (expand-file-name path)))) ;; normalize buffer name
+        (not (null
+              (or (get-file-buffer filename) ;; already open?
+                  (find-buffer-visiting      ;; open with different buffer name?
+                   filename
+                   (lambda (buffer) ;; filter dead symlinks
+                     (let ((file (buffer-local-value
+                                  'buffer-file-name buffer)))
+                       (and file (file-exists-p file)))))
+                  ;; other wise try opening and closing
+                  (ignore-errors (kill-buffer (find-file-noselect path))))))))
+    (advice-add 'org-roam-file-p :after-while 'jrb/can-read-gpg-file))
 
   (setq org-capture-templates ;TODO switch to org-roam-capture
         '(("t" "TODO" entry (file "~/org/roam/20240326123755-tasks.org")
@@ -474,9 +483,7 @@ See `org-capture-templates' for more information."
   (defun jrb/is-org-src-block (&optional arg)
     (interactive "P")
     (member (org-element-type (org-element-context)) (list `src-block `inline-src-block)))
-  (advice-add '+org/dwim-at-point :before-until #'jrb/is-org-src-block)
-
-  ) ; end after! org
+  (advice-add '+org/dwim-at-point :before-until #'jrb/is-org-src-block)) ; end after! org
 
 ;; key binds
 (map! :leader

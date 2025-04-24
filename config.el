@@ -1,11 +1,9 @@
 ;; ~/.config/doom/config.el -*- lexical-binding: t; -*-
 
-(when (not (string-equal system-type "android"))
-  (setq doom-font (font-spec :family "JetBrainsMono Nerd Font" :size 20)
-        doom-variable-pitch-font (font-spec :family "DejaVu Sans" :size 22)
-        doom-symbol-font (font-spec :family "Fira Code Nerd Font"))
-  (setq nerd-icons-font-names '("SymbolsNerdFontMono-Regular.ttf")))
-
+(setq doom-font (font-spec :family "JetBrainsMono Nerd Font" :size 20)
+      doom-variable-pitch-font (font-spec :family "DejaVu Sans" :size 22)
+      doom-symbol-font (font-spec :family "Fira Code Nerd Font"))
+(setq nerd-icons-font-names '("SymbolsNerdFontMono-Regular.ttf"))
 ;; disable doom splash image
 (setq +doom-dashboard-functions (cdr +doom-dashboard-functions))
 

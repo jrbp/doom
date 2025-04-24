@@ -18,6 +18,11 @@
   (setq overriding-text-conversion-style '())
   (setq! touch-screen-display-keyboard t)
   (setq! vterm-shell "/data/data/com.termux/files/usr/bin/bash")
+  (keymap-global-unset "<f3>") ;; silence switch
+  ;; following for making thumb-key usable for now
+  (keymap-global-set "<volume-down>" "<down>")
+  (keymap-global-set "<volume-up>" "<up>")
+  (keymap-global-set "°" "ESC")
   ;; (tool-bar-add-item "" DEF KEY &rest PROPS)
   ;; (menu-bar-mode y)
   ;; (tool-bar-mode y)

@@ -121,7 +121,7 @@
        eval              ; run code, run (also, repls)
        ;;gist              ; interacting with github gists
        (lookup           ; helps you navigate your code and documentation
-        ;+docsets
+        ;+docsets ;;TODO add dictionary and such
         )        ; ...or in Dash docsets locally
        (lsp
         +peek)
@@ -267,9 +267,9 @@
        ;;(wanderlust +gmail)
 
        :app
-       calendar
+       calendar         ;;TODO use / configure more
        ;;emms
-       ;;everywhere        ; *leave* Emacs!? You must be joking
+       ;;everywhere        ; *leave* Emacs!? You must be joking ;; TODO get working on hyprland
        ;;irc               ; how neckbeards socialize
        (rss +org)        ; emacs as an RSS reader
        ;;;twitter           ; twitter client https://twitter.com/vnought
@@ -290,7 +290,7 @@
        ;; provides a Spacemacs-inspired keybinding scheme, a custom yasnippet
        ;; library, and additional ex commands for evil-mode. Use it as a
        ;; reference for your own modules.
-       (default +bindings +snippets +evil-commands)
+       (default +bindings +snippets +evil-commands) ;; TODO add +gnupg?, do snippets go elsewher?
 
        :private ;; ~/.config/doom/modules/private/{...}
        (system-specific ;Do I still use these?

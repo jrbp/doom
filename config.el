@@ -12,6 +12,30 @@
 ;;  https://github.com/doomemacs/doomemacs/issues/7623
 ;; (setq +tree-sitter-hl-enabled-modes '(not web-mode typescript-tsx-mode julia-mode nix-mode))
 
+(defalias 'jrb/system-notifications-notify
+  (if (string-equal system-type "android")
+      #'android-notifications-notify
+    #'notifications-notify))
+
+(after! org ;; org notification stuff
+  (appt-activate 1)
+  (setq appt-message-warning-time 15)
+  (setq appt-display-interval 3)
+  (setq appt-display-format 'window)
+  (defun jrb/appt-reminder (min-to-app new-time appt-msg)
+    "notification about incoming diary and agenda events"
+    (jrb/system-notifications-notify
+     :title (format "Appointment in %s minutes" min-to-app)
+     :body (format "%s" appt-msg)))
+  (setq appt-disp-window-function 'jrb/appt-reminder)
+  ;; When ever any org agenda-agenda-files saves refresh reminder
+  (defun jrb/orgsaveapptup ()
+    "add org-agenda-files events in appointment notification system"
+    (when (org-agenda-file-p)
+      (org-agenda-to-appt)))
+  (add-hook 'after-save-hook 'orgsaveapptup)
+  (run-at-time t (* 45 60) 'org-agenda-to-appt))
+
 (when (string-equal system-type "android")
   (setq overriding-text-conversion-style '())
   (setq! touch-screen-display-keyboard t)

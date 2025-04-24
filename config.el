@@ -33,7 +33,7 @@
     "add org-agenda-files events in appointment notification system"
     (when (org-agenda-file-p)
       (org-agenda-to-appt)))
-  (add-hook 'after-save-hook 'orgsaveapptup)
+  (add-hook 'after-save-hook 'jrb/orgsaveapptup)
   (run-at-time t (* 45 60) 'org-agenda-to-appt))
 
 (when (string-equal system-type "android")

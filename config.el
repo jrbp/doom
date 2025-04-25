@@ -527,6 +527,7 @@ See `org-capture-templates' for more information."
 (map! :leader
       (:desc "App" :prefix "A"
        :desc "Ielm" :n "i" #'ielm
+       :desc "Cal" :n "c" #'cfw:open-org-calendar
        :desc "elfeed" :n "e" #'elfeed
        :desc "Processes" :n "p" #'list-processes
        :desc "Jupyter-repl" :n "j" #'jupyter-run-repl)

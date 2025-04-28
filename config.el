@@ -65,6 +65,16 @@
                 ;; do not treat repl as popup
                 (set-popup-rules! '(("^\\*julia.*" :ignore t)))
                 ))
+    ;; I wanted to wrap the send commands with let statements to control the
+    ;; popup and have an alt prefix for the popup, but it seems something deeper
+    ;; in snail prevents this, so for now I bind changing the variable:
+    (map! (:localleader
+           (:map (julia-snail-mode-map)
+                 (:prefix ("m" . "eval with popup")
+                          "n" (lambda () (interactive) (setq julia-snail-popup-display-eval-results nil))
+                          "m" (lambda () (interactive) (setq julia-snail-popup-display-eval-results :command))
+                          "c" (lambda () (interactive) (setq julia-snail-popup-display-eval-results :change))))))
+
     (after! org
       (add-to-list '+org-babel-mode-alist '(julia . julia-snail))))
   (progn ;; lsp-julia

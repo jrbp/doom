@@ -62,9 +62,9 @@
                 (inheritenv-add-advice 'julia-snail--start)
                 ;; snail popup gets slow for large output, more trouble than worht
                 (setq julia-snail-popup-display-eval-results nil)
+                (setq julia-snail/ob-julia-resource-directory (file-truename "~/org/assets/ob-julia-snail"))
                 ;; do not treat repl as popup
-                (set-popup-rules! '(("^\\*julia.*" :ignore t)))
-                ))
+                (set-popup-rules! '(("^\\*julia.*" :ignore t)))))
     ;; I wanted to wrap the send commands with let statements to control the
     ;; popup and have an alt prefix for the popup, but it seems something deeper
     ;; in snail prevents this, so for now I bind changing the variable:

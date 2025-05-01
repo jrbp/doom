@@ -45,6 +45,11 @@
 ;; Disabling esc behavior on 'jk' see https://discourse.doomemacs.org/t/typing-jk-deletes-j-and-returns-to-normal-mode
 (package! evil-escape :disable t)
 
+;; TODO: go back to master after merge, see https://github.com/gcv/julia-snail/issues/149
+(package! julia-snail
+  :recipe (:host github :repo "gcv/julia-snail" :branch "juliasyntax")
+  :pin "1bfa18bc300be54efd83a8f1e3e51d725141067c")
+
 ;; Doom's packages are pinned to a specific commit and updated from release to
 ;; release. The `unpin!' macro allows you to unpin single packages...
 ;(unpin! pinned-package)

@@ -64,7 +64,7 @@
                 (setq julia-snail-popup-display-eval-results nil)
                 (setq julia-snail/ob-julia-resource-directory (file-truename "~/org/assets/ob-julia-snail"))
                 ;; do not treat repl as popup
-                (set-popup-rules! '(("^\\*julia.*" :ignore t)))))
+                (set-popup-rules! '(("^\\*julia.*" :quit nil)))))
     ;; I wanted to wrap the send commands with let statements to control the
     ;; popup and have an alt prefix for the popup, but it seems something deeper
     ;; in snail prevents this, so for now I bind changing the variable:
@@ -243,7 +243,7 @@ Then run FUN with ARGS."
          (insert (expand-file-name filename)))))
 
 (set-popup-rules!
-  '(("^\\*jupyter.*" :ignore t)))
+  '(("^\\*jupyter.*" :quit nil)))
 
 ;; +make it so that by default ESC is sent to vterm+ disabled -> C-c C-z to toggle this
 ;; (add-hook! 'vterm-mode-hook #'evil-collection-vterm-toggle-send-escape)

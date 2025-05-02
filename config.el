@@ -28,12 +28,13 @@
      :title (format "Appointment in %s minutes" min-to-app)
      :body (format "%s" appt-msg)))
   (setq appt-disp-window-function 'jrb/appt-reminder)
+  ;; Following hook would cause lag when saving. May consider some other option later
   ;; When ever any org agenda-agenda-files saves refresh reminder
-  (defun jrb/orgsaveapptup ()
-    "add org-agenda-files events in appointment notification system"
-    (when (org-agenda-file-p)
-      (org-agenda-to-appt)))
-  (add-hook 'after-save-hook 'jrb/orgsaveapptup)
+  ;; (defun jrb/orgsaveapptup ()
+  ;;   "add org-agenda-files events in appointment notification system"
+  ;;   (when (org-agenda-file-p)
+  ;;     (org-agenda-to-appt)))
+  ;; (add-hook 'after-save-hook 'jrb/orgsaveapptup)
   (run-at-time t (* 45 60) 'org-agenda-to-appt))
 
 (when (string-equal system-type "android")

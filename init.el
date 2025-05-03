@@ -307,5 +307,5 @@
        roam-extra
        secrets
        tera-mode
-       ;; ox-zola
+       ox-zola
        )

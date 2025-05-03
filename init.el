@@ -306,6 +306,7 @@
        gptel
        roam-extra
        secrets
-       tera-mode
-       ox-zola
+       ;; FIXME: following don't work with doom-emacs-unstraightened (missing ox-hugo on precompile)
+       ;; tera-mode
+       ;; ox-zola
        )

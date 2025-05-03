@@ -1,3 +1,4 @@
 ;;; private/ox-zola/config.el -*- lexical-binding: t; -*-
 (use-package! ox-zola
-  :after (ox ox-hugo))
+  :derfer-incrementally ox-hugo
+  :after (ox))

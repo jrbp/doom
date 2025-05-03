@@ -306,6 +306,6 @@
        gptel
        roam-extra
        secrets
-       tera-mode
-       ox-zola
+       ;; tera-mode
+       ;; ox-zola
        )

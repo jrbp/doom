@@ -63,7 +63,7 @@
                 (inheritenv-add-advice 'julia-snail--start)
                 (setq julia-snail/ob-julia-resource-directory (file-truename "~/org/assets/ob-julia-snail"))
                 ;; do not treat repl as popup
-                (set-popup-rules! '(("^\\*julia.*" :quit nil :ttl nil)))))
+                 (set-popup-rules! '(("^\\*julia.*\\*" :quit nil :ttl nil)))))
     ;; I wanted to wrap the send commands with let statements to control the
     ;; popup and have an alt prefix for the popup, but it seems something deeper
     ;; in snail prevents this, so for now I bind changing the variable:

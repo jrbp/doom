@@ -65,7 +65,7 @@
                 (setq julia-snail-popup-display-eval-results nil)
                 (setq julia-snail/ob-julia-resource-directory (file-truename "~/org/assets/ob-julia-snail"))
                 ;; do not treat repl as popup
-                (set-popup-rules! '(("^\\*julia.*" :quit nil)))))
+                (set-popup-rules! '(("^\\*julia.*" :quit nil :ttl nil)))))
     ;; I wanted to wrap the send commands with let statements to control the
     ;; popup and have an alt prefix for the popup, but it seems something deeper
     ;; in snail prevents this, so for now I bind changing the variable:
@@ -81,6 +81,14 @@
   (progn ;; lsp-julia
     ;; I have nix make a separate, wrapped executable + sysimage
     (setq! lsp-julia-command "julia-ls")
+    ;; (add-hook 'julia-mode-hook ;; Unsure if this really does anything
+    ;;           (lambda ()
+    ;;             (setq! lsp-julia-default-environment
+    ;;                    (if-let* ((bsi "~/.julia/sysimages/base/lib/project")
+    ;;                              (jlp (getenv "JULIA_LOAD_PATH")))
+    ;;                        (cadr (split-string jlp ":"))
+    ;;                      (if (f-exists? bsi) bsi
+    ;;                        "~/.julia/environments/v1.11")))))
     (setq! lsp-julia-package-dir 'nil) ; shouldn't matter (set in julia-ls script)
     )
   (after! julia-mode

@@ -252,7 +252,7 @@ Then run FUN with ARGS."
          (insert (expand-file-name filename)))))
 
 (set-popup-rules!
-  '(("^\\*jupyter.*" :quit nil)))
+  '(("^\\*jupyter.*" :quit nil :ttl nil)))
 
 ;; +make it so that by default ESC is sent to vterm+ disabled -> C-c C-z to toggle this
 ;; (add-hook! 'vterm-mode-hook #'evil-collection-vterm-toggle-send-escape)

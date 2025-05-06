@@ -56,13 +56,11 @@
 (progn   ;;julia config
   (progn ;;julia-snail
     (setq julia-snail-extensions '(ob-julia))
-    ;; setq alone only works if ran after snail loads
+    ;; setq alone only works if ran after snail loads?
     (add-hook 'julia-snail-mode-hook
               (lambda ()
                 ;; enable using julia version from direnv
                 (inheritenv-add-advice 'julia-snail--start)
-                ;; snail popup gets slow for large output, more trouble than worht
-                (setq julia-snail-popup-display-eval-results nil)
                 (setq julia-snail/ob-julia-resource-directory (file-truename "~/org/assets/ob-julia-snail"))
                 ;; do not treat repl as popup
                 (set-popup-rules! '(("^\\*julia.*" :quit nil :ttl nil)))))

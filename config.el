@@ -7,9 +7,6 @@
 ;; disable doom splash image
 (setq +doom-dashboard-functions (cdr +doom-dashboard-functions))
 
-;; I like tree-sitter text objects
-;; TODO: re-enable/configure tree-sitter after the following is resolved
-;;  https://github.com/doomemacs/doomemacs/issues/7623
 ;; (setq +tree-sitter-hl-enabled-modes '(not web-mode typescript-tsx-mode julia-mode nix-mode))
 
 (defalias 'jrb/system-notifications-notify
@@ -612,5 +609,8 @@ jupyter kernels after pyenv env is changed"
 (advice-add 'evil-org-edit-src-exit :override
             'replace-evil-org-edit-src-exit)
 (use-package treesit-auto
+  :custom
+  (treesit-auto-install 'prompt)
   :config
-  (global-treesit-auto-mode))
+  (global-treesit-auto-mode)
+  (setq treesit-font-lock-level 6))

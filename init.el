@@ -307,7 +307,7 @@
        gptel
        roam-extra
        secrets
-       astro
+        astro
        ;; FIXME: following don't work with doom-emacs-unstraightened (missing ox-hugo on precompile)
        ;; tera-mode
        ;; ox-zola

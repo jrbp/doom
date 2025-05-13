@@ -6,7 +6,7 @@
   (add-hook 'astro-ts-mode-hook #'lsp 'append)
   (add-to-list
    'apheleia-formatters
-   '(prettier-astro npx "prettier" "--stdin-filepath" filepath "--parser=astro"
+   '(prettier-astro npx "prettier" "--stdin-filepath" filepath "--plugin=prettier-plugin-astro" "--parser=astro"
      (apheleia-formatters-indent "--use-spaces" "--tab-width" 'astro-ts-mode-indent-offset)))
 
   (add-to-list 'apheleia-mode-alist '(astro-ts-mode . prettier-astro))

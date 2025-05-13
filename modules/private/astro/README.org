@@ -1,0 +1,2 @@
+#+title: Readme
+* mostly adapted from [[https://edmundmiller.dev/posts/emacs-astro/][this]]

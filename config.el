@@ -598,6 +598,16 @@ jupyter kernels after pyenv env is changed"
           persp-emacsclient-init-frame-behaviour-override -1))
   )
 
+(map! :after (lispy lispyville)
+      ;; default bracket behavior was annoying for even just writing strings containing brackets
+      :map lispy-mode-map-lispy
+      ;; unbind individual bracket keys
+      "[" nil
+      "]" nil
+      ;; re-bind commands bound to bracket keys by default
+      "M-[" #'lispyville-previous-opening
+      "M-]" #'lispyville.next-opening)
+
 ;; fixing where this was broken used to use evil-write instead of save-buffer
 ;; it used to be that I could just redefine here, but that seems to not work
 ;; renaming my functiona and putting in as advice instead

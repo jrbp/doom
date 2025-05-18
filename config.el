@@ -599,14 +599,10 @@ jupyter kernels after pyenv env is changed"
   )
 
 (map! :after (lispy lispyville)
-      ;; default bracket behavior was annoying for even just writing strings containing brackets
       :map lispy-mode-map-lispy
-      ;; unbind individual bracket keys
+      ;; unbind individual bracket keys (annoying for writing strings containing brackets)
       "[" nil
-      "]" nil
-      ;; re-bind commands bound to bracket keys by default
-      "M-[" #'lispyville-previous-opening
-      "M-]" #'lispyville.next-opening)
+      "]" nil)
 
 ;; fixing where this was broken used to use evil-write instead of save-buffer
 ;; it used to be that I could just redefine here, but that seems to not work

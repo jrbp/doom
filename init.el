@@ -246,8 +246,7 @@
         )              ; Fe2O3.unwrap().unwrap().unwrap().unwrap()
        ;;scala             ; java, but good
        (scheme         ; a fully conniving family of lisps
-        +guile
-        +racket) ; HACK: lispy seems to fail unless some racket thing is set
+        +guile)
        ;;(sh +fish)        ; she sells (ba|z|fi)sh shells on the C xor
        sh
        ;;sml

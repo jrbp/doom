@@ -50,11 +50,16 @@
   :recipe (:host github :repo "gcv/julia-snail" :branch "juliasyntax")
   :pin "1bfa18bc300be54efd83a8f1e3e51d725141067c")
 
+;; TODO: remove if/when main repo is maintained, see https://github.com/abo-abo/lispy/issues/684
+(package! lispy
+  :recipe (:host github :repo "enzuru/lispy" :branch "master")
+  :pin "b6e1d5c02c0d506a003731dfc310e330094f6749")
+
 ;; Doom's packages are pinned to a specific commit and updated from release to
 ;; release. The `unpin!' macro allows you to unpin single packages...
-;(unpin! pinned-package)
+                                        ;(unpin! pinned-package)
 ;; ...or multiple packages
-;(unpin! pinned-package another-pinned-package)
+                                        ;(unpin! pinned-package another-pinned-package)
 ;; ...Or *all* packages (NOT RECOMMENDED; will likely break things)
-;(unpin! t)
+                                        ;(unpin! t)
 ;;

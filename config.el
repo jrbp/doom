@@ -109,6 +109,8 @@
                         (insert "\n" hspace " #    " ln))
                       (cdr data-lines))))))
       ;; very rough; to do this properly will require some work on the julia side.
+      ;; Really want the data as would be shown by print in julia rather than show/display
+      ;; (usually print can be used to reconstruct an object)
       (defun jrb/julia-snail--setup-expect-test (block-start block-end buf data)
         (let* ((read-data (read data))
                (eval-data (eval read-data))

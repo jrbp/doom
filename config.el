@@ -60,7 +60,7 @@
                 (inheritenv-add-advice 'julia-snail--start)
                 (setq julia-snail/ob-julia-resource-directory (file-truename "~/org/assets/ob-julia-snail"))
                 ;; do not treat repl as popup
-                 (set-popup-rules! '(("^\\*julia.*\\*" :quit nil :ttl nil)))))
+                (set-popup-rules! '(("^\\*julia.*\\*" :quit nil :ttl nil)))))
     ;; I wanted to wrap the send commands with let statements to control the
     ;; popup and have an alt prefix for the popup, but it seems something deeper
     ;; in snail prevents this, so for now I bind changing the variable:
@@ -72,7 +72,79 @@
                           "c" (lambda () (interactive) (setq julia-snail-popup-display-eval-results :change))))))
 
     (after! org
-      (add-to-list '+org-babel-mode-alist '(julia . julia-snail))))
+      (add-to-list '+org-babel-mode-alist '(julia . julia-snail)))
+
+    (progn ;; towards https://ianthehenry.com/posts/my-kind-of-repl/
+      (cl-defun jrb/julia-snail--send-eval-print-last-exp (block-start
+                                                           block-end
+                                                           &key
+                                                           (print-pos-start block-end)
+                                                           (message-prefix "Evaluated and printed"))
+                (let ((text (buffer-substring-no-properties block-start block-end))
+                      (filename (julia-snail--efn (buffer-file-name (buffer-base-buffer))))
+                      (module (if current-prefix-arg :Main (julia-snail--module-at-point)))
+                      (line-num (line-number-at-pos block-start))
+                      (buf (current-buffer)))
+                  (cl-labels ((print-res-callback (data)
+                                                  (let* ((read-data (read data))
+                                                         (eval-data (eval read-data))
+                                                         (the-data (when (and (listp eval-data) (car eval-data))
+                                                                     (cadr eval-data)))
+                                                         (data-lines (split-string the-data "\n")))
+                                                    (with-current-buffer buf)
+                                                    (goto-char print-pos-start)
+                                                    ;; (insert the-data)
+                                                    (let ((hspace (make-string (current-column) ?\s)))
+                                                      (insert " # -> ")
+                                                      (insert (car data-lines))
+                                                      (when (cdr data-lines)
+                                                        (mapcar (lambda (ln)
+                                                                  (insert "\n")
+                                                                  (insert hspace)
+                                                                  (insert " #    ")
+                                                                  (insert ln))
+                                                                (cdr data-lines)))))))
+                             (julia-snail--flash-region block-start block-end)
+                             (julia-snail--send-to-server-via-tmp-file
+                              module
+                              text
+                              filename
+                              line-num
+                              :popup-display-params (julia-snail--popup-params block-end)
+                              :callback-success (lambda (_request-info &optional data)
+                                                  (print-res-callback data)
+                                                  (message "%s; module %s"
+                                                           message-prefix
+                                                           (julia-snail--construct-module-path module)))))))
+      (defun jrb/julia-snail-send-eval-print-line ()
+        (interactive)
+        (let ((block-start (line-beginning-position))
+              (block-end (line-end-position)))
+          (unless (eq block-start block-end)
+            (jrb/julia-snail--send-eval-print-last-exp
+             block-start block-end))))
+      (defun jrb/julia-snail-send-eval-print-region ()
+        (interactive)
+        (if (null (use-region-p))
+            (user-error "No region selected")
+          (let ((block-start (region-beginning))
+                (block-end (region-end)))
+            (jrb/julia-snail--send-eval-print-last-exp
+             block-start block-end))))
+      (defun jrb/julia-snail-send-eval-print-last-dwim ()
+        (interactive)
+        (if (use-region-p)              ; region
+            (jrb/julia-snail-send-eval-print-region)
+          (condition-case _err
+              (jrb/julia-snail-send-eval-print-line)   ;line
+              ;; (jrb/julia-snail-send-eval-print-top-level-form) ;; not implemented
+            ;; (user-error (jrb/julia-snail-send-eval-print-line) ; block fails, so send line
+            ;;  )
+            )))
+      ;; end test repl thing
+      )
+    ;; end snail
+    )
   (progn ;; lsp-julia
     ;; I have nix make a separate, wrapped executable + sysimage
     (setq! lsp-julia-command "julia-ls")

@@ -108,6 +108,7 @@
               (mapcar (lambda (ln)
                         (insert "\n" hspace " #    " ln))
                       (cdr data-lines))))))
+      ;; very rough; to do this properly will require some work on the julia side.
       (defun jrb/julia-snail--setup-expect-test (block-start block-end buf data)
         (let* ((read-data (read data))
                (eval-data (eval read-data))

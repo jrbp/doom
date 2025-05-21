@@ -94,14 +94,11 @@
       )))
 ;; Disabling a bunch of older julia things I did in the past and don't understand
 ;; move them above above as needed
-                                        ;(setq +tree-sitter-hl-enabled-modes '(not web-mode typescript-tsx-mode julia-mode))
                                         ;(set-lookup-handlers! '(julia-snail-mode)
                                         ;  :definition '(xref-find-definitions)
                                         ;  :documentation '(julia-snail-doc-lookup))
                                         ;(setq lsp-enable-xref nil)
-                                        ;(setq lsp-julia-lint-missingrefs "none") ; until it becomes usable
                                         ;(defun jrb/lsp-nil-ifnotfound (&rest arg)
-
                                         ;  "alternate lookup-handlers are tried when it can't find symbol"
                                         ;  (if (equal (car arg) "No content at point.")
                                         ;      (error "LSP can't find it") ; returning nil apparently doesn't work, throw error instead
@@ -121,16 +118,9 @@
                                         ;            (add-hook 'completion-at-point-functions #'lsp-completion-at-point -1 t) ; I'd let it be higher than snail if it would still let snail run
                                         ;            ))
 
-                                        ;(setq lsp-julia-package-dir "/home/john/.config/emacs/.local/straight/repos/lsp-julia/languageserver")
-                                        ;       1) the default lsp-julia-package-dir is in a sense preferable so leave it (latest version w/o incompatability with project)
-                                        ; but   2) you may need to go to that directory and instantiate things
-                                        ; also  3) default-env below doesn't matter if in a project, to use outside: =] activate --shared default=
-                                        ;       4) for some reason using dftk as a library seems to not work with the languageserver
                                         ;(after! lsp-julia
-                                        ;  (setq lsp-julia-default-environment "/home/john/.julia/environments/default"))
                                         ; (after! (:and julia-repl inheritenv)
                                         ;   (inheritenv-add-advice 'julia-repl-inferior-buffer))
-                                        ;
                                         ; (after! julia-repl
                                         ;   (set-popup-rules!
                                         ;     '(("^\\*julia.*" :ignore t)))

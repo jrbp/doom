@@ -91,47 +91,73 @@
               (hash-table-keys julia-snail--requests)))
 
     (progn ;; towards https://ianthehenry.com/posts/my-kind-of-repl/
+      (defun jrb/julia-snail--print-eval-result (print-pos-start buf data)
+        (when data
+          (message data)
+          (message "no data?"))
+        (let* ((read-data (read data))
+               (eval-data (eval read-data))
+               (the-data (when (and (listp eval-data) (car eval-data))
+                           (cadr eval-data)))
+               (data-lines (split-string the-data "\n")))
+          (with-current-buffer buf)
+          (goto-char print-pos-start)
+          (let ((hspace (make-string (current-column) ?\s)))
+            (insert " # -> " (car data-lines))
+            (when (cdr data-lines)
+              (mapcar (lambda (ln)
+                        (insert "\n" hspace " #    " ln))
+                      (cdr data-lines))))))
+      (defun jrb/julia-snail--setup-expect-test (block-start block-end buf data)
+        (let* ((read-data (read data))
+               (eval-data (eval read-data))
+               (the-data (when (and (listp eval-data) (car eval-data))
+                           (cadr eval-data)))
+               (data-lines (split-string the-data "\n")))
+          (with-current-buffer buf)
+          (goto-char block-end)
+          (insert ", ")
+          (if (null (cdr data-lines))
+              (insert (car data-lines))
+            (let ((hspace (make-string (current-column) ?\s)))
+              (insert "# " (car data-lines))
+              (mapcar (lambda (ln)
+                        (insert "\n  " hspace ln))
+                      (cdr data-lines))))
+          (insert ")")
+          (goto-char block-start)
+          (insert "@test isequal(")))
+
       (cl-defun jrb/julia-snail--send-eval-print-last-exp (block-start
                                                            block-end
                                                            &key
                                                            (print-pos-start block-end)
                                                            (message-prefix "Evaluated and printed"))
-                (let ((text (buffer-substring-no-properties block-start block-end))
-                      (filename (julia-snail--efn (buffer-file-name (buffer-base-buffer))))
-                      (module (if current-prefix-arg :Main (julia-snail--module-at-point)))
-                      (line-num (line-number-at-pos block-start))
-                      (buf (current-buffer)))
-                  (cl-labels ((print-res-callback (data)
-                                                  (let* ((read-data (read data))
-                                                         (eval-data (eval read-data))
-                                                         (the-data (when (and (listp eval-data) (car eval-data))
-                                                                     (cadr eval-data)))
-                                                         (data-lines (split-string the-data "\n")))
-                                                    (with-current-buffer buf)
-                                                    (goto-char print-pos-start)
-                                                    ;; (insert the-data)
-                                                    (let ((hspace (make-string (current-column) ?\s)))
-                                                      (insert " # -> ")
-                                                      (insert (car data-lines))
-                                                      (when (cdr data-lines)
-                                                        (mapcar (lambda (ln)
-                                                                  (insert "\n")
-                                                                  (insert hspace)
-                                                                  (insert " #    ")
-                                                                  (insert ln))
-                                                                (cdr data-lines)))))))
-                             (julia-snail--flash-region block-start block-end)
-                             (julia-snail--send-to-server-via-tmp-file
-                              module
-                              text
-                              filename
-                              line-num
-                              :popup-display-params (julia-snail--popup-params block-end)
-                              :callback-success (lambda (_request-info &optional data)
-                                                  (print-res-callback data)
-                                                  (message "%s; module %s"
-                                                           message-prefix
-                                                           (julia-snail--construct-module-path module)))))))
+        (let ((text (buffer-substring-no-properties block-start block-end))
+              (filename (julia-snail--efn (buffer-file-name (buffer-base-buffer))))
+              ;; (module (if current-prefix-arg :Main (julia-snail--module-at-point)))
+              (module (julia-snail--module-at-point))
+              (line-num (line-number-at-pos block-start))
+              (buf (current-buffer))
+              (julia-snail-popup-display-eval-results :command))
+          (cl-flet
+              ((callbackf (if current-prefix-arg
+                              (lambda (data)
+                                (jrb/julia-snail--setup-expect-test block-start block-end buf data))
+                              (lambda (data)
+                                (jrb/julia-snail--print-eval-result print-pos-start buf data)))))
+            (julia-snail--flash-region block-start block-end)
+            (julia-snail--send-to-server-via-tmp-file
+              module
+              text
+              filename
+              line-num
+              :popup-display-params '(80 80) ;; (julia-snail--popup-params block-end)
+              :callback-success (lambda (_request-info &optional data)
+                                  (callbackf data)
+                                  (message "%s; module %s"
+                                           message-prefix
+                                           (julia-snail--construct-module-path module)))))))
       (defun jrb/julia-snail-send-eval-print-line ()
         (interactive)
         (let ((block-start (line-beginning-position))
@@ -152,8 +178,8 @@
         (if (use-region-p)              ; region
             (jrb/julia-snail-send-eval-print-region)
           (condition-case _err
-              (jrb/julia-snail-send-eval-print-line)   ;line
-              ;; (jrb/julia-snail-send-eval-print-top-level-form) ;; not implemented
+              (jrb/julia-snail-send-eval-print-line) ;line
+            ;; (jrb/julia-snail-send-eval-print-top-level-form) ;; not implemented
             ;; (user-error (jrb/julia-snail-send-eval-print-line) ; block fails, so send line
             ;;  )
             )))

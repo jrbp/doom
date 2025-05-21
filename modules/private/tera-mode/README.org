@@ -1,0 +1,5 @@
+#+title: Readme
+
+I made this when using zola for a static site gen (and it probably should have just been part of the ox-zola module).
+
+I no longer use zola so I also no longer use this module.

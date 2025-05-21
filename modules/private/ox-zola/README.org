@@ -1,0 +1,4 @@
+#+title: Readme
+
+This doesn't currently work with doom-unstraightened.
+But I'm not using zola anymore so I haven't bothered to fix it.

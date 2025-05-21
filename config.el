@@ -74,6 +74,22 @@
     (after! org
       (add-to-list '+org-babel-mode-alist '(julia . julia-snail)))
 
+    (defun jrb/julia-snail--interupt-all ()
+      (interactive)
+      (mapcar (lambda (reqid)
+                (let* ((repl-buf (get-buffer julia-snail-repl-buffer))
+                       (resp (julia-snail--send-to-server
+                               '("JuliaSnail" "Tasks")
+                               (format "interrupt(\"%s\")" reqid)
+                               :repl-buf repl-buf
+                               :async nil))
+                       (res (car resp)))
+                  (if res
+                      (message "Interrupt scheduled for Julia reqid %s" reqid)
+                    (message "Unknown reqid %s on the Julia side" reqid)
+                    (remhash reqid julia-snail--requests))))
+              (hash-table-keys julia-snail--requests)))
+
     (progn ;; towards https://ianthehenry.com/posts/my-kind-of-repl/
       (cl-defun jrb/julia-snail--send-eval-print-last-exp (block-start
                                                            block-end

@@ -131,7 +131,7 @@
                 (block-end (region-end)))
             (jrb/julia-snail--send-eval-print-last-exp
              block-start block-end))))
-      (defun jrb/julia-snail-send-eval-print-last-dwim ()
+      (defun jrb/julia-snail-send-eval-print-dwim ()
         (interactive)
         (if (use-region-p)              ; region
             (jrb/julia-snail-send-eval-print-region)
@@ -141,6 +141,12 @@
             ;; (user-error (jrb/julia-snail-send-eval-print-line) ; block fails, so send line
             ;;  )
             )))
+      (map! (:localleader
+             (:map (julia-snail-mode-map)
+                   (:prefix ("e" . "eval")
+                            "L" #'jrb/julia-snail-send-eval-print-line
+                            "R" #'jrb/julia-snail-send-eval-print-region
+                            "E" #'jrb/julia-snail-send-eval-print-dwim))))
       ;; end test repl thing
       )
     ;; end snail

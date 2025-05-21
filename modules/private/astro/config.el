@@ -4,14 +4,15 @@
   :config
   (global-treesit-auto-mode)
   (add-hook 'astro-ts-mode-hook #'lsp 'append)
-  (add-to-list
-   ;; need to do the following in project for formatting to work
-   ;; npm i --save-dev prettier prettier-plugin-astro
-   'apheleia-formatters
-   '(prettier-astro npx "prettier" "--stdin-filepath" filepath "--plugin=prettier-plugin-astro" "--parser=astro"
-     (apheleia-formatters-indent "--use-spaces" "--tab-width" 'astro-ts-mode-indent-offset)))
-
-  (add-to-list 'apheleia-mode-alist '(astro-ts-mode . prettier-astro))
+  ;; need to do the following in project for formatting to work
+  ;; npm i --save-dev prettier prettier-plugin-astro
+  (after! apheleia
+    (add-to-list 'apheleia-mode-alist '(astro-ts-mode . prettier-astro))
+    (add-to-list 'apheleia-formatters
+                 '(prettier-astro npx "prettier" "--stdin-filepath"
+                   filepath "--plugin=prettier-plugin-astro" "--parser=astro"
+                   (apheleia-formatters-indent "--use-spaces" "--tab-width"
+                                               'astro-ts-mode-indent-offset))))
 
   (let ((astro-recipe (make-treesit-auto-recipe
                        :lang 'astro

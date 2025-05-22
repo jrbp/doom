@@ -92,9 +92,6 @@
 
     (progn ;; towards https://ianthehenry.com/posts/my-kind-of-repl/
       (defun jrb/julia-snail--print-eval-result (print-pos-start buf data)
-        (when data
-          (message data)
-          (message "no data?"))
         (let* ((read-data (read data))
                (eval-data (eval read-data))
                (the-data (when (and (listp eval-data) (car eval-data))
@@ -102,40 +99,31 @@
                (data-lines (split-string the-data "\n")))
           (with-current-buffer buf)
           (goto-char print-pos-start)
+          (skip-chars-backward " \t\n")
           (let ((hspace (make-string (current-column) ?\s)))
             (insert " # -> " (car data-lines))
             (when (cdr data-lines)
               (mapcar (lambda (ln)
                         (insert "\n" hspace " #    " ln))
                       (cdr data-lines))))))
-      ;; very rough; to do this properly will require some work on the julia side.
-      ;; Really want the data as would be shown by print in julia rather than show/display
-      ;; (usually print can be used to reconstruct an object)
+
       (defun jrb/julia-snail--setup-expect-test (block-start block-end buf data)
-        (let* ((read-data (read data))
-               (eval-data (eval read-data))
-               (the-data (when (and (listp eval-data) (car eval-data))
-                           (cadr eval-data)))
-               (data-lines (split-string the-data "\n")))
+        (when-let* ((read-data (read data))
+                    (eval-data (eval read-data))
+                    (the-data (when (and (listp eval-data) (car eval-data))
+                                (read (cadr eval-data)))))
           (with-current-buffer buf)
           (goto-char block-end)
-          (insert ", ")
-          (if (null (cdr data-lines))
-              (insert (car data-lines))
-            (let ((hspace (make-string (current-column) ?\s)))
-              (insert "# " (car data-lines))
-              (mapcar (lambda (ln)
-                        (insert "\n  " hspace ln))
-                      (cdr data-lines))))
-          (insert ")")
+          (skip-chars-backward " \t\n")
+          (insert " |> isequal(" the-data ")")
           (goto-char block-start)
-          (insert "@test isequal(")))
+          (insert "@test ")))
 
       (cl-defun jrb/julia-snail--send-eval-print-last-exp (block-start
                                                            block-end
                                                            &key
-                                                           (print-pos-start block-end)
-                                                           (message-prefix "Evaluated and printed"))
+                                                             (print-pos-start block-end)
+                                                             (message-prefix "Evaluated and printed"))
         (let ((text (buffer-substring-no-properties block-start block-end))
               (filename (julia-snail--efn (buffer-file-name (buffer-base-buffer))))
               ;; (module (if current-prefix-arg :Main (julia-snail--module-at-point)))
@@ -147,12 +135,12 @@
               ((callbackf (if current-prefix-arg
                               (lambda (data)
                                 (jrb/julia-snail--setup-expect-test block-start block-end buf data))
-                              (lambda (data)
-                                (jrb/julia-snail--print-eval-result print-pos-start buf data)))))
+                            (lambda (data)
+                              (jrb/julia-snail--print-eval-result print-pos-start buf data)))))
             (julia-snail--flash-region block-start block-end)
             (julia-snail--send-to-server-via-tmp-file
-              module
-              text
+                module
+                (if current-prefix-arg (concat "repr(" text ")") text)
               filename
               line-num
               :popup-display-params '(80 80) ;; (julia-snail--popup-params block-end)
@@ -191,11 +179,7 @@
                    (:prefix ("e" . "eval")
                             "L" #'jrb/julia-snail-send-eval-print-line
                             "R" #'jrb/julia-snail-send-eval-print-region
-                            "E" #'jrb/julia-snail-send-eval-print-dwim))))
-      ;; end test repl thing
-      )
-    ;; end snail
-    )
+                            "E" #'jrb/julia-snail-send-eval-print-dwim))))))
   (progn ;; lsp-julia
     ;; I have nix make a separate, wrapped executable + sysimage
     (setq! lsp-julia-command "julia-ls")

@@ -703,20 +703,40 @@ jupyter kernels after pyenv env is changed"
       (forward-line (- start-line (line-number-at-pos))) ;(goto-line start-line)
       (message "Not found"))))
 
-(if (modulep! :private frames-only)
-    (setq org-src-window-setup 'other-frame) ;; other-window doesn't close as I'd like on exit
-  (setq org-src-window-setup 'other-window)
-  (after!  persp-mode
-    (setq persp-interactive-init-frame-behaviour-override -1
-          persp-emacsclient-init-frame-behaviour-override -1))
-  )
+(after! lispyville
+  (lispyville-set-key-theme ;; so that it applies when executed interactively
+   (setq lispyville-key-theme
+         '((operators normal) ;; safe version of evil normal ops
+           c-w                ;; safe version of delete prev word
+           (prettify insert)  ;; tab will format
+           text-objects ;; experimental (a)tom (l)ist se(x)p (f)unction (c)omment (S)tring
+           (atom-movement t) ;; evil B/W/E(g E) movement over atoms instead of words
+           commentary          ;; gc, gy followed by motion
+           slurp/barf-lispy
+           additional
+           additional-insert))))
 
-(map! :after (lispy lispyville)
+(map! :after (lispyville)
+      :map lispyville-mode-map
+      ;; add a subset of  the additional-movement theme
+      :m "(" #'lispyville-backward-up-list
+      :m ")" #'lispyville-up-list
+      :m "{" #'lispyville-previous-opening
+      :m "}" #'lispyville-next-opening)
+
+(map! :after (lispy)
       :map lispy-mode-map-lispy
       ;; unbind individual bracket keys (annoying for writing strings containing brackets)
       "[" nil
-      "]" nil)
+      "]" nil
+      "}" nil)
 
+(if (modulep! :private frames-only)
+    (setq org-src-window-setup 'other-frame) ;; other-window doesn't close as I'd like on exit
+  (setq org-src-window-setup 'other-window)
+  (after! persp-mode
+    (setq persp-interactive-init-frame-behaviour-override -1
+          persp-emacsclient-init-frame-behaviour-override -1)))
 ;; fixing where this was broken used to use evil-write instead of save-buffer
 ;; it used to be that I could just redefine here, but that seems to not work
 ;; renaming my functiona and putting in as advice instead

@@ -107,7 +107,8 @@
                         (insert "\n" hspace " #    " ln))
                       (cdr data-lines))))))
 
-      (defun jrb/julia-snail--setup-expect-test (block-start block-end buf data)
+      (cl-defun jrb/julia-snail--setup-expect-test (block-start block-end buf data
+                                                                &optional (prepend-test "@test "))
         (when-let* ((read-data (read data))
                     (eval-data (eval read-data))
                     (the-data (when (and (listp eval-data) (car eval-data))
@@ -115,9 +116,16 @@
           (with-current-buffer buf)
           (goto-char block-end)
           (skip-chars-backward " \t\n")
-          (insert " |> isequal(" the-data ")")
-          (goto-char block-start)
-          (insert "@test ")))
+          ;; following is robust to trailing comments, but also ugly
+          ;; (insert "\nend |> isequal(" the-data ")")
+          ;; (goto-char block-start)
+          ;; (insert "@test begin \n")
+          (insert " |> ")
+          (let ((endpt (+ (length prepend-test) (point))))
+            (insert "isequal(" the-data ")")
+            (goto-char block-start)
+            (insert prepend-test)
+            (goto-char endpt))))
 
       (cl-defun jrb/julia-snail--send-eval-print-last-exp (block-start
                                                            block-end
@@ -126,21 +134,21 @@
                                                              (message-prefix "Evaluated and printed"))
         (let ((text (buffer-substring-no-properties block-start block-end))
               (filename (julia-snail--efn (buffer-file-name (buffer-base-buffer))))
-              ;; (module (if current-prefix-arg :Main (julia-snail--module-at-point)))
               (module (julia-snail--module-at-point))
               (line-num (line-number-at-pos block-start))
               (buf (current-buffer))
+              (comment-only current-prefix-arg)
               (julia-snail-popup-display-eval-results :command))
           (cl-flet
-              ((callbackf (if current-prefix-arg
+              ((callbackf (if comment-only
                               (lambda (data)
-                                (jrb/julia-snail--setup-expect-test block-start block-end buf data))
+                                (jrb/julia-snail--print-eval-result print-pos-start buf data))
                             (lambda (data)
-                              (jrb/julia-snail--print-eval-result print-pos-start buf data)))))
+                              (jrb/julia-snail--setup-expect-test block-start block-end buf data)))))
             (julia-snail--flash-region block-start block-end)
             (julia-snail--send-to-server-via-tmp-file
                 module
-                (if current-prefix-arg (concat "repr(" text ")") text)
+                (if comment-only text (concat "repr( begin " text "\n end)"))
               filename
               line-num
               :popup-display-params '(80 80) ;; (julia-snail--popup-params block-end)

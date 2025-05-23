@@ -317,8 +317,8 @@ Then run FUN with ARGS."
   (advice-remove 'pdf-sync-backward-search-mouse #'jrb/framesMenus-display-buffer-use-some-frame))
 
 (after! apheleia
-  (setq apheleia-formatters (map-insert apheleia-formatters 'alejandra '("alejandra")))
-  (setq apheleia-mode-alist (map-insert apheleia-mode-alist 'nix-mode 'alejandra)))
+  (add-to-list 'apheleia-mode-alist '(nix-mode . alejandra))
+  (add-to-list 'apheleia-formatters '(alejandra "alejandra")))
 
 (with-eval-after-load 'lsp-mode
   (lsp-register-client

@@ -6,7 +6,7 @@
   (add-hook 'astro-ts-mode-hook #'lsp 'append)
   ;; need to do the following in project for formatting to work
   ;; npm i --save-dev prettier prettier-plugin-astro
-  (after! apheleia
+  (after! (:and apheleia astro-ts-mode)
     (add-to-list 'apheleia-mode-alist '(astro-ts-mode . prettier-astro))
     (add-to-list 'apheleia-formatters
                  '(prettier-astro npx "prettier" "--stdin-filepath"

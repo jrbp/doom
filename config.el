@@ -745,3 +745,23 @@ jupyter kernels after pyenv env is changed"
   :config
   (global-treesit-auto-mode)
   (setq treesit-font-lock-level 6))
+
+(after! emacs-everywhere
+  (defun emacs-everywhere--app-info-linux-hyprland ()
+    "Return information on the current active window, on a Linux Sway session."
+    (let* ((activewindow (json-read-from-string
+                          (emacs-everywhere--call "hyprctl" "-j" "activewindow")))
+           (at (alist-get 'at activewindow))
+           (size (alist-get 'size activewindow))
+           (geometry (append at size nil)))
+      (make-emacs-everywhere-app
+       :id (alist-get 'address activewindow)
+       :class (alist-get 'class activewindow)
+       :title (alist-get 'title activewindow)
+       :geometry geometry)))
+  (when (eq 'Hyprland (cdr emacs-everywhere--display-server))
+    (setq emacs-everywhere-window-focus-command (list "hyprctl" "dispatch" "focuswindow" "address:%w"))
+    (setq emacs-everywhere-app-info-function #'emacs-everywhere--app-info-linux-hyprland)
+    ;; (setq emacs-everywhere-paste-command (list "ydotool" "key" "42:1" "110:1" "42:0" "110:0"))
+    )
+  )

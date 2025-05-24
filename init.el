@@ -269,7 +269,7 @@
        :app
        calendar         ;;TODO use / configure more
        ;;emms
-       ;;everywhere        ; *leave* Emacs!? You must be joking ;; TODO get working on hyprland
+       everywhere        ; *leave* Emacs!? You must be joking ;; TODO get working on hyprland
        ;;irc               ; how neckbeards socialize
        (rss +org)        ; emacs as an RSS reader
        ;;;twitter           ; twitter client https://twitter.com/vnought

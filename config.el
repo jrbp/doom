@@ -354,6 +354,10 @@ Then run FUN with ARGS."
 (set-popup-rules!
   '(("^\\*jupyter.*" :quit nil :ttl nil)))
 
+(after! vterm
+  (map! :mode vterm-mode
+        :i "C-V" #'vterm-yank))
+
 ;; +make it so that by default ESC is sent to vterm+ disabled -> C-c C-z to toggle this
 ;; (add-hook! 'vterm-mode-hook #'evil-collection-vterm-toggle-send-escape)
 (defun jrb/vterm-execute-current-line ()

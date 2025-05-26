@@ -405,48 +405,48 @@ Then run FUN with ARGS."
 
 (after! org
   (progn ;; footnote stuff
-  (defcustom org-footnote-define-indrawer t
-    "Non-nil means define footnotes in a drawer, below reference location."
-    :group 'org-footnote
-    :type 'boolean
-    :safe #'booleanp)
+    (defcustom org-footnote-define-indrawer t
+      "Non-nil means define footnotes in a drawer, below reference location."
+      :group 'org-footnote
+      :type 'boolean
+      :safe #'booleanp)
 
-  (defun jrb/org-footnote-new-drawer-maybe ()
-    "When 'org-footnote-define-indrawer insert a new footnote in
+    (defun jrb/org-footnote-new-drawer-maybe ()
+      "When 'org-footnote-define-indrawer insert a new footnote in
  it in a drawer on a new next line after reference point and return 't, otherwise return 'nil.
  This is meant to be used as an advice with #'org-footnote-new e.g.
  (advice-add #'org-footnote-new :before-until #'jrb/org-footnote-new-drawer-maybe)"
-    (interactive)
-    (unless (org-footnote--allow-reference-p)
-      (user-error "Cannot insert a footnote here"))
-    (when org-footnote-define-indrawer
-      (let* ((all (org-footnote-all-labels))
-             (label
-              (unless (eq org-footnote-auto-label 'anonymous)
-                (if (eq org-footnote-auto-label 'random)
-                    (format "%x" (abs (random)))
-                  (org-footnote-normalize-label
-                   (let ((propose (org-footnote-unique-label all)))
-                     (if (eq org-footnote-auto-label t) propose
-                       (completing-read
-                        "Label (leave empty for anonymous): "
-                        (mapcar #'list all) nil nil
-                        (and (eq org-footnote-auto-label 'confirm) propose)))))))))
-        (cond ((not label)
-               (insert "[fn::]")
-               (backward-char 1))
-              ((member label all)
-               (insert "[fn:" label "]")
-               (message "New reference to existing note"))
-              (t
-               (insert "[fn:" label "]")
-               (org-insert-drawer nil "fn")
-               (let ((labeln (org-footnote-normalize-label label))
-                     electric-indent-mode) ; Prevent wrong indentation.
-                 (insert "[fn:" labeln "] ")
-                 (org-footnote-auto-adjust-maybe))))
-        t)))
-  (advice-add #'org-footnote-new :before-until #'jrb/org-footnote-new-drawer-maybe))
+      (interactive)
+      (unless (org-footnote--allow-reference-p)
+        (user-error "Cannot insert a footnote here"))
+      (when org-footnote-define-indrawer
+        (let* ((all (org-footnote-all-labels))
+               (label
+                (unless (eq org-footnote-auto-label 'anonymous)
+                  (if (eq org-footnote-auto-label 'random)
+                      (format "%x" (abs (random)))
+                    (org-footnote-normalize-label
+                     (let ((propose (org-footnote-unique-label all)))
+                       (if (eq org-footnote-auto-label t) propose
+                         (completing-read
+                          "Label (leave empty for anonymous): "
+                          (mapcar #'list all) nil nil
+                          (and (eq org-footnote-auto-label 'confirm) propose)))))))))
+          (cond ((not label)
+                 (insert "[fn::]")
+                 (backward-char 1))
+                ((member label all)
+                 (insert "[fn:" label "]")
+                 (message "New reference to existing note"))
+                (t
+                 (insert "[fn:" label "]")
+                 (org-insert-drawer nil "fn")
+                 (let ((labeln (org-footnote-normalize-label label))
+                       electric-indent-mode) ; Prevent wrong indentation.
+                   (insert "[fn:" labeln "] ")
+                   (org-footnote-auto-adjust-maybe))))
+          t)))
+    (advice-add #'org-footnote-new :before-until #'jrb/org-footnote-new-drawer-maybe))
   (setq org-roam-directory (file-truename "~/org/roam"))
   (setq org-export-with-toc nil)
   ;; fix jupyter output see https://github.com/nnicandro/emacs-jupyter/issues/366

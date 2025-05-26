@@ -889,4 +889,5 @@ Must only be called within a emacs-everywhere buffer. "
   (when (eq 'Hyprland (cdr emacs-everywhere--display-server))
     (add-hook 'emacs-everywhere-init-hooks #'jrb/float-on-parent)
     (setq emacs-everywhere-window-focus-command (list "hyprctl" "dispatch" "focuswindow" "address:%w"))
-    (setq emacs-everywhere-app-info-function #'emacs-everywhere--app-info-linux-hyprland)))
+    (setq emacs-everywhere-app-info-function #'emacs-everywhere--app-info-linux-hyprland))
+  (map! :mode emacs-everywhere-mode (:leader "r" #'jrb/emacs-everywhere-write)))

@@ -2,7 +2,11 @@
 
 (after! org-roam
   (add-hook 'before-save-hook #'roam-extra:update-todo-tag)
-  (advice-add 'org-agenda :before #'roam-extra:update-todo-files))
+  (advice-add 'org-agenda :before #'roam-extra:update-todo-files)
+  ;;  TODO: make hooks for things like logging to dailies
+  (defun roam-extra:message-todo-tag-removed ()
+    (message "Removing roam todo tag from %s." (buffer-file-name)))
+  (add-hook 'before-remove-roam-todo-tag-hook #'roam-extra:message-todo-tag-removed))
 
 (use-package! org-ql
   :after org

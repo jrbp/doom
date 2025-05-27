@@ -1,5 +1,12 @@
 ;;; private/roam-extra/autoload.el -*- lexical-binding: t; -*-
 
+;;;###autoload
+(defcustom before-remove-roam-todo-tag-hook nil
+  "Normal hook that is run before a roam node has the todo-tag removed
+ by `roam-extra:update-todo-tag'."
+  :options '()
+  :type 'hook
+  :group 'roam-extra)
 
 ;;;###autoload
 (defun roam-extra:todo-p ()
@@ -24,7 +31,10 @@ tasks."
            (tags prop-tags))
       (if (roam-extra:todo-p)
           (setq tags (seq-uniq (cons "todo" tags)))
-        (setq tags (remove "todo" tags)))
+        (setq tags (remove "todo" tags))
+        (when (string= (car (seq-difference prop-tags tags)) "todo")
+          (with-demoted-errors "Before-remove-roam-todo-tag hook error: %S"
+	    (run-hooks 'before-remove-roam-todo-tag-hook))))
       (unless (equal prop-tags tags)
         (org-roam-set-keyword "filetags" (combine-and-quote-strings tags ":"))))))
 ;;;###autoload

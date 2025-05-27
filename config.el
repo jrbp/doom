@@ -126,6 +126,7 @@
           (let ((endpt (+ (length prepend-test) (point))))
             (insert "isequal(" the-data ")")
             (goto-char block-start)
+            (skip-chars-forward " \t")
             (insert prepend-test)
             (goto-char endpt))))
 

@@ -91,6 +91,8 @@
               (hash-table-keys julia-snail--requests)))
 
     (progn ;; towards https://ianthehenry.com/posts/my-kind-of-repl/
+      ;; TODO: if eval takes time and the buffer changes above point we print to wrong place
+      ;; maybe write a placeholder key, then come back and try replacing the key?
       (defun jrb/julia-snail--print-eval-result (print-pos-start buf data)
         (let* ((read-data (read data))
                (eval-data (eval read-data))

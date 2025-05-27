@@ -406,6 +406,7 @@ Then run FUN with ARGS."
 (add-hook! 'elfeed-search-mode-hook 'elfeed-update)
 
 (after! org
+  (setq org-log-done 'time)
   (progn ;; footnote stuff
     (defcustom org-footnote-define-indrawer t
       "Non-nil means define footnotes in a drawer, below reference location."

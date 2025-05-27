@@ -118,15 +118,16 @@
           (with-current-buffer buf)
           (goto-char block-end)
           (skip-chars-backward " \t\n")
-          ;; following is robust to trailing comments, but also ugly
+          ;; following is robust to trailing comments and multiline regions, but also ugly
           ;; (insert "\nend |> isequal(" the-data ")")
           ;; (goto-char block-start)
           ;; (insert "@test begin \n")
+          ;; Really we want to wrap only the final expression, but need better parsing
           (insert " |> ")
           (let ((endpt (+ (length prepend-test) (point))))
             (insert "isequal(" the-data ")")
             (goto-char block-start)
-            (skip-chars-forward " \t")
+            (skip-chars-forward " \t\n")
             (insert prepend-test)
             (goto-char endpt))))
 

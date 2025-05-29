@@ -38,14 +38,22 @@ tasks."
       (unless (equal prop-tags tags)
         (org-roam-set-keyword "filetags" (combine-and-quote-strings tags ":"))))))
 ;;;###autoload
-(defun roam-extra:todo-files ()
-  "Return a list of roam files containing todo tag."
+(cl-defun roam-extra:todo-files (&key (max-daily 30))
+  "Return a list of roam files containing todo tag, only include up to the `max-daily' most recent dailies."
   (org-roam-db-sync)
-  (seq-uniq (mapcar 'car
-                    (org-roam-db-query
-                     [:select [nodes:file]
-                      :from nodes
-                      :inner :join tags :on (like tags:tag "todo") :and (= tags:node-id nodes:id)]))))
+  (seq-uniq (mapcar 'car (append
+                          (org-roam-db-query
+                           [:select [nodes:file]
+                            :from nodes
+                            :inner :join tags :on (like tags:tag "todo") :and (= tags:node-id nodes:id)
+                            :where :not nodes:file :like "%daily/%.org"])
+                          (org-roam-db-query
+                           [:select [nodes:file]
+                            :from nodes
+                            :inner :join tags :on (like tags:tag "todo") :and (= tags:node-id nodes:id)
+                            :where nodes:file :like "%daily/%.org"
+                            :order :by [(desc nodes:file)] :limit $s1]
+                           max-daily)))))
 ;;;###autoload
 (defun roam-extra:update-todo-files (&rest _)
   "Update the value of `org-agenda-files'."

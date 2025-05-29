@@ -613,7 +613,8 @@ otherwise use the subtree title."
                                    ("writing/preparing" . ?p)
                                    ("calculations" . ?s)))
   (setq org-todo-keywords
-        '((sequence "TODO" "IN-PROGRESS" "WAITING" "|" "CANCELED" "DEFERRED" "DONE")))
+        '((type "APPT" "|" "CANCELED")
+          (sequence "TODO" "IN-PROGRESS" "WAITING" "|" "CANCELED" "DEFERRED" "DONE")))
   (setq org-roam-capture-templates
         `(
           ("d" "default" plain "%?" :target
@@ -632,8 +633,7 @@ otherwise use the subtree title."
            :kill-buffer t      ;; kill buffer after C-c C-c
            :jump-to-captured t ;; reload file after killed
            :unnarrowed t
-           )
-          ))
+           )))
 
   (progn ;; Ignore gpg files which we don't have the key for. Memoize result.
     (defvar jrb/gpg-file-cache (make-hash-table :test 'equal))

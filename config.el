@@ -614,19 +614,6 @@ otherwise use the subtree title."
                                    ("calculations" . ?s)))
   (setq org-todo-keywords
         '((sequence "TODO" "IN-PROGRESS" "WAITING" "|" "CANCELED" "DEFERRED" "DONE")))
-  (defun org-zola-new-subtree-post-capture-template ()
-    "Returns `org-capture' template string for new Zola post.
-See `org-capture-templates' for more information."
-    (let* ((title (read-from-minibuffer "Post Title: ")) ;Prompt to enter the post title
-           (fname (org-hugo-slug title)))
-      (mapconcat #'identity
-                 `(
-                   ,(concat "* TODO " title)
-                   ":PROPERTIES:"
-                   ,(concat ":EXPORT_FILE_NAME: " fname)
-                   ":END:"
-                   "%?\n")          ;Place the cursor here finally
-                   "\n")))
   (setq org-roam-capture-templates
         `(
           ("d" "default" plain "%?" :target
@@ -641,7 +628,7 @@ See `org-capture-templates' for more information."
           ("e" "encrypted" plain ,(concat "%?Hit C-c C-c now if you want to use below id \n\n;; Local Variables:\n;;  epa-file-encrypt-to: (" (format "%S" jrb/secret-identity) ")\n;; End:\n")
            :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org.gpg" "#+title: ${title}")
            ;; Want the local var applied, but can only seem to do so after reloading file
-           :immediate-finish t ;; doesn't seem to work? ideally would not even allow editing
+           :immediate-finish t ;; doesn't seem to work? ideally would not even allow editing. Untested, but maybe the issue is that it needs the title
            :kill-buffer t      ;; kill buffer after C-c C-c
            :jump-to-captured t ;; reload file after killed
            :unnarrowed t
@@ -673,20 +660,17 @@ See `org-capture-templates' for more information."
                   (ignore-errors (kill-buffer (find-file-noselect path))))))))
     (advice-add 'org-roam-file-p :after-while 'jrb/can-read-gpg-file))
 
-  (setq org-capture-templates ;TODO switch to org-roam-capture
-        '(("t" "TODO" entry (file "~/org/roam/20240326123755-tasks.org")
-           "* TODO %?\n  %i %a %U" :prepend t)
-          ("l" "Log (misc)" entry (file "20240326124519-log.org")
-           "* %?\n  %i %a %U")
-          ("s" "Someday" entry (file "20240326123840-someday.org")
-           "* TODO %?\n  %i %a %U")
-          ("a" "Appointments" entry (file "20240326123910-appointments.org")
-           "* %?\n  %i %a %U")
-          ("n" "Notes" plain (function org-roam-capture)
-           "%?" :immediate-finish t)
-          ("z" "Zola post" entry (file+olp "~/git/mysite/content-org/all-posts.org" "Misc Posts")
-                 (function org-zola-new-subtree-post-capture-template))
-          ))
+  ;; (setq org-capture-templates ; switched to org-roam-capture
+  ;;       '(("t" "TODO" entry (file "~/org/roam/20240326123755-tasks.org")
+  ;;          "* TODO %?\n  %i %a %U" :prepend t)
+  ;;         ("l" "Log (misc)" entry (file "20240326124519-log.org")
+  ;;          "* %?\n  %i %a %U")
+  ;;         ("s" "Someday" entry (file "20240326123840-someday.org")
+  ;;          "* TODO %?\n  %i %a %U")
+  ;;         ("a" "Appointments" entry (file "20240326123910-appointments.org")
+  ;;          "* %?\n  %i %a %U")
+  ;;         ("n" "Notes" plain #'org-roam-capture
+  ;;          "%?" :immediate-finish t)))
 
   ;; don't want return to execute src blocks
   (defun jrb/is-org-src-block (&optional arg)

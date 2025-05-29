@@ -9,6 +9,7 @@
 
 ;; (setq +tree-sitter-hl-enabled-modes '(not web-mode typescript-tsx-mode julia-mode nix-mode))
 
+(require 'notifications)
 (defalias 'jrb/system-notifications-notify
   (if (string-equal system-type "android")
       #'android-notifications-notify
@@ -17,22 +18,22 @@
 (after! org ;; org notification stuff
   (appt-activate 1)
   (setq appt-message-warning-time 15)
-  (setq appt-display-interval 3)
+  (setq appt-display-interval 5)
   (setq appt-display-format 'window)
+  (defun jrb/appt-action (id key)
+    (pcase key
+      ("default" (org-roam-dailies-goto-today))
+      ("agenda" (org-agenda "a" "a"))))
   (defun jrb/appt-reminder (min-to-app new-time appt-msg)
     "notification about incoming diary and agenda events"
+    ;; TODO: keep the notification-ids to not spam so much
     (jrb/system-notifications-notify
      :title (format "Appointment in %s minutes" min-to-app)
-     :body (format "%s" appt-msg)))
+     :body (format "%s" appt-msg)
+     :actions '("default" "daily" "agenda" "agenda")
+     :on-action #'jrb/appt-action))
   (setq appt-disp-window-function 'jrb/appt-reminder)
-  ;; Following hook would cause lag when saving. May consider some other option later
-  ;; When ever any org agenda-agenda-files saves refresh reminder
-  ;; (defun jrb/orgsaveapptup ()
-  ;;   "add org-agenda-files events in appointment notification system"
-  ;;   (when (org-agenda-file-p)
-  ;;     (org-agenda-to-appt)))
-  ;; (add-hook 'after-save-hook 'jrb/orgsaveapptup)
-  (run-at-time t (* 45 60) 'org-agenda-to-appt))
+  (run-at-time t (* 15 60) #'(lambda () (org-agenda-to-appt t))))
 
 (when (string-equal system-type "android")
   (setq overriding-text-conversion-style '())

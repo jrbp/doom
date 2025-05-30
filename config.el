@@ -38,6 +38,8 @@
 (when (string-equal system-type "android")
   (setq overriding-text-conversion-style '())
   (setq! touch-screen-display-keyboard t)
+  (setenv "PREFIX" "/data/data/com.termux/files/usr")
+  (setenv "SHELL" "/data/data/com.termux/files/usr/bin/bash")
   (setq! vterm-shell "/data/data/com.termux/files/usr/bin/bash")
   (keymap-global-unset "<f3>") ;; silence switch
   ;; following for making thumb-key usable for now

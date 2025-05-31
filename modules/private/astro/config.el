@@ -1,6 +1,7 @@
 ;;; private/astro/config.el -*- lexical-binding: t; -*-
 
 (use-package! astro-ts-mode
+  :mode "\\.astro\\'"
   :config
   (global-treesit-auto-mode)
   (add-hook 'astro-ts-mode-hook #'lsp 'append)

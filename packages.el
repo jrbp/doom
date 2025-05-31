@@ -45,15 +45,29 @@
 ;; Disabling esc behavior on 'jk' see https://discourse.doomemacs.org/t/typing-jk-deletes-j-and-returns-to-normal-mode
 (package! evil-escape :disable t)
 
+;; janet repl mode
+(package! ajrepl
+  :recipe (:host github
+           :repo "sogaiu/ajrepl"
+           :files (:defaults ("ajrepl/" "ajrepl/*"))))
+
 ;; TODO: go back to master after merge, see https://github.com/gcv/julia-snail/issues/149
 (package! julia-snail
   :recipe (:host github :repo "gcv/julia-snail" :branch "juliasyntax")
   :pin "1bfa18bc300be54efd83a8f1e3e51d725141067c")
 
-;; TODO: remove if/when main repo is maintained, see https://github.com/abo-abo/lispy/issues/684
+;; TODO: go back to doom module maybe?
+(package! janet-mode
+  :recipe (:files ("*.el"))
+  :pin "9e3254a0249d720d5fa5603f1f8c3ed0612695af")
+
 (package! lispy
-  :recipe (:host github :repo "enzuru/lispy" :branch "master")
-  :pin "b6e1d5c02c0d506a003731dfc310e330094f6749")
+  :recipe (:host github :repo "jrbp/lispy" :branch "janet-eval")
+  :pin "ff3482b404616bca46c794e39a13745d5094a17d")
+;; TODO: remove if/when main repo is maintained, see https://github.com/abo-abo/lispy/issues/684
+;; (package! lispy
+;;   :recipe (:host github :repo "enzuru/lispy" :branch "master")
+;;   :pin "b6e1d5c02c0d506a003731dfc310e330094f6749")
 
 ;; Doom's packages are pinned to a specific commit and updated from release to
 ;; release. The `unpin!' macro allows you to unpin single packages...

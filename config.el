@@ -9,6 +9,17 @@
 
 ;; (setq +tree-sitter-hl-enabled-modes '(not web-mode typescript-tsx-mode julia-mode nix-mode))
 
+(progn ;; janet
+  ;; doom's module indent thing was giving errors removed it
+  (use-package! janet-mode
+    :mode "\\.\\(jdn\\|janet\\)\\'"
+    :interpreter "janet[0-9]*\\'"
+    :config
+    (add-hook 'janet-mode-hook (lambda () (lispy-mode 1))))
+  (use-package! ajrepl
+    :after janet-mode
+    :config (add-hook 'janet-mode-hook #'ajrepl-interaction-mode)))
+
 (require 'notifications)
 (defalias 'jrb/system-notifications-notify
   (if (string-equal system-type "android")

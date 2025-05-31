@@ -63,7 +63,7 @@
 
 (package! lispy
   :recipe (:host github :repo "jrbp/lispy" :branch "janet-eval")
-  :pin "ff3482b404616bca46c794e39a13745d5094a17d")
+  :pin "936872617cc568c6da6b1c4ad2afc4e417018acb")
 ;; TODO: remove if/when main repo is maintained, see https://github.com/abo-abo/lispy/issues/684
 ;; (package! lispy
 ;;   :recipe (:host github :repo "enzuru/lispy" :branch "master")

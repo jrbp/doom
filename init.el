@@ -25,6 +25,9 @@
     (push termuxpath exec-path)
     (push "~/.config/emacs/bin" exec-path)))
 
+ ;; sane j and k behavior, needed before evil is loaded
+(setq evil-respect-visual-line-mode t)
+
 (doom! :input
        ;;bidi              ; (tfel ot) thgir etirw uoy gnipleh
        ;;chinese

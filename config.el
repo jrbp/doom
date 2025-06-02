@@ -627,8 +627,8 @@ otherwise use the subtree title."
                                    ("writing/preparing" . ?p)
                                    ("calculations" . ?s)))
   (setq org-todo-keywords
-        '((type "APPT" "|" "CANCELED")
-          (sequence "TODO" "IN-PROGRESS" "WAITING" "|" "CANCELED" "DEFERRED" "DONE")))
+        '(;; (type "APPT" "|" "CANCELED") ;; I don't actually understand the 'type keyword
+          (sequence "TODO" "IN-PROGRESS" "WAITING" "APPT" "|" "CANCELED" "DEFERRED" "DONE")))
   (setq org-roam-capture-templates
         `(
           ("d" "default" plain "%?" :target

@@ -12,6 +12,7 @@
   (interactive)
   "Create an entry in the daily-note for an appointment using the calendar."
   ;; for unexplained reasons daily-goto-* functions break when I add templates
+  (defvar org-roam-dailies-capture-templates) ;; make it dynamic I guess?
   (let ((org-roam-dailies-capture-templates
          '(("d" "default" entry "* %?" :target
             (file+head "%<%Y-%m-%d>.org" "#+title: %<%Y-%m-%d>\n"))

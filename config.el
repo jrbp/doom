@@ -72,6 +72,7 @@
   )
 
 (progn   ;;julia config
+  (setenv "JULIA_EDITOR" "emacsclient")
   (progn ;;julia-snail
     (setq julia-snail-extensions '(ob-julia))
     ;; setq alone only works if ran after snail loads?

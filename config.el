@@ -74,6 +74,7 @@
 (progn   ;;julia config
   (setenv "JULIA_EDITOR" "emacsclient")
   (progn ;;julia-snail
+    ;; TODO: default bind to `+julia/open-snail-repl'
     (setq julia-snail-extensions '(ob-julia))
     ;; setq alone only works if ran after snail loads?
     (add-hook 'julia-snail-mode-hook
@@ -131,8 +132,8 @@
                         (insert "\n" hspace " #    " ln))
                       (cdr data-lines))))))
 
-      (cl-defun jrb/julia-snail--setup-expect-test (block-start block-end buf data
-                                                                &optional (prepend-test "@test "))
+      (cl-defun jrb/julia-snail--setup-expect-test
+          (block-start block-end buf data &optional (prepend-test "@test "))
         (when-let* ((read-data (read data))
                     (eval-data (eval read-data))
                     (the-data (when (and (listp eval-data) (car eval-data))
@@ -153,11 +154,9 @@
             (insert prepend-test)
             (goto-char endpt))))
 
-      (cl-defun jrb/julia-snail--send-eval-print-last-exp (block-start
-                                                           block-end
-                                                           &key
-                                                             (print-pos-start block-end)
-                                                             (message-prefix "Evaluated and printed"))
+      (cl-defun jrb/julia-snail--send-eval-print-last-exp
+          (block-start block-end
+                       &key (print-pos-start block-end) (message-prefix "Evaluated and printed"))
         (let ((text (buffer-substring-no-properties block-start block-end))
               (filename (julia-snail--efn (buffer-file-name (buffer-base-buffer))))
               (module (julia-snail--module-at-point))
@@ -183,6 +182,7 @@
                                   (message "%s; module %s"
                                            message-prefix
                                            (julia-snail--construct-module-path module)))))))
+
       (defun jrb/julia-snail-send-eval-print-line ()
         (interactive)
         (let ((block-start (line-beginning-position))
@@ -190,6 +190,7 @@
           (unless (eq block-start block-end)
             (jrb/julia-snail--send-eval-print-last-exp
              block-start block-end))))
+
       (defun jrb/julia-snail-send-eval-print-region ()
         (interactive)
         (if (null (use-region-p))
@@ -198,6 +199,7 @@
                 (block-end (region-end)))
             (jrb/julia-snail--send-eval-print-last-exp
              block-start block-end))))
+
       (defun jrb/julia-snail-send-eval-print-dwim ()
         (interactive)
         (if (use-region-p)              ; region
@@ -215,24 +217,14 @@
                             "R" #'jrb/julia-snail-send-eval-print-region
                             "E" #'jrb/julia-snail-send-eval-print-dwim))))))
   (progn ;; lsp-julia
-    ;; I have nix make a separate, wrapped executable + sysimage
     (setq! lsp-julia-command "julia-ls")
-    ;; (add-hook 'julia-mode-hook ;; Unsure if this really does anything
-    ;;           (lambda ()
-    ;;             (setq! lsp-julia-default-environment
-    ;;                    (if-let* ((bsi "~/.julia/sysimages/base/lib/project")
-    ;;                              (jlp (getenv "JULIA_LOAD_PATH")))
-    ;;                        (cadr (split-string jlp ":"))
-    ;;                      (if (f-exists? bsi) bsi
-    ;;                        "~/.julia/environments/v1.11")))))
-    (setq! lsp-julia-package-dir 'nil) ; shouldn't matter (set in julia-ls script)
-    )
+    (setq! lsp-julia-package-dir nil))
+
   (after! julia-mode
     (set-ligatures! 'julia-mode
       :def "function"
       :src_block "begin"
-      :src_block_end "end"
-      )))
+      :src_block_end "end")))
 ;; Disabling a bunch of older julia things I did in the past and don't understand
 ;; move them above above as needed
                                         ;(set-lookup-handlers! '(julia-snail-mode)

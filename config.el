@@ -633,6 +633,7 @@ otherwise use the subtree title."
         `(
           ("d" "default" plain "%?" :target
            (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n")
+           :jump-to-captured t ;; reload file after killed
            :unnarrowed t)
           ("t" "task" entry "* TODO ${title}%?\n%U\n" :target
            (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n∈ [[id:678c0cf6-54fc-408c-ba0e-b4da26c8791d][tasks]]\n#+filetags: :todo:\n")

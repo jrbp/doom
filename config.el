@@ -562,10 +562,10 @@ otherwise use the subtree title."
 
   ;; for inline latex
   (setq org-latex-packages-alist '(("" "braket" t) ("" "amsmath" t) ("bb=dsserif" "mathalpha" t) ("" "hyperref" t)))
-  (plist-put org-format-latex-options :scale 4)
+  (plist-put org-format-latex-options :scale 3)
   (defun jrb/org-scale-latex (&optional arg)
     (interactive "P")
-    (let ((scale  (if arg (prefix-numeric-value arg) 2)))
+    (let ((scale  (if arg (prefix-numeric-value arg) 3)))
       (message "latex scale set to %s" scale)
       (plist-put org-format-latex-options :scale scale)))
   (defun jrb/org-latex-yas ()

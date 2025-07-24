@@ -49,7 +49,8 @@
 (package! ajrepl
   :recipe (:host github
            :repo "sogaiu/ajrepl"
-           :files (:defaults ("ajrepl/" "ajrepl/*"))))
+           :files (:defaults ("ajrepl/" "ajrepl/*")))
+  :pin "6ffb2c1e96aaf1a6069453507c29097fcead6569")
 
 ;; TODO: go back to master after merge, see https://github.com/gcv/julia-snail/issues/149
 (package! julia-snail

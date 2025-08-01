@@ -630,25 +630,24 @@ otherwise use the subtree title."
         '(;; (type "APPT" "|" "CANCELED") ;; I don't actually understand the 'type keyword
           (sequence "TODO" "IN-PROGRESS" "WAITING" "APPT" "|" "CANCELED" "DEFERRED" "DONE")))
   (setq org-roam-capture-templates
-        `(
-          ("d" "default" plain "%?" :target
-           (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n")
-           :jump-to-captured t ;; reload file after killed
-           :unnarrowed t)
-          ("t" "task" entry "* TODO ${title}%?\n%U\n" :target
-           (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n∈ [[id:678c0cf6-54fc-408c-ba0e-b4da26c8791d][tasks]]\n#+filetags: :todo:\n")
-           :unnarrowed t)
-          ("s" "someday" entry "* TODO [#C] ${title}%?\n%U\n" :target
-           (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n∈ [[id:521a6dfa-58a1-49a7-9a5e-e107f3e26562][someday]]\n#+filetags: :todo:\n")
-           :unnarrowed t)
-          ("e" "encrypted" plain ,(concat "%?Hit C-c C-c now if you want to use below id \n\n;; Local Variables:\n;;  epa-file-encrypt-to: (" (format "%S" jrb/secret-identity) ")\n;; End:\n")
-           :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org.gpg" "#+title: ${title}")
-           ;; Want the local var applied, but can only seem to do so after reloading file
-           :immediate-finish t ;; doesn't seem to work? ideally would not even allow editing. Untested, but maybe the issue is that it needs the title
-           :kill-buffer t      ;; kill buffer after C-c C-c
-           :jump-to-captured t ;; reload file after killed
-           :unnarrowed t
-           )))
+        (append '(("d" "default" plain "%?" :target
+                   (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n")
+                   :jump-to-captured t ;; reload file after killed
+                   :unnarrowed t)
+                  ("t" "task" entry "* TODO ${title}%?\n%U\n" :target
+                   (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n∈ [[id:678c0cf6-54fc-408c-ba0e-b4da26c8791d][tasks]]\n#+filetags: :todo:\n")
+                   :unnarrowed t)
+                  ("s" "someday" entry "* TODO [#C] ${title}%?\n%U\n" :target
+                   (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n∈ [[id:521a6dfa-58a1-49a7-9a5e-e107f3e26562][someday]]\n#+filetags: :todo:\n")
+                   :unnarrowed t))
+                (when (boundp 'jrb/secret-identity)
+                  `(("e" "encrypted" plain ,(concat "%?Hit C-c C-c now if you want to use below id \n\n;; Local Variables:\n;;  epa-file-encrypt-to: (" (format "%S" jrb/secret-identity) ")\n;; End:\n")
+                     :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org.gpg" "#+title: ${title}")
+                     ;; Want the local var applied, but can only seem to do so after reloading file
+                     :immediate-finish t ;; doesn't seem to work? ideally would not even allow editing. Untested, but maybe the issue is that it needs the title
+                     :kill-buffer t      ;; kill buffer after C-c C-c
+                     :jump-to-captured t ;; reload file after killed
+                     :unnarrowed t)))))
 
   (progn ;; Ignore gpg files which we don't have the key for. Memoize result.
     (defvar jrb/gpg-file-cache (make-hash-table :test 'equal))

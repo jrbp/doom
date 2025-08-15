@@ -1,9 +1,15 @@
 ;; ~/.config/doom/config.el -*- lexical-binding: t; -*-
 
-(setq doom-font (font-spec :family "JetBrainsMono Nerd Font" :size 20)
-      doom-variable-pitch-font (font-spec :family "DejaVu Sans" :size 22)
-      doom-symbol-font (font-spec :family "Fira Code Nerd Font"))
-(setq nerd-icons-font-names '("SymbolsNerdFontMono-Regular.ttf"))
+;; use shell command fc-list --format='%{family}\n' to see options
+(setq doom-font (font-spec :family "JetBrainsMono Nerd Font" :size 20))
+(setq doom-symbol-font (font-spec :family "FiraCode Nerd Font"))
+;; (setq doom-symbol-font (font-spec :family "JuliaMono Medium"))
+;; (setq doom-variable-pitch-font (font-spec :family "DejaVu Sans" :size 22))
+;; (setq doom-serif-font (font-spec :family "?"))
+;; (setq doom-emoji-font (font-spec :family "?"))
+(setq doom-symbol-fallback-font-families '("Hack Nerd Font" "JuliaMono Medium" "TexMaths BlackBoard"))
+(setq nerd-icons-font-names '("SymbolsNerdFontMono-Regular.ttf"
+                              "SymbolsNerdFont-Regular.ttf"))
 ;; disable doom splash image
 (setq +doom-dashboard-functions (cdr +doom-dashboard-functions))
 

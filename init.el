@@ -138,7 +138,7 @@
        ;;;taskrunner        ; taskrunner for all your projects
        ;;terraform         ; infrastructure as code
        ;;tmux              ; an API for interacting with tmux
-       ;; tree-sitter         ;  syntax and parsing, sitting in a tree...
+       tree-sitter         ;  syntax and parsing, sitting in a tree...
        ;; having a number of issues with this tree-sitter module, disabling for now.
        ;; https://github.com/marienz/nix-doom-emacs-unstraightened/issues/7
        ;; there is a workaround for the above in the readme
@@ -181,7 +181,7 @@
        ;;(haskell +intero) ; a language that's lazier than I am
        ;;hy                ; readability of scheme w/ speed of python
        ;;idris             ;
-       ;; janet (FIXME: jrb: not using, the indent stuff seems to break hooks?)
+       (janet +tree-sitter)
        json              ; At least it ain't XML
        ;;(java +meghanada) ; the poster child for carpal tunnel syndrome
        (javascript +lsp)        ; all(hope(abandon(ye(who(enter(here))))))

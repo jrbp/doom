@@ -24,14 +24,29 @@
 
 (progn ;; janet
   ;; doom's module indent thing was giving errors removed it
-  (use-package! janet-mode
-    :mode "\\.\\(jdn\\|janet\\)\\'"
-    :interpreter "janet[0-9]*\\'"
-    :config
-    (add-hook 'janet-mode-hook (lambda () (lispy-mode 1))))
+  ;; (use-package! janet-mode
+  ;;   :mode "\\.\\(jdn\\|janet\\)\\'"
+  ;;   :interpreter "janet[0-9]*\\'"
+  ;;   :config
+  ;;   (add-hook 'janet-mode-hook (lambda () (lispy-mode 1))))
   (use-package! ajrepl
-    :after janet-mode
-    :config (add-hook 'janet-mode-hook #'ajrepl-interaction-mode)))
+    :after janet-ts-mode
+    :config (add-hook 'janet-ts-mode-hook #'ajrepl-interaction-mode))
+  
+  (after! treesit-auto ;;HACK: https://github.com/renzmann/treesit-auto/pull/112
+    (setq! treesit-auto-recipe-list
+           (seq-remove (lambda (item)
+                         (eq (treesit-auto-recipe-lang item) 'janet))
+                       treesit-auto-recipe-list))
+    (add-to-list 'treesit-auto-recipe-list
+                 (make-treesit-auto-recipe
+                  :lang 'janet-simple
+                  :ts-mode 'janet-ts-mode
+                  :remap 'janet-mode
+                  :url "https://github.com/sogaiu/tree-sitter-janet-simple"
+                  :ext "\\.janet\\'")
+                 ))
+  )
 
 (require 'notifications)
 (defalias 'jrb/system-notifications-notify

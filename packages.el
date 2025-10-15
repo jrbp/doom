@@ -58,9 +58,9 @@
   :pin "1bfa18bc300be54efd83a8f1e3e51d725141067c")
 
 ;; TODO: go back to doom module maybe?
-(package! janet-mode
-  :recipe (:files ("*.el"))
-  :pin "9e3254a0249d720d5fa5603f1f8c3ed0612695af")
+;; (package! janet-mode
+;;   :recipe (:files ("*.el"))
+;;   :pin "9e3254a0249d720d5fa5603f1f8c3ed0612695af")
 
 (package! lispy
   :recipe (:host github :repo "jrbp/lispy" :branch "janet-eval")

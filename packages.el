@@ -62,13 +62,13 @@
 ;;   :recipe (:files ("*.el"))
 ;;   :pin "9e3254a0249d720d5fa5603f1f8c3ed0612695af")
 
-(package! lispy
-  :recipe (:host github :repo "jrbp/lispy" :branch "janet-eval")
-  :pin "936872617cc568c6da6b1c4ad2afc4e417018acb")
-;; TODO: remove if/when main repo is maintained, see https://github.com/abo-abo/lispy/issues/684
 ;; (package! lispy
-;;   :recipe (:host github :repo "enzuru/lispy" :branch "master")
-;;   :pin "b6e1d5c02c0d506a003731dfc310e330094f6749")
+;;   :recipe (:host github :repo "jrbp/lispy" :branch "janet-eval")
+;;   :pin "936872617cc568c6da6b1c4ad2afc4e417018acb")
+;; TODO: remove if/when main repo is maintained, see https://github.com/abo-abo/lispy/issues/684
+(package! lispy
+  :recipe (:host github :repo "enzuru/lispy" :branch "master")
+  :pin "b6e1d5c02c0d506a003731dfc310e330094f6749")
 
 ;; Doom's packages are pinned to a specific commit and updated from release to
 ;; release. The `unpin!' macro allows you to unpin single packages...

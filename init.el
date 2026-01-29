@@ -310,5 +310,5 @@
        gptel
        roam-extra
        secrets
-       astro
+       ;;astro
        )

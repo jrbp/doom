@@ -356,6 +356,14 @@ Then run FUN with ARGS."
   (advice-remove 'pdf-sync-backward-search-mouse #'jrb/framesMenus-display-buffer-use-some-frame))
 
 (after! apheleia
+  (add-to-list 'apheleia-mode-alist '(julia-mode . runic))
+  (add-to-list 'apheleia-mode-alist '(julia-ts-mode . runic))
+  (add-to-list 'apheleia-formatters '(runic '("julia"
+                                             "--project=@runic"
+                                             "--startup-file=no"
+                                             "-e"
+                                             "using Runic; exit(Runic.main(ARGS))"
+                                             "--")))
   (add-to-list 'apheleia-mode-alist '(nix-mode . alejandra))
   (add-to-list 'apheleia-formatters '(alejandra "alejandra")))
 

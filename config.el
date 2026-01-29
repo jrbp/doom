@@ -826,70 +826,24 @@ jupyter kernels after pyenv env is changed"
   (setq treesit-font-lock-level 6))
 
 (after! emacs-everywhere
-  (defun jrb/emacs-everywhere-write ()
-    "Copy buffer content, maybe (paste,  select all), refocus emacs.
-Must only be called within a emacs-everywhere buffer. "
-    (interactive)
-    (when emacs-everywhere-mode
-      ;; won't support org to md, but fine
-      ;; (run-hooks 'emacs-everywhere-final-hooks)
-      ;; First ensure text is in kill-ring and system clipboard
-      (let ((text (buffer-string)))
-        (kill-new text)
-        ;; Use macOS specific clipboard command
-        (when (eq system-type 'darwin)
-          (call-process "osascript" nil nil nil
-                        "-e" (format "set the clipboard to %S" text)))
-        ;; Also try GUI selection methods
-        (gui-select-text text)
-        (gui-backend-set-selection 'PRIMARY text))
-      ;; Extra clipboard handling if needed
-      (when emacs-everywhere-copy-command ; handle clipboard finicklyness
-        (let ((inhibit-message t)
-              (require-final-newline nil)
-              write-file-functions)
-          ;; Add this to your config to exclude tempf file from recent files
-          ;; (with-eval-after-load 'recentf
-          ;;   (dolist (pattern emacs-everywhere-file-patterns)
-          ;;     (add-to-list 'recentf-exclude pattern)))
-          (with-file-modes 384
-            (write-file buffer-file-name))
-          (apply #'call-process (car emacs-everywhere-copy-command)
-                 nil nil nil
-                 (mapcar (lambda (arg)
-                           (replace-regexp-in-string "%f" buffer-file-name arg))
-                         (cdr emacs-everywhere-copy-command)))))
-      (sleep-for emacs-everywhere-clipboard-sleep-delay) ; prevents weird multi-second pause, lets clipboard info propagate
-      (when emacs-everywhere-window-focus-command
-        (let* ((the-emacseverywhere-app (funcall emacs-everywhere-app-info-function))
-               (emacseverywhere-window-id (emacs-everywhere-app-id the-emacseverywhere-app))
-               (window-id (emacs-everywhere-app-id emacs-everywhere-current-app)))
-          (apply #'call-process (car emacs-everywhere-window-focus-command)
-                 nil nil nil
-                 (mapcar (lambda (arg)
-                           (replace-regexp-in-string "%w" window-id arg))
-                         (cdr emacs-everywhere-window-focus-command)))
-          ;; The frame only has this parameter if this package initialized the temp
-          ;; file its displaying. Otherwise, it was created by another program, likely
-          ;; a browser with direct EDITOR support, like qutebrowser.
-          (when (and (frame-parameter nil 'emacs-everywhere-app)
-                     emacs-everywhere-paste-command)
-            ;; Add small delay before paste
-            (sleep-for emacs-everywhere-clipboard-sleep-delay)
-            (apply #'call-process (car emacs-everywhere-paste-command)
-                   (if (cdr emacs-everywhere-paste-command) nil
-                     (make-temp-file nil nil nil "key shift+insert")) nil nil
-                   (cdr emacs-everywhere-paste-command)))
-          (apply #'call-process "ydotool" ;; select all
-                 nil nil nil
-                 '("key" "29:1" "30:1" "29:0" "30:0"))
-          (apply #'call-process (car emacs-everywhere-window-focus-command)
-                 nil nil nil
-                 (mapcar (lambda (arg)
-                           (replace-regexp-in-string "%w" emacseverywhere-window-id arg))
-                         (cdr emacs-everywhere-window-focus-command)))
-          (emacs-everywhere-mode 1)
-          (setq emacs-everywhere--contents (buffer-string))))))
+  (defun jrb/float-on-parent ()
+    (if (eq 'Hyprland (cdr (emacs-everywhere--system-compositor)))
+        (let* (
+               (geometry (emacs-everywhere-app-geometry emacs-everywhere-current-app))
+               ;; (geometry '(3708 2180 1273 1381))
+               (ox (car geometry))
+               (oy (cadr geometry))
+               (ow (caddr geometry))
+               (oh (cadddr geometry))
+               (x ox)
+               (w ow)
+               (h (* oh 0.618))
+               (y (- oy (- h oh))))
+          (call-process "hyprctl" nil nil nil "dispatch" "movewindowpixel" "exact"
+                        (int-to-string x) (format "%d,initialtitle:emacs\-everywhere" y))
+          (call-process "hyprctl" nil nil nil "dispatch" "resizewindowpixel" "exact"
+                        (int-to-string w) (format "%d,initialtitle:emacs\-everywhere" h)))))
+  (add-hook 'emacs-everywhere-init-hooks #'jrb/float-on-parent)
   (defun emacs-everywhere--app-info-linux-hyprland ()
     "Return information on the current active window, on a Linux Sway session."
     (let* ((activewindow (json-read-from-string
@@ -902,24 +856,74 @@ Must only be called within a emacs-everywhere buffer. "
        :class (alist-get 'class activewindow)
        :title (alist-get 'title activewindow)
        :geometry geometry)))
-  (defun jrb/float-on-parent ()
-    (let* (
-           (geometry (emacs-everywhere-app-geometry emacs-everywhere-current-app))
-           ;; (geometry '(3708 2180 1273 1381))
-           (ox (car geometry))
-           (oy (cadr geometry))
-           (ow (caddr geometry))
-           (oh (cadddr geometry))
-           (x ox)
-           (w ow)
-           (h (* oh 0.618))
-           (y (- oy (- h oh))))
-      (call-process "hyprctl" nil nil nil "dispatch" "movewindowpixel" "exact"
-                    (int-to-string x) (format "%d,initialtitle:emacs\-everywhere" y))
-      (call-process "hyprctl" nil nil nil "dispatch" "resizewindowpixel" "exact"
-                    (int-to-string w) (format "%d,initialtitle:emacs\-everywhere" h))))
-  (when (eq 'Hyprland (cdr emacs-everywhere--display-server))
-    (add-hook 'emacs-everywhere-init-hooks #'jrb/float-on-parent)
-    (setq emacs-everywhere-window-focus-command (list "hyprctl" "dispatch" "focuswindow" "address:%w"))
-    (setq emacs-everywhere-app-info-function #'emacs-everywhere--app-info-linux-hyprland))
-  (map! :mode emacs-everywhere-mode (:leader "r" #'jrb/emacs-everywhere-write)))
+
+  (add-to-list 'emacs-everywhere-system-configs
+               '((wayland . Hyprland)
+                 :focus-command ("hyprctl" "dispatch" "focuswindow" "address:%w")
+                 :info-function emacs-everywhere--app-info-linux-hyprland)) 
+  ;; (defun jrb/emacs-everywhere-write ()
+  ;;     "Copy buffer content, maybe (paste,  select all), refocus emacs.
+  ;; Must only be called within a emacs-everywhere buffer. "
+  ;;     (interactive)
+  ;;     (when emacs-everywhere-mode
+  ;;       ;; won't support org to md, but fine
+  ;;       ;; (run-hooks 'emacs-everywhere-final-hooks)
+  ;;       ;; First ensure text is in kill-ring and system clipboard
+  ;;       (let ((text (buffer-string)))
+  ;;         (kill-new text)
+  ;;         ;; Use macOS specific clipboard command
+  ;;         (when (eq system-type 'darwin)
+  ;;           (call-process "osascript" nil nil nil
+  ;;                         "-e" (format "set the clipboard to %S" text)))
+  ;;         ;; Also try GUI selection methods
+  ;;         (gui-select-text text)
+  ;;         (gui-backend-set-selection 'PRIMARY text))
+  ;;       ;; Extra clipboard handling if needed
+  ;;       (when emacs-everywhere-copy-command ; handle clipboard finicklyness
+  ;;         (let ((inhibit-message t)
+  ;;               (require-final-newline nil)
+  ;;               write-file-functions)
+  ;;           ;; Add this to your config to exclude tempf file from recent files
+  ;;           ;; (with-eval-after-load 'recentf
+  ;;           ;;   (dolist (pattern emacs-everywhere-file-patterns)
+  ;;           ;;     (add-to-list 'recentf-exclude pattern)))
+  ;;           (with-file-modes 384
+  ;;             (write-file buffer-file-name))
+  ;;           (apply #'call-process (car emacs-everywhere-copy-command)
+  ;;                  nil nil nil
+  ;;                  (mapcar (lambda (arg)
+  ;;                            (replace-regexp-in-string "%f" buffer-file-name arg))
+  ;;                          (cdr emacs-everywhere-copy-command)))))
+  ;;       (sleep-for emacs-everywhere-clipboard-sleep-delay) ; prevents weird multi-second pause, lets clipboard info propagate
+  ;;       (when emacs-everywhere-window-focus-command
+  ;;         (let* ((the-emacseverywhere-app (funcall emacs-everywhere-app-info-function))
+  ;;                (emacseverywhere-window-id (emacs-everywhere-app-id the-emacseverywhere-app))
+  ;;                (window-id (emacs-everywhere-app-id emacs-everywhere-current-app)))
+  ;;           (apply #'call-process (car emacs-everywhere-window-focus-command)
+  ;;                  nil nil nil
+  ;;                  (mapcar (lambda (arg)
+  ;;                            (replace-regexp-in-string "%w" window-id arg))
+  ;;                          (cdr emacs-everywhere-window-focus-command)))
+  ;;           ;; The frame only has this parameter if this package initialized the temp
+  ;;           ;; file its displaying. Otherwise, it was created by another program, likely
+  ;;           ;; a browser with direct EDITOR support, like qutebrowser.
+  ;;           (when (and (frame-parameter nil 'emacs-everywhere-app)
+  ;;                      emacs-everywhere-paste-command)
+  ;;             ;; Add small delay before paste
+  ;;             (sleep-for emacs-everywhere-clipboard-sleep-delay)
+  ;;             (apply #'call-process (car emacs-everywhere-paste-command)
+  ;;                    (if (cdr emacs-everywhere-paste-command) nil
+  ;;                      (make-temp-file nil nil nil "key shift+insert")) nil nil
+  ;;                      (cdr emacs-everywhere-paste-command)))
+  ;;           (apply #'call-process "ydotool" ;; select all
+  ;;                  nil nil nil
+  ;;                  '("key" "29:1" "30:1" "29:0" "30:0"))
+  ;;           (apply #'call-process (car emacs-everywhere-window-focus-command)
+  ;;                  nil nil nil
+  ;;                  (mapcar (lambda (arg)
+  ;;                            (replace-regexp-in-string "%w" emacseverywhere-window-id arg))
+  ;;                          (cdr emacs-everywhere-window-focus-command)))
+  ;;           (emacs-everywhere-mode 1)
+  ;;           (setq emacs-everywhere--contents (buffer-string))))))
+  ;; (map! :mode emacs-everywhere-mode (:leader "r" #'jrb/emacs-everywhere-write))
+  )

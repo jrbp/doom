@@ -124,6 +124,7 @@
        ;;ein               ; tame Jupyter notebooks with emacs
        eval              ; run code, run (also, repls)
        ;;gist              ; interacting with github gists
+       llm
        (lookup           ; helps you navigate your code and documentation
         ;+docsets ;;TODO add dictionary and such
         )        ; ...or in Dash docsets locally
@@ -307,7 +308,6 @@
        super-agenda
        ;;org-ref ;trying biblio instead?
        plutojl-mode
-       gptel
        roam-extra
        secrets
        ;;astro

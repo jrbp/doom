@@ -15,13 +15,6 @@
 
 ;; (setq +tree-sitter-hl-enabled-modes '(not web-mode typescript-tsx-mode julia-mode nix-mode))
 
-;; https://github.com/doomemacs/doomemacs/issues/2447https://github.com/doomemacs/doomemacs/issues/2447
-(after! general
-  (general-evil-setup t)
-  (general-nmap "c" (general-key-dispatch 'evil-change
-                      "c" #'evil-change-whole-line))
-  (general-vmap "c" #'evil-change))
-
 (progn ;; janet
   ;; doom's module indent thing was giving errors removed it
   ;; (use-package! janet-mode

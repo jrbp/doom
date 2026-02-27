@@ -358,6 +358,7 @@ Then run FUN with ARGS."
                                              "using Runic; exit(Runic.main(ARGS))"
                                              "--")))
   (add-to-list 'apheleia-mode-alist '(nix-mode . alejandra))
+  (add-to-list 'apheleia-mode-alist '(nix-ts-mode . alejandra))
   (add-to-list 'apheleia-formatters '(alejandra "alejandra")))
 
 (with-eval-after-load 'lsp-mode

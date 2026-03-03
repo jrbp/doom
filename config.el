@@ -351,7 +351,7 @@ Then run FUN with ARGS."
 (after! apheleia
   (add-to-list 'apheleia-mode-alist '(julia-mode . runic))
   (add-to-list 'apheleia-mode-alist '(julia-ts-mode . runic))
-  (add-to-list 'apheleia-formatters '(runic '("julia"
+  (add-to-list 'apheleia-formatters '(runic '("juliab"
                                              "--project=@runic"
                                              "--startup-file=no"
                                              "-e"

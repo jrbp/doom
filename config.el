@@ -823,14 +823,24 @@ jupyter kernels after pyenv env is changed"
   ;; (let ((file-name-handler-alist '(("\\.gpg\\(~\\|\\.~[0-9]+~\\)?\\'" . epa-file-handler))))
   ;;   (load-file (expand-file-name "modules/private/gptel/secrets/apikeys.el.gpg" doom-user-dir)))
   (setq! gptel-default-mode 'org-mode)
+  (add-hook 'gptel-post-response-functions 'gptel-end-of-response)
   (set-popup-rules!
     '(("^\\*ChatGPT.*" :quit nil :ttl nil)
       ("^\\*Gemini.*" :quit nil :ttl nil)
+      ("^\\*rchat.*" :quit nil :ttl nil)
       ("^\\*Claude.*" :quit nil :ttl nil)))
-  (add-hook 'gptel-post-response-functions 'gptel-end-of-response)
   (when (modulep! :private secrets)
     (if-let ((k (alist-get 'openai llm-apikey-alist))) (setq! gptel-api-key k))
-    (if-let ((k (alist-get 'gemini llm-apikey-alist))) (gptel-make-gemini "Gemini" :key k :stream t))
+    (if-let ((k (alist-get 'rchat llm-apikey-alist)))
+        (gptel-make-openai "rchat"
+          :host "rchat.nist.gov"
+          :key k
+          :endpoint "/api/chat/completions"
+          :stream t
+          :models '(Llama-4-Maverick-17B-128E-Instruct-FP8
+                    gpt-oss-120b
+                    embeddinggemma-300m)))
+    (if-let ((k (alist-get 'gemini llm-apikey-alist))) (gptel-make-gemini "Gemini-free" :key k :stream t))
     (if-let ((k (alist-get 'claude llm-apikey-alist))) (gptel-make-anthropic "Claude" :key k :stream t))))
 
 (after! emacs-everywhere

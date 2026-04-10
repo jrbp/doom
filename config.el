@@ -837,9 +837,11 @@ jupyter kernels after pyenv env is changed"
           :key k
           :endpoint "/api/chat/completions"
           :stream t
-          :models '(Llama-4-Maverick-17B-128E-Instruct-FP8
+          :models '(NVIDIA-Nemotron-3-Super-120B-A12B-FP8
+                    Llama-4-Maverick-17B-128E-Instruct-FP8
                     gpt-oss-120b
-                    embeddinggemma-300m)))
+                    embeddinggemma-300m
+                    gemma-4-31B-it)))
     (if-let ((k (alist-get 'gemini llm-apikey-alist))) (gptel-make-gemini "Gemini-free" :key k :stream t))
     (if-let ((k (alist-get 'claude llm-apikey-alist))) (gptel-make-anthropic "Claude" :key k :stream t)))
   (progn ;; from https://paste.karthinks.com/93cf8524-gptel-preset-visible-text.el.html

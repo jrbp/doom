@@ -841,7 +841,25 @@ jupyter kernels after pyenv env is changed"
                     gpt-oss-120b
                     embeddinggemma-300m)))
     (if-let ((k (alist-get 'gemini llm-apikey-alist))) (gptel-make-gemini "Gemini-free" :key k :stream t))
-    (if-let ((k (alist-get 'claude llm-apikey-alist))) (gptel-make-anthropic "Claude" :key k :stream t))))
+    (if-let ((k (alist-get 'claude llm-apikey-alist))) (gptel-make-anthropic "Claude" :key k :stream t)))
+  (progn ;; from https://paste.karthinks.com/93cf8524-gptel-preset-visible-text.el.html
+    (defun jrb/gptel-windows-on-frame ()
+      "Return all windows on frame that aren't gptel chat buffers."
+      (delq (and-let* ((current-buf (window-buffer (selected-window)))
+                       ((buffer-local-value 'gptel-mode current-buf)))
+              (selected-window))
+            (window-list)))
+    (gptel-make-preset 'visible-buffers
+      :description "Include the full text of all buffers visible in the frame."
+      :context
+      '(:eval (mapcar #'window-buffer (jrb/gptel-windows-on-frame))))
+    (gptel-make-preset 'visible-text
+      :description "Include visible text from all windows in the frame."
+      :context
+      '(:eval (mapcar (lambda (win) ;; Create (<buffer> :bounds ((start . end)))
+                        `(,(window-buffer win)
+                          :bounds ((,(window-start win) . ,(window-end win)))))
+                      (jrb/gptel-windows-on-frame))))))
 
 (after! emacs-everywhere
   (defun jrb/float-on-parent ()

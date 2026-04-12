@@ -27,7 +27,7 @@
     :config (add-hook 'janet-ts-mode-hook #'ajrepl-interaction-mode))
   
   (after! treesit-auto ;;HACK: https://github.com/renzmann/treesit-auto/pull/112
-    (setq! treesit-auto-recipe-list
+    (setopt treesit-auto-recipe-list
            (seq-remove (lambda (item)
                          (eq (treesit-auto-recipe-lang item) 'janet))
                        treesit-auto-recipe-list))
@@ -69,10 +69,10 @@
 
 (when (string-equal system-type "android")
   (setq overriding-text-conversion-style '())
-  (setq! touch-screen-display-keyboard t)
+  (setopt touch-screen-display-keyboard t)
   (setenv "PREFIX" "/data/data/com.termux/files/usr")
   (setenv "SHELL" "/data/data/com.termux/files/usr/bin/bash")
-  (setq! vterm-shell "/data/data/com.termux/files/usr/bin/bash")
+  (setopt vterm-shell "/data/data/com.termux/files/usr/bin/bash")
   (keymap-global-unset "<f3>") ;; silence switch
   ;; following for making thumb-key usable for now
   (keymap-global-set "<volume-down>" "<down>")
@@ -82,7 +82,7 @@
   ;; (menu-bar-mode y)
   ;; (tool-bar-mode y)
   ;; (modifier-bar-mode 'y)
-  ;; (setq! tool-bar-position 'bottom)
+  ;; (setopt tool-bar-position 'bottom)
   )
 
 (progn   ;;julia config
@@ -231,8 +231,8 @@
                             "R" #'jrb/julia-snail-send-eval-print-region
                             "E" #'jrb/julia-snail-send-eval-print-dwim))))))
   (progn ;; lsp-julia
-    (setq! lsp-julia-command "julia-ls")
-    (setq! lsp-julia-package-dir nil))
+    (setopt lsp-julia-command "julia-ls")
+    (setopt lsp-julia-package-dir nil))
 
   (after! julia-mode
     (set-ligatures! 'julia-mode
@@ -822,7 +822,7 @@ jupyter kernels after pyenv env is changed"
 (after! gptel
   ;; (let ((file-name-handler-alist '(("\\.gpg\\(~\\|\\.~[0-9]+~\\)?\\'" . epa-file-handler))))
   ;;   (load-file (expand-file-name "modules/private/gptel/secrets/apikeys.el.gpg" doom-user-dir)))
-  (setq! gptel-default-mode 'org-mode)
+  (setopt gptel-default-mode 'org-mode)
   (add-hook 'gptel-post-response-functions 'gptel-end-of-response)
   (set-popup-rules!
     '(("^\\*ChatGPT.*" :quit nil :ttl nil)
@@ -830,7 +830,7 @@ jupyter kernels after pyenv env is changed"
       ("^\\*rchat.*" :quit nil :ttl nil)
       ("^\\*Claude.*" :quit nil :ttl nil)))
   (when (modulep! :private secrets)
-    (if-let ((k (alist-get 'openai llm-apikey-alist))) (setq! gptel-api-key k))
+    (if-let ((k (alist-get 'openai llm-apikey-alist))) (setopt gptel-api-key k))
     (if-let ((k (alist-get 'rchat llm-apikey-alist)))
         (gptel-make-openai "rchat"
           :host "rchat.nist.gov"

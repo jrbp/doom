@@ -1,6 +1,6 @@
 ;;; private/secrets/config.el -*- lexical-binding: t; -*-
 
-(setq! epg-pinentry-mode 'loopback)
+(setopt epg-pinentry-mode 'loopback)
 (defvar jrb/secret-identity nil)
 (defvar llm-apikey-alist nil)
 (defvar epa-file-encrypt-to nil)

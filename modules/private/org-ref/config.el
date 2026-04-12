@@ -69,7 +69,7 @@
 
 
 ;; adding noter property
-  (setq! org-ref-note-title-format
+  (setopt org-ref-note-title-format
          "* %y - %t
  :PROPERTIES:
   :Custom_ID: %k
@@ -85,7 +85,7 @@
 
 ")
 
-  (setq! bibtex-completion-notes-template-one-file
+  (setopt bibtex-completion-notes-template-one-file
          (format "* ${title} - ${year}
 :PROPERTIES:
 :Custom_ID: ${=key=}

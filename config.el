@@ -15,6 +15,10 @@
 
 ;; (setq +tree-sitter-hl-enabled-modes '(not web-mode typescript-tsx-mode julia-mode nix-mode))
 
+(progn ;; https://github.com/ArthurHeymans/emacs-tramp-rpc
+  (use-package! msgpack)
+  (use-package! tramp-rpc))
+
 (progn ;; janet
   ;; doom's module indent thing was giving errors removed it
   ;; (use-package! janet-mode

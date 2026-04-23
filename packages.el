@@ -25,6 +25,9 @@
 ;; with the `:disable' property:
 ;(package! builtin-package :disable t)
 
+(package! msgpack)                      ;; for tramp-rpc
+(package! tramp-rpc :recipe (:host github :repo "ArthurHeymans/emacs-tramp-rpc" :files ("lisp/*.el")))
+
 (package! pdf-tools :built-in 'prefer) ; use nix installed pdf-tools
 (package! treesit-auto) ; because of https://github.com/marienz/nix-doom-emacs-unstraightened/issues/7
 

@@ -73,6 +73,10 @@
   :recipe (:host github :repo "enzuru/lispy" :branch "master")
   :pin "b6e1d5c02c0d506a003731dfc310e330094f6749")
 
+;; not tried yet
+;; (package! eca
+;;   :recipe (:host github :repo "editor-code-assistant/eca-emacs" :files ("*.el")))
+
 ;; Doom's packages are pinned to a specific commit and updated from release to
 ;; release. The `unpin!' macro allows you to unpin single packages...
                                         ;(unpin! pinned-package)

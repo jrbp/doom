@@ -923,9 +923,7 @@ jupyter kernels after pyenv env is changed"
                        (mapcar #'bind roots)
                        command)))))
   (setq eca-process-wrapper-function #'jrb/eca-jail-wrapper)
-  ;; (setq eca-send-process-id nil)
-  ;; (setq eca-process-wrapper-function 'nil)
-  )
+  (setq eca-send-process-id nil))
 
 (after! emacs-everywhere
   (defun jrb/float-on-parent ()

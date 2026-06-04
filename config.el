@@ -915,6 +915,8 @@ jupyter kernels after pyenv env is changed"
                              "--proc" "/proc"
                              "--dev" "/dev"
                              "--tmpfs" "/tmp"
+                             "--setenv" "NIST_RCHAT_API_KEY" (alist-get 'rchat llm-apikey-alist "")
+                             "--setenv" "MY_ANTHROPIC_API_KEY" (alist-get 'claude llm-apikey-alist "")
                              ;; "--unshare-uts"
                              "--die-with-parent"
                              "--new-session")

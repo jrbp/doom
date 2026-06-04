@@ -867,6 +867,66 @@ jupyter kernels after pyenv env is changed"
                           :bounds ((,(window-start win) . ,(window-end win)))))
                       (jrb/gptel-windows-on-frame))))))
 
+(progn ; eca
+  (defun jrb/eca-jail-wrapper (command roots)
+    "Wrap the eca server COMMAND with `bwrap', exposing ROOTS."
+    (let ((ro-paths (list "~/.config/emacs"
+                          "/nix"
+                          "~/.nix-profile"
+                          "~/.bashrc"
+                          "~/.profile"
+                          "~/.local"
+                          "/bin"
+                          "/lib"
+                          "/lib32"
+                          "/lib64"
+                          "/usr/bin"
+                          "/usr/lib"
+                          "/usr/local/bin"
+                          "/usr/local/lib"
+                          "/etc/passwd"
+                          "/etc/group"
+                          "/etc/alternatives"
+                          "/etc/resolv.conf"
+                          "/etc/profile.d"
+                          "/etc/ssl/certs"
+                          "/etc/localtime"
+                          "/usr/share/ca-certificates"
+                          "/etc/ssl/openssl.cnf"
+                          "/etc/ld.so.cache"
+                          "/etc/ld.so.conf"
+                          "/etc/ld.so.conf.d"
+                          "/etc/nsswitch.conf"
+                          "/etc/hosts"
+                          ;; "/etc/bash_completion.d"
+                          ;; "/usr/share/terminfo"
+                          ;; "/usr/share/zoneinfo"
+                          ))
+          (rw-paths (list "~/.cache/eca"
+                          "~/.config/eca"
+                          )))
+      (cl-labels ((-bind (bindflag path)
+                    (let ((p (expand-file-name path)))
+                      (list bindflag p p)))
+                  (bind (path) (-bind "--bind" path))
+                  (bind-ro (path) (-bind "--ro-bind" path)))
+        (flatten-list (list
+                       (list "bwrap"
+                             "--proc" "/proc"
+                             "--dev" "/dev"
+                             "--tmpfs" "/tmp"
+                             ;; "--unshare-uts"
+                             "--die-with-parent"
+                             "--new-session")
+                       (mapcar #'bind-ro ro-paths)
+                       (mapcar #'bind rw-paths)
+                       (mapcar #'bind roots)
+                       command)))))
+  (setq eca-process-wrapper-function #'jrb/eca-jail-wrapper)
+  ;; (setq eca-send-process-id nil)
+  ;; (setq eca-process-wrapper-function 'nil)
+  )
+
 (after! emacs-everywhere
   (defun jrb/float-on-parent ()
     (if (eq 'Hyprland (cdr (emacs-everywhere--system-compositor)))

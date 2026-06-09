@@ -236,7 +236,7 @@
                             "E" #'jrb/julia-snail-send-eval-print-dwim))))))
   (progn ;; lsp-julia
     (setopt lsp-julia-command "julia-ls")
-    (setopt lsp-julia-package-dir nil))
+    (setopt lsp-julia-package-dir ""))
 
   (after! julia-mode
     (set-ligatures! 'julia-mode
@@ -868,6 +868,12 @@ jupyter kernels after pyenv env is changed"
                       (jrb/gptel-windows-on-frame))))))
 
 (progn ; eca
+  (with-eval-after-load 'evil-collection-eca
+    (evil-collection-define-key 'normal 'eca-chat-mode-map
+      (kbd "<tab>")      'eca-chat--key-pressed-tab
+      (kbd "<return>") 'eca-chat--key-pressed-return
+      (kbd "RET") 'eca-chat--key-pressed-return
+      (kbd "C-<return>") 'eca-chat--key-pressed-newline))
   (defun jrb/eca-jail-wrapper (command roots)
     "Wrap the eca server COMMAND with `bwrap', exposing ROOTS."
     (let ((ro-paths (list "~/.config/emacs"
@@ -927,6 +933,7 @@ jupyter kernels after pyenv env is changed"
                        (mapcar #'bind roots)
                        command)))))
   (setq eca-process-wrapper-function #'jrb/eca-jail-wrapper)
+  (setq eca-chat-diff-tool 'ediff)
   (setq eca-send-process-id nil))
 
 (after! emacs-everywhere

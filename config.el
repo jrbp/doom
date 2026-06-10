@@ -915,7 +915,7 @@ jupyter kernels after pyenv env is changed"
                     (let ((p (expand-file-name path)))
                       (list bindflag p p)))
                   (bind (path) (-bind "--bind" path))
-                  (bind-ro (path) (-bind "--ro-bind" path)))
+                  (bind-ro (path) (-bind "--ro-bind-try" path)))
         (flatten-list (list
                        (list "bwrap"
                              "--proc" "/proc"

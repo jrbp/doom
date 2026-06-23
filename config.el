@@ -731,8 +731,7 @@ otherwise use the subtree title."
        :desc "Cal" :n "c" #'cfw:open-org-calendar
        :desc "elfeed" :n "e" #'elfeed
        :desc "Processes" :n "p" #'list-processes
-       :desc "Jupyter-repl" :n "j" #'jupyter-run-repl)
-      :prefix "m" :desc "schedule" :n "s" #'org-schedule)
+       :desc "Jupyter-repl" :n "j" #'jupyter-run-repl))
 
 (map! :leader
       :mode process-menu-mode

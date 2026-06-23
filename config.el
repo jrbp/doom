@@ -400,6 +400,10 @@ Then run FUN with ARGS."
   '(("^\\*jupyter.*" :quit nil :ttl nil)))
 
 (after! vterm
+  (if (assoc "rpc" vterm-tramp-shells #'equal)
+      (setf (alist-get "rpc" vterm-tramp-shells nil nil #'equal) 'login-shell)
+    (push (list "rpc" 'login-shell) vterm-tramp-shells))
+
   (map! :mode vterm-mode
         :i "C-V" #'vterm-yank))
 

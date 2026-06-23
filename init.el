@@ -312,4 +312,5 @@
        roam-extra
        secrets
        ;;astro
+       ghostel
        )

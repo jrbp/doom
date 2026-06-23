@@ -3,10 +3,10 @@
 (use-package! ghostel
   ;; :bind
   :config
-  (if (assoc "rpc" ghostel-tramp-shells #'equal)
-      (setf (alist-get "rpc" ghostel-tramp-shells nil nil #'equal) 'login-shell)
-    (push (list "rpc" 'login-shell) ghostel-tramp-shells))
-  )
+  (let ((method (cadr (assoc-string "rpc" ghostel-tramp-shells))))
+    (if method
+        (setf method 'login-shell)     
+      (push (list "rpc" 'login-shell) ghostel-tramp-shells))))
 
 (use-package evil-ghostel
   :after (ghostel evil)

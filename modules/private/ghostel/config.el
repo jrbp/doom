@@ -6,7 +6,14 @@
   (let ((method (cadr (assoc-string "rpc" ghostel-tramp-shells))))
     (if method
         (setf method 'login-shell)     
-      (push (list "rpc" 'login-shell) ghostel-tramp-shells))))
+      (push (list "rpc" 'login-shell) ghostel-tramp-shells)))
+  (map! :map evil-ghostel-mode-map
+        :localleader
+        "m" #'ghostel-semi-char-mode
+        "M" #'ghostel-char-mode
+        "e" #'ghostel-emacs-mode
+        "E" #'ghostel-copy-mode
+        "l" #'ghostel-line-mode))
 
 (use-package evil-ghostel
   :after (ghostel evil)

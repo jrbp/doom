@@ -7,8 +7,10 @@
     (if method
         (setf method 'login-shell)     
       (push (list "rpc" 'login-shell) ghostel-tramp-shells)))
+  ;; TODO: doom vterm popup like behavior
   (map! :leader :prefix-map ("o" . "open")
-        :desc "ghostel term" "g" #'ghostel))
+        :desc "ghostel term" "g" #'ghostel
+        :desc "ghostel Term" "G" (lambda () (interactive) (ghostel '(4)))))
 
 (use-package evil-ghostel
   :after (ghostel evil)
@@ -20,7 +22,8 @@
          "M" #'ghostel-char-mode
          "e" #'ghostel-emacs-mode
          "E" #'ghostel-copy-mode
-         "l" #'ghostel-line-mode)))
+         "l" #'ghostel-line-mode
+         "t" #'evil-ghostel-toggle-send-escape)))
 
 ;; (use-package ghostel-eshell
 ;;   :after (ghostel)

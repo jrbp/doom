@@ -13,7 +13,7 @@
 ;; disable doom splash image
 (setq +dashboard-functions (cdr +dashboard-functions))
 
-;; HACK: Workaround for some nasty macro expansion order issue!
+;; HACK: Workaround for https://github.com/doomemacs/modules/issues/37
 (function-put #'+julia/open-repl #'completion-predicate
               #'(lambda (_sym _buf) (not (modulep! :lang julia +snail))))
 (function-put #'+julia/open-snail-repl #'completion-predicate

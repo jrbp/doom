@@ -13,6 +13,12 @@
 ;; disable doom splash image
 (setq +dashboard-functions (cdr +dashboard-functions))
 
+;; HACK: Workaround for some nasty macro expansion order issue!
+(function-set #'+julia/open-repl #'completion-predicate
+              #'(lambda (_sym _buf) (not (modulep! :lang julia +snail))))
+(function-set #'+julia/open-snail-repl #'completion-predicate
+              #'(lambda (_sym _buf) (not (modulep! :lang julia +snail))))
+
 ;; (setq +tree-sitter-hl-enabled-modes '(not web-mode typescript-tsx-mode julia-mode nix-mode))
 
 (progn ;; https://github.com/ArthurHeymans/emacs-tramp-rpc

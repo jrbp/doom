@@ -58,12 +58,7 @@
 ;; TODO: go back to master after merge, see https://github.com/gcv/julia-snail/issues/149
 (package! julia-snail
   :recipe (:host github :repo "gcv/julia-snail" :branch "juliasyntax")
-  :pin "1bfa18bc300be54efd83a8f1e3e51d725141067c")
-
-;; TODO: go back to doom module maybe?
-;; (package! janet-mode
-;;   :recipe (:files ("*.el"))
-;;   :pin "9e3254a0249d720d5fa5603f1f8c3ed0612695af")
+  :pin "8e3222bc13de5f5a3df9439e07ff1d2ece3b4c0e")
 
 ;; (package! lispy
 ;;   :recipe (:host github :repo "jrbp/lispy" :branch "janet-eval")

@@ -9,8 +9,6 @@
         (setf method 'login-shell)     
       (push (list "rpc" 'login-shell) ghostel-tramp-shells)))
   (set-popup-rule! "^\\*jrb:ghostel-popup" :size 0.35 :height 0.35 :vslot -5 :select t :modeline t :quit nil :ttl nil :parameters '((:transient . t) (:no-other-window . t)))
-  ;; HACK: currently still have vterm installed, shadowing bindings while testing ghostel
-  ;; note: julia-snail still relies on vterm so not ready to delete yet
   (map! :leader :prefix-map ("o" . "open")
         :desc "Toggle ghostel popup" "t" #'+ghostel/toggle
         :desc "Open ghostel terminal here" "T" (lambda () (interactive) (ghostel '(4)))))

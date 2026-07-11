@@ -38,9 +38,9 @@
   
   (after! treesit-auto ;;HACK: https://github.com/renzmann/treesit-auto/pull/112
     (setopt treesit-auto-recipe-list
-           (seq-remove (lambda (item)
-                         (eq (treesit-auto-recipe-lang item) 'janet))
-                       treesit-auto-recipe-list))
+            (seq-remove (lambda (item)
+                          (eq (treesit-auto-recipe-lang item) 'janet))
+                        treesit-auto-recipe-list))
     (add-to-list 'treesit-auto-recipe-list
                  (make-treesit-auto-recipe
                   :lang 'janet-simple
@@ -127,10 +127,10 @@
       (mapcar (lambda (reqid)
                 (let* ((repl-buf (get-buffer julia-snail-repl-buffer))
                        (resp (julia-snail--send-to-server
-                               '("JuliaSnail" "Tasks")
-                               (format "interrupt(\"%s\")" reqid)
-                               :repl-buf repl-buf
-                               :async nil))
+                              '("JuliaSnail" "Tasks")
+                              (format "interrupt(\"%s\")" reqid)
+                              :repl-buf repl-buf
+                              :async nil))
                        (res (car resp)))
                   (if res
                       (message "Interrupt scheduled for Julia reqid %s" reqid)
@@ -197,16 +197,16 @@
                               (jrb/julia-snail--setup-expect-test block-start block-end buf data)))))
             (julia-snail--flash-region block-start block-end)
             (julia-snail--send-to-server-via-tmp-file
-                module
-                (if comment-only text (concat "repr( begin " text "\n end)"))
-              filename
-              line-num
-              :popup-display-params '(80 80) ;; (julia-snail--popup-params block-end)
-              :callback-success (lambda (_request-info &optional data)
-                                  (callbackf data)
-                                  (message "%s; module %s"
-                                           message-prefix
-                                           (julia-snail--construct-module-path module)))))))
+             module
+             (if comment-only text (concat "repr( begin " text "\n end)"))
+             filename
+             line-num
+             :popup-display-params '(80 80) ;; (julia-snail--popup-params block-end)
+             :callback-success (lambda (_request-info &optional data)
+                                 (callbackf data)
+                                 (message "%s; module %s"
+                                          message-prefix
+                                          (julia-snail--construct-module-path module)))))))
 
       (defun jrb/julia-snail-send-eval-print-line ()
         (interactive)
@@ -363,11 +363,11 @@ Then run FUN with ARGS."
   (add-to-list 'apheleia-mode-alist '(julia-mode . runic))
   (add-to-list 'apheleia-mode-alist '(julia-ts-mode . runic))
   (add-to-list 'apheleia-formatters '(runic '("juliab"
-                                             "--project=@runic"
-                                             "--startup-file=no"
-                                             "-e"
-                                             "using Runic; exit(Runic.main(ARGS))"
-                                             "--")))
+                                              "--project=@runic"
+                                              "--startup-file=no"
+                                              "-e"
+                                              "using Runic; exit(Runic.main(ARGS))"
+                                              "--")))
   (add-to-list 'apheleia-mode-alist '(nix-mode . alejandra))
   (add-to-list 'apheleia-mode-alist '(nix-ts-mode . alejandra))
   (add-to-list 'apheleia-formatters '(alejandra "alejandra")))
@@ -651,9 +651,9 @@ otherwise use the subtree title."
   (setq org-overriding-columns-format "%25ITEM %TODO %EFFORT %CLOCKSUM %JOBID %JOBCLUST %JOBDIR")
   (setq org-agenda-custom-commands '(("j" "HPC jobs" tags-todo "HPCJOB") ("n" "Agenda and all TODOs" ((agenda "") (alltodo "")))))
   (setq org-agenda-prefix-format '((agenda . " %i %?-12t% s")
-                                  (todo . " %i")
-                                  (tags . " %i %-12:c")
-                                  (search . " %i %-12:c")))
+                                   (todo . " %i")
+                                   (tags . " %i %-12:c")
+                                   (search . " %i %-12:c")))
 
   (defun esf/execute-startup-block ()
     (interactive)

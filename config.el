@@ -11,7 +11,7 @@
 (setq nerd-icons-font-names '("SymbolsNerdFontMono-Regular.ttf"
                               "SymbolsNerdFont-Regular.ttf"))
 ;; disable doom splash image
-(setq +doom-dashboard-functions (cdr +doom-dashboard-functions))
+(setq +dashboard-functions (cdr +dashboard-functions))
 
 ;; (setq +tree-sitter-hl-enabled-modes '(not web-mode typescript-tsx-mode julia-mode nix-mode))
 

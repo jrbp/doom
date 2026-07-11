@@ -82,7 +82,7 @@
   (setopt touch-screen-display-keyboard t)
   (setenv "PREFIX" "/data/data/com.termux/files/usr")
   (setenv "SHELL" "/data/data/com.termux/files/usr/bin/bash")
-  (setopt vterm-shell "/data/data/com.termux/files/usr/bin/bash")
+  (setopt ghostel-shell "/data/data/com.termux/files/usr/bin/bash")
   (keymap-global-unset "<f3>") ;; silence switch
   ;; following for making thumb-key usable for now
   (keymap-global-set "<volume-down>" "<down>")
@@ -100,6 +100,7 @@
   (progn ;;julia-snail
     ;; TODO: default bind to `+julia/open-snail-repl'
     (setq julia-snail-extensions '(ob-julia))
+    (after! julia-snail (julia-snail-terminal-type :ghostel))
     ;; setq alone only works if ran after snail loads?
     (add-hook 'julia-snail-mode-hook
               (lambda ()
@@ -405,42 +406,48 @@ Then run FUN with ARGS."
 (set-popup-rules!
   '(("^\\*jupyter.*" :quit nil :ttl nil)))
 
-(after! vterm
+(after! ghostel
+  (remove-hook 'ghostel-mode-hook #'mode-line-invisible-mode)
   (let ((method (cadr (assoc-string "rpc" ghostel-tramp-shells))))
     (if method
         (setf method 'login-shell)     
       (push (list "rpc" 'login-shell) ghostel-tramp-shells)))
-
-  (map! :mode vterm-mode
-        :i "C-V" #'vterm-yank))
+  (map! (:map evil-ghostel-mode-map
+         :localleader
+         "m" #'ghostel-semi-char-mode
+         "M" #'ghostel-char-mode
+         "e" #'ghostel-emacs-mode
+         "E" #'ghostel-copy-mode
+         "l" #'ghostel-line-mode
+         "t" #'evil-ghostel-toggle-send-escape)))
 
 ;; +make it so that by default ESC is sent to vterm+ disabled -> C-c C-z to toggle this
 ;; (add-hook! 'vterm-mode-hook #'evil-collection-vterm-toggle-send-escape)
-(defun jrb/vterm-execute-current-line ()
-  "Insert text of current line in vterm and execute."
-  (interactive)
-  (require 'vterm)
-  (eval-when-compile (require 'subr-x))
-  (let ((command (string-trim (buffer-substring
-                               (save-excursion
-                                 (beginning-of-line)
-                                 (point))
-                               (save-excursion
-                                 (end-of-line)
-                                 (point))))))
-    (let ((buf (current-buffer)))
-      (if-let (vwin (get-buffer-window
-                     (format "*doom:vterm-popup:%s*"
-                             (if (bound-and-true-p persp-mode)
-                                 (safe-persp-name (get-current-persp))
-                               "main"))))
-          (select-window vwin)
-        (+vterm/toggle nil))
-      (vterm--goto-line -1)
-      (message command)
-      (vterm-send-string command)
-      (vterm-send-return)
-      (switch-to-buffer-other-window buf))))
+;; (defun jrb/vterm-execute-current-line ()
+;;   "Insert text of current line in vterm and execute."
+;;   (interactive)
+;;   (require 'vterm)
+;;   (eval-when-compile (require 'subr-x))
+;;   (let ((command (string-trim (buffer-substring
+;;                                (save-excursion
+;;                                  (beginning-of-line)
+;;                                  (point))
+;;                                (save-excursion
+;;                                  (end-of-line)
+;;                                  (point))))))
+;;     (let ((buf (current-buffer)))
+;;       (if-let (vwin (get-buffer-window
+;;                      (format "*doom:vterm-popup:%s*"
+;;                              (if (bound-and-true-p persp-mode)
+;;                                  (safe-persp-name (get-current-persp))
+;;                                "main"))))
+;;           (select-window vwin)
+;;         (+vterm/toggle nil))
+;;       (vterm--goto-line -1)
+;;       (message command)
+;;       (vterm-send-string command)
+;;       (vterm-send-return)
+;;       (switch-to-buffer-other-window buf))))
 
                                         ; never did the google developers steps
                                         ; (defun my-open-calendar ()

@@ -15,9 +15,9 @@
 
 ;; HACK: Workaround for https://github.com/doomemacs/modules/issues/37
 (function-put #'+julia/open-repl #'completion-predicate
-              #'(lambda (_sym _buf) (not (modulep! :lang julia +snail))))
+              #'(lambda (_sym _buf) t))
 (function-put #'+julia/open-snail-repl #'completion-predicate
-              #'(lambda (_sym _buf) (not (modulep! :lang julia +snail))))
+              #'(lambda (_sym _buf) (fboundp 'julia-snail)))
 
 ;; (setq +tree-sitter-hl-enabled-modes '(not web-mode typescript-tsx-mode julia-mode nix-mode))
 

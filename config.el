@@ -23,7 +23,9 @@
 
 (progn ;; https://github.com/ArthurHeymans/emacs-tramp-rpc
   (use-package! msgpack)
-  (use-package! tramp-rpc))
+  (use-package! tramp-rpc)
+  ;; TODO: better nix + doom setup for tramp-rpc-deploy-git-build-policy
+  (setq tramp-rpc-deploy-git-build-policy 'release))
 
 (progn ;; janet
   ;; doom's module indent thing was giving errors removed it

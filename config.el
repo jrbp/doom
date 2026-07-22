@@ -28,29 +28,38 @@
   (setq tramp-rpc-deploy-git-build-policy 'release))
 
 (progn ;; janet
-  ;; doom's module indent thing was giving errors removed it
-  ;; (use-package! janet-mode
-  ;;   :mode "\\.\\(jdn\\|janet\\)\\'"
-  ;;   :interpreter "janet[0-9]*\\'"
-  ;;   :config
-  ;;   (add-hook 'janet-mode-hook (lambda () (lispy-mode 1))))
+
   (use-package! ajrepl
     :after janet-ts-mode
     :config (add-hook 'janet-ts-mode-hook #'ajrepl-interaction-mode))
   
-  (after! treesit-auto ;;HACK: https://github.com/renzmann/treesit-auto/pull/112
-    (setopt treesit-auto-recipe-list
-            (seq-remove (lambda (item)
-                          (eq (treesit-auto-recipe-lang item) 'janet))
-                        treesit-auto-recipe-list))
-    (add-to-list 'treesit-auto-recipe-list
-                 (make-treesit-auto-recipe
-                  :lang 'janet-simple
-                  :ts-mode 'janet-ts-mode
-                  :remap 'janet-mode
-                  :url "https://github.com/sogaiu/tree-sitter-janet-simple"
-                  :ext "\\.janet\\'")
-                 ))
+  (after! lsp-mode
+    (add-to-list 'lsp-language-id-configuration '(janet-ts-mode . "janet"))
+    (lsp-register-client
+     (make-lsp-client
+      :new-connection (lsp-stdio-connection '("janet-lsp"))
+      :major-modes '(janet-ts-mode)
+      :server-id 'janet-lsp)))
+  (after! janet-ts-mode
+    (add-hook 'janet-ts-mode-local-vars-hook #'lsp! 'append))
+
+  ;; TODO: again should test things with nix-doom-emacs-unstraightened
+  ;; originally the following was needed as a workaround for https://github.com/renzmann/treesit-auto/pull/112
+  ;; and tree-sit-auto was only needed as a workaround for https://github.com/marienz/nix-doom-emacs-unstraightened/issues/7
+  ;; these are both resolved, though may require something else to work with unstraightened
+  ;; (after! treesit-auto ;;HACK: https://github.com/renzmann/treesit-auto/pull/112
+  ;;   (setopt treesit-auto-recipe-list
+  ;;           (seq-remove (lambda (item)
+  ;;                         (eq (treesit-auto-recipe-lang item) 'janet))
+  ;;                       treesit-auto-recipe-list))
+  ;;   (add-to-list 'treesit-auto-recipe-list
+  ;;                (make-treesit-auto-recipe
+  ;;                 :lang 'janet-simple
+  ;;                 :ts-mode 'janet-ts-mode
+  ;;                 :remap 'janet-mode
+  ;;                 :url "https://github.com/sogaiu/tree-sitter-janet-simple"
+  ;;                 :ext "\\.janet\\'")
+  ;;                ))
   )
 
 (require 'notifications)
@@ -835,12 +844,13 @@ jupyter kernels after pyenv env is changed"
   (mapc #'call-interactively '(save-buffer org-edit-src-exit)))
 (advice-add 'evil-org-edit-src-exit :override
             'replace-evil-org-edit-src-exit)
-(use-package treesit-auto
-  :custom
-  (treesit-auto-install 'prompt)
-  :config
-  (global-treesit-auto-mode)
-  (setq treesit-font-lock-level 6))
+;; TODO: again nix-doom-emacs-unstraightenedd should be checked
+;; (use-package treesit-auto
+;;   :custom
+;;   (treesit-auto-install 'prompt)
+;;   :config
+;;   (global-treesit-auto-mode)
+;;   (setq treesit-font-lock-level 6))
 
 (after! gptel
   ;; (let ((file-name-handler-alist '(("\\.gpg\\(~\\|\\.~[0-9]+~\\)?\\'" . epa-file-handler))))

@@ -113,6 +113,7 @@
        :checkers
        (spell +aspell)
        (syntax
+        +flymake
         ;+childframe
         )
        ;;grammar           ; tasing grammar mistake every you make

@@ -43,6 +43,12 @@
   (after! janet-ts-mode
     (add-hook 'janet-ts-mode-local-vars-hook #'lsp! 'append))
 
+  (after! apheleia
+    ;; TODO: janet-format comes with spork, should sort out nix installation
+    (add-to-list 'apheleia-mode-alist '(janet-mode . janet-format))
+    (add-to-list 'apheleia-mode-alist '(janet-ts-mode . janet-format))
+    (add-to-list 'apheleia-formatters '(janet-format "janet-format")))
+
   ;; TODO: again should test things with nix-doom-emacs-unstraightened
   ;; originally the following was needed as a workaround for https://github.com/renzmann/treesit-auto/pull/112
   ;; and tree-sit-auto was only needed as a workaround for https://github.com/marienz/nix-doom-emacs-unstraightened/issues/7

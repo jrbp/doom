@@ -52,6 +52,11 @@
 ;; Disabling esc behavior on 'jk' see https://discourse.doomemacs.org/t/typing-jk-deletes-j-and-returns-to-normal-mode
 (package! evil-escape :disable t)
 
+(package! flycheck-janet
+  :recipe (:host github
+           :repo "sogaiu/flycheck-janet"
+           :files ("*.el")))
+
 ;; janet repl mode
 (package! ajrepl
   :recipe (:host github

@@ -32,6 +32,9 @@
   (use-package! ajrepl
     :after janet-ts-mode
     :config (add-hook 'janet-ts-mode-hook #'ajrepl-interaction-mode))
+
+  (use-package! flycheck-janet
+    :when (modulep! :checkers syntax -flymake))
   
   (after! lsp-mode
     (add-to-list 'lsp-language-id-configuration '(janet-ts-mode . "janet"))

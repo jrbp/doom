@@ -27,6 +27,8 @@
   ;; TODO: better nix + doom setup for tramp-rpc-deploy-git-build-policy
   (setq tramp-rpc-deploy-git-build-policy 'release))
 
+(use-package! rainbow-delimiters)
+
 (progn ;; janet
 
   (use-package! ajrepl

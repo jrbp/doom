@@ -30,6 +30,12 @@
 
 (package! pdf-tools :built-in 'prefer) ; use nix installed pdf-tools
 
+(package! rainbow-delimiters
+  :recipe (:host github
+           :repo "Fanael/rainbow-delimiters"
+           :files ("rainbow-delimiters.el"))
+  :pin "f40ece58df8b2f0fb6c8576b527755a552a5e763")
+
 ;; TODO: Should test the state of things working with nix-doom-emacs-unstraightened
 ;; I think this is no longer needed, but from the issue page maybe something else is needed?
 ;; (package! treesit-auto)

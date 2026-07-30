@@ -872,6 +872,7 @@ jupyter kernels after pyenv env is changed"
     '(("^\\*ChatGPT.*" :quit nil :ttl nil)
       ("^\\*Gemini.*" :quit nil :ttl nil)
       ("^\\*rchat.*" :quit nil :ttl nil)
+      ("^\\*or.*" :quit nil :ttl nil)
       ("^\\*Claude.*" :quit nil :ttl nil)))
   (when (modulep! :private secrets)
     (if-let ((k (alist-get 'openai llm-apikey-alist))) (setopt gptel-api-key k))
@@ -886,6 +887,32 @@ jupyter kernels after pyenv env is changed"
                     gpt-oss-120b
                     embeddinggemma-300m
                     gemma-4-31B-it)))
+    (if-let ((k (alist-get 'openrouter llm-apikey-alist))
+             (ort (gptel-make-openai "or" ;Any name you want
+                    :host "openrouter.ai"
+                    :endpoint "/api/v1/chat/completions"
+                    :stream t
+                    :key k
+                    :models '(z-ai/glm-5.2
+                              openrouter/auto
+                              qwen/qwen3.7-plus
+                              qwen/qwen3.7-max
+                              qwen/qwen3.6-plus
+                              qwen/qwen3.6-flash
+                              xiaomi/mimo-v2.5
+                              moonshotai/kimi-k3
+                              minimax/minimax-m3
+                              deepseek/deepseek-v4-flash
+                              deepseek/deepseek-v4-pro
+                              anthropic/claude-sonnet-5
+                              anthropic/claude-opus-4.8
+                              anthropic/claude-opus-5
+                              anthropic/claude-fable-5
+                              google/gemini-3.6-flash
+                              openai/gpt-5.6-terra
+                              openai/gpt-5.6-sol))))
+        (setq gptel-model 'z-ai/glm-5.2
+              gptel-backend ort))
     (if-let ((k (alist-get 'gemini llm-apikey-alist))) (gptel-make-gemini "Gemini-free" :key k :stream t))
     (if-let ((k (alist-get 'claude llm-apikey-alist))) (gptel-make-anthropic "Claude" :key k :stream t)))
   (progn ;; from https://paste.karthinks.com/93cf8524-gptel-preset-visible-text.el.html
@@ -896,16 +923,16 @@ jupyter kernels after pyenv env is changed"
               (selected-window))
             (window-list)))
     (gptel-make-preset 'visible-buffers
-      :description "Include the full text of all buffers visible in the frame."
-      :context
-      '(:eval (mapcar #'window-buffer (jrb/gptel-windows-on-frame))))
+                       :description "Include the full text of all buffers visible in the frame."
+                       :context
+                       '(:eval (mapcar #'window-buffer (jrb/gptel-windows-on-frame))))
     (gptel-make-preset 'visible-text
-      :description "Include visible text from all windows in the frame."
-      :context
-      '(:eval (mapcar (lambda (win) ;; Create (<buffer> :bounds ((start . end)))
-                        `(,(window-buffer win)
-                          :bounds ((,(window-start win) . ,(window-end win)))))
-                      (jrb/gptel-windows-on-frame))))))
+                       :description "Include visible text from all windows in the frame."
+                       :context
+                       '(:eval (mapcar (lambda (win) ;; Create (<buffer> :bounds ((start . end)))
+                                         `(,(window-buffer win)
+                                           :bounds ((,(window-start win) . ,(window-end win)))))
+                                       (jrb/gptel-windows-on-frame))))))
 
 (progn ; eca
   (with-eval-after-load 'evil-collection-eca

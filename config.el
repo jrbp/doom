@@ -893,24 +893,31 @@ jupyter kernels after pyenv env is changed"
                     :endpoint "/api/v1/chat/completions"
                     :stream t
                     :key k
-                    :models '(z-ai/glm-5.2
-                              openrouter/auto
-                              qwen/qwen3.7-plus
-                              qwen/qwen3.7-max
-                              qwen/qwen3.6-plus
-                              qwen/qwen3.6-flash
-                              xiaomi/mimo-v2.5
-                              moonshotai/kimi-k3
-                              minimax/minimax-m3
-                              deepseek/deepseek-v4-flash
-                              deepseek/deepseek-v4-pro
-                              anthropic/claude-sonnet-5
-                              anthropic/claude-opus-4.8
-                              anthropic/claude-opus-5
-                              anthropic/claude-fable-5
-                              google/gemini-3.6-flash
-                              openai/gpt-5.6-terra
-                              openai/gpt-5.6-sol))))
+                    :models '(openrouter/auto
+                              z-ai/glm-5.2                ;;  0.78 /  2.13
+                              qwen/qwen3.7-plus           ;;  0.32 /  1.28
+                              qwen/qwen3.7-max            ;;  1.48 /  4.23
+                              qwen/qwen3.7-flash          ;;  0.03 /  0.13
+                              qwen/qwen3.6-plus           ;;  0.33 /  1.95
+                              qwen/qwen3.6-flash          ;;  0.19 /  1.13
+                              xiaomi/mimo-v2.5            ;;  0.11 /  0.22
+                              xiaomi/mimo-v2.5-pro        ;;  0.35 /  0.70
+                              moonshotai/kimi-k3          ;;  3.00 / 15.00
+                              moonshotai/kimi-k2.7-code   ;;  0.71 /  3.50
+                              minimax/minimax-m3          ;;  0.24 /  0.96
+                              deepseek/deepseek-v4-flash  ;;  0.09 /  0.18
+                              deepseek/deepseek-v4-pro    ;;  0.44 /  0.87
+                              anthropic/claude-sonnet-5   ;;  2.00 / 10.00
+                              anthropic/claude-opus-4.8   ;;  5.00 / 25.00
+                              anthropic/claude-opus-5     ;;  5.00 / 25.00
+                              anthropic/claude-fable-5    ;; 10.00 / 50.00
+                              openai/gpt-5.6-sol          ;;  5.00 / 30.00
+                              openai/gpt-5.6-terra        ;;  1.25 / 7.50
+                              openai/gpt-5.6-luna         ;;  0.50 / 3.00
+                              google/gemini-3.6-flash     ;;  1.50 / 7.50
+                              meta-llama/llama-4-maverick ;;  0.20 /  0.80
+                              nvidia/nemotron-3-ultra-550b-a55b ;; 0.50 / 2.20
+                              ))))
         (setq gptel-model 'z-ai/glm-5.2
               gptel-backend ort))
     (if-let ((k (alist-get 'gemini llm-apikey-alist))) (gptel-make-gemini "Gemini-free" :key k :stream t))

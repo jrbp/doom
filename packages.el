@@ -36,6 +36,12 @@
            :files ("rainbow-delimiters.el"))
   :pin "f40ece58df8b2f0fb6c8576b527755a552a5e763")
 
+(package! qml-ts-mode
+  :recipe (:host github
+           :repo "xhcoding/qml-ts-mode"
+           :files ("qml-ts-mode.el"))
+  :pin "b80c6663521b4d0083e416e6712ebc02d37b7aec")
+
 ;; TODO: Should test the state of things working with nix-doom-emacs-unstraightened
 ;; I think this is no longer needed, but from the issue page maybe something else is needed?
 ;; (package! treesit-auto)

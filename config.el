@@ -992,6 +992,7 @@ jupyter kernels after pyenv env is changed"
                           "/etc/nsswitch.conf"
                           "/etc/hosts"
                           "/etc/nix"
+                          "/etc/static/nix"
                           ;; "/etc/bash_completion.d"
                           ;; "/usr/share/terminfo"
                           ;; "/usr/share/zoneinfo"
@@ -1022,6 +1023,8 @@ jupyter kernels after pyenv env is changed"
                        (mapcar #'bind roots)
                        command)))))
   (setq eca-process-wrapper-function #'jrb/eca-jail-wrapper)
+  ;; (kill-new (s-join " " (jrb/eca-jail-wrapper "bash" '("/data/home/john/git/mynix"))))
+  ;; TODO use above for debugging in more automated way (e.g. insead of copying command to clipboard have a function to launch it in ghostty)
   (setq eca-chat-diff-tool 'ediff)
   (setq eca-send-process-id nil))
 

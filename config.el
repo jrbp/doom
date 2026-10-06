@@ -900,6 +900,7 @@ jupyter kernels after pyenv env is changed"
           :stream t
           :models '(NVIDIA-Nemotron-3-Super-120B-A12B-FP8
                     Llama-4-Maverick-17B-128E-Instruct-FP8
+                    Muse-Glimmer-30B
                     gpt-oss-120b
                     embeddinggemma-300m
                     gemma-4-31B-it)))

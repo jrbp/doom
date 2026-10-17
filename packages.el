@@ -29,6 +29,7 @@
 (package! tramp-rpc :recipe (:host github :repo "ArthurHeymans/emacs-tramp-rpc" :files ("lisp/*.el")))
 
 (package! pdf-tools :built-in 'prefer) ; use nix installed pdf-tools
+(package! ghostel :built-in 'prefer) ; use nix installed ghostel
 
 (package! rainbow-delimiters
   :recipe (:host github

@@ -1049,10 +1049,11 @@ jupyter kernels after pyenv env is changed"
                (w ow)
                (h (* oh 0.618))
                (y (- oy (- h oh))))
-          (call-process "hyprctl" nil nil nil "dispatch" "movewindowpixel" "exact"
-                        (int-to-string x) (format "%d,initialtitle:emacs\-everywhere" y))
+          ;; It seems the order of the following starts to matter for the multi-monitor case
           (call-process "hyprctl" nil nil nil "dispatch" "resizewindowpixel" "exact"
-                        (int-to-string w) (format "%d,initialtitle:emacs\-everywhere" h)))))
+                        (int-to-string w) (format "%d,initialtitle:emacs\-everywhere" h))
+          (call-process "hyprctl" nil nil nil "dispatch" "movewindowpixel" "exact"
+                        (int-to-string x) (format "%d,initialtitle:emacs\-everywhere" y)))))
   (add-hook 'emacs-everywhere-init-hooks #'jrb/float-on-parent)
   (defun emacs-everywhere--app-info-linux-hyprland ()
     "Return information on the current active window, on a Linux Sway session."

@@ -30,6 +30,7 @@
 
 (package! pdf-tools :built-in 'prefer) ; use nix installed pdf-tools
 (package! ghostel :built-in 'prefer) ; use nix installed ghostel
+(package! evil-ghostel :built-in 'prefer) ; seem to need both on lpc?
 
 (package! rainbow-delimiters
   :recipe (:host github

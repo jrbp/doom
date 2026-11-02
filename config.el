@@ -827,33 +827,87 @@ jupyter kernels after pyenv env is changed"
       (forward-line (- start-line (line-number-at-pos))) ;(goto-line start-line)
       (message "Not found"))))
 
-(after! lispyville
-  (lispyville-set-key-theme ;; so that it applies when executed interactively
-   (setq lispyville-key-theme
-         '((operators normal) ;; safe version of evil normal ops
-           c-w                ;; safe version of delete prev word
-           (prettify insert)  ;; tab will format
-           text-objects ;; experimental (a)tom (l)ist se(x)p (f)unction (c)omment (S)tring
-           (atom-movement t) ;; evil B/W/E(g E) movement over atoms instead of words
-           commentary          ;; gc, gy followed by motion
-           slurp/barf-lispy
-           additional
-           additional-insert))))
+;; (after! lispyville
+;;   (lispyville-set-key-theme ;; so that it applies when executed interactively
+;;    (setq lispyville-key-theme
+;;          '((operators normal) ;; safe version of evil normal ops
+;;            c-w                ;; safe version of delete prev word
+;;            (prettify insert)  ;; tab will format
+;;            text-objects ;; experimental (a)tom (l)ist se(x)p (f)unction (c)omment (S)tring
+;;            (atom-movement t) ;; evil B/W/E(g E) movement over atoms instead of words
+;;            commentary          ;; gc, gy followed by motion
+;;            slurp/barf-lispy
+;;            additional
+;;            additional-insert))))
 
-(map! :after (lispyville)
-      :map lispyville-mode-map
-      ;; add a subset of  the additional-movement theme
-      :m "(" #'lispyville-backward-up-list
-      :m ")" #'lispyville-up-list
-      :m "{" #'lispyville-previous-opening
-      :m "}" #'lispyville-next-opening)
+;; (map! :after (lispyville)
+;;       :map lispyville-mode-map
+;;       ;; add a subset of  the additional-movement theme
+;;       :m "(" #'lispyville-backward-up-list
+;;       :m ")" #'lispyville-up-list
+;;       :m "{" #'lispyville-previous-opening
+;;       :m "}" #'lispyville-next-opening)
 
-(map! :after (lispy)
-      :map lispy-mode-map-lispy
-      ;; unbind individual bracket keys (annoying for writing strings containing brackets)
-      "[" nil
-      "]" nil
-      "}" nil)
+;; (map! :after (lispy)
+;;       :map lispy-mode-map-lispy
+;;       ;; unbind individual bracket keys (annoying for writing strings containing brackets)
+;;       "[" nil
+;;       "]" nil
+;;       "}" nil)
+
+(progn ;symex
+  (use-package! symex-core)
+  (use-package! symex
+    :after symex-core
+    :config
+    (symex-mode 1)
+    (global-set-key (kbd "M-[") #'symex-mode-interface)
+    (defvar-local entered-insert-from-symex nil
+      "Did buffer's most recent entry into insert state come from symex state?")
+    (add-hook 'evil-insert-state-entry-hook
+              (lambda ()
+                (setq entered-insert-from-symex (eq evil-previous-state 'symex))))
+    ;; when returning from insert state, go back to symex state if it's whence we came
+    (advice-add 'evil-normal-state :after
+                (lambda (&rest _)
+                  (when (and (eq evil-previous-state 'insert) entered-insert-from-symex) ; when we're coming from insert state, and got their from symex state
+                    ;; (setq entered-insert-from-symex nil) ; this seems to be redundant, but would make doubly sure it's just a one-shot
+                    (symex-mode-interface))))
+    (lithium-define-keys symex-editing-mode
+      (("h" symex-go-down)
+       ("j" symex-go-forward)
+       ("k" symex-go-backward)
+       ("l" symex-go-up)
+       
+       ("H" symex-join-lines)
+       ("J" symex-shift-forward)
+       ("K" symex-shift-backward)
+       ("L" symex-raise) ; revisit kb
+       
+       ("C-h" symex-descend-branch)
+       ("C-l" symex-climb-branch)
+
+       ("C-S-h" symex-emit-backward)
+       ("C-S-j" symex-capture-forward)
+       ("C-S-k" symex-capture-backward)
+       ("C-S-l" symex-emit-forward)
+       
+       ("M-h" symex-goto-lowest)
+       ("M-j" symex-goto-last)
+       ("M-k" symex-goto-first)
+       ("M-l" symex-goto-highest)
+
+       ("M-H" symex-collapse)
+       ("M-J" symex-shift-forward-most)
+       ("M-K" symex-shift-backward-most))))
+  (use-package! symex-ide
+    :after symex
+    :config
+    (symex-ide-mode 1))
+  (use-package! symex-evil
+    :after symex
+    :config
+    (symex-evil-mode 1)))
 
 (if (modulep! :private frames-only)
     (setq org-src-window-setup 'other-frame) ;; other-window doesn't close as I'd like on exit

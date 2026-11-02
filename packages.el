@@ -87,9 +87,26 @@
 ;;   :recipe (:host github :repo "jrbp/lispy" :branch "janet-eval")
 ;;   :pin "936872617cc568c6da6b1c4ad2afc4e417018acb")
 ;; TODO: remove if/when main repo is maintained, see https://github.com/abo-abo/lispy/issues/684
-(package! lispy
-  :recipe (:host github :repo "enzuru/lispy" :branch "master")
-  :pin "b6e1d5c02c0d506a003731dfc310e330094f6749")
+;; (package! lispy
+;;   :recipe (:host github :repo "enzuru/lispy" :branch "master")
+;;   :pin "b6e1d5c02c0d506a003731dfc310e330094f6749")
+
+(package! symex-core
+  :recipe (:host github :repo "drym-org/symex.el"
+           :files ("symex-core/symex*.el"))
+  :pin "9c8b981e955975d41ec47d8c9b1bb2e20441951c")
+(package! symex
+  :recipe (:host github :repo "drym-org/symex.el"
+           :files ("symex/symex*.el" "symex/doc/*.texi" "symex/doc/figures"))
+  :pin "9c8b981e955975d41ec47d8c9b1bb2e20441951c")
+(package! symex-ide
+  :recipe (:host github :repo "drym-org/symex.el"
+           :files ("symex-ide/symex*.el"))
+  :pin "9c8b981e955975d41ec47d8c9b1bb2e20441951c")
+(package! symex-evil
+  :recipe (:host github :repo "drym-org/symex.el"
+           :files ("symex-evil/symex*.el"))
+  :pin "9c8b981e955975d41ec47d8c9b1bb2e20441951c")
 
 (package! eca
   :recipe (:host github :repo "editor-code-assistant/eca-emacs" :files ("*.el")))

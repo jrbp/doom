@@ -861,6 +861,7 @@ jupyter kernels after pyenv env is changed"
     :after symex-core
     :config
     (symex-mode 1)
+    ; TODO: better key for this:
     (global-set-key (kbd "M-[") #'symex-mode-interface)
     (defvar-local entered-insert-from-symex nil
       "Did buffer's most recent entry into insert state come from symex state?")
@@ -873,33 +874,35 @@ jupyter kernels after pyenv env is changed"
                   (when (and (eq evil-previous-state 'insert) entered-insert-from-symex) ; when we're coming from insert state, and got their from symex state
                     ;; (setq entered-insert-from-symex nil) ; this seems to be redundant, but would make doubly sure it's just a one-shot
                     (symex-mode-interface))))
-    (lithium-define-keys symex-editing-mode
-      (("h" symex-go-down)
-       ("j" symex-go-forward)
-       ("k" symex-go-backward)
-       ("l" symex-go-up)
-       
-       ("H" symex-join-lines)
-       ("J" symex-shift-forward)
-       ("K" symex-shift-backward)
-       ("L" symex-raise) ; revisit kb
-       
-       ("C-h" symex-descend-branch)
-       ("C-l" symex-climb-branch)
+    ;; Thought I wanted something more lispy-like, but think I might try the defaults for a bit
+    ;; (lithium-define-keys symex-editing-mode
+    ;;   (("h" symex-go-down)
+    ;;    ("j" symex-go-forward)
+    ;;    ("k" symex-go-backward)
+    ;;    ("l" symex-go-up)
+    
+    ;;    ("H" symex-join-lines)
+    ;;    ("J" symex-shift-forward)
+    ;;    ("K" symex-shift-backward)
+    ;;    ("L" symex-raise) ; revisit kb
+    
+    ;;    ("C-h" symex-descend-branch)
+    ;;    ("C-l" symex-climb-branch)
 
-       ("C-S-h" symex-emit-backward)
-       ("C-S-j" symex-capture-forward)
-       ("C-S-k" symex-capture-backward)
-       ("C-S-l" symex-emit-forward)
-       
-       ("M-h" symex-goto-lowest)
-       ("M-j" symex-goto-last)
-       ("M-k" symex-goto-first)
-       ("M-l" symex-goto-highest)
+    ;;    ("C-S-h" symex-emit-backward)
+    ;;    ("C-S-j" symex-capture-forward)
+    ;;    ("C-S-k" symex-capture-backward)
+    ;;    ("C-S-l" symex-emit-forward)
+    
+    ;;    ("M-h" symex-goto-lowest)
+    ;;    ("M-j" symex-goto-last)
+    ;;    ("M-k" symex-goto-first)
+    ;;    ("M-l" symex-goto-highest)
 
-       ("M-H" symex-collapse)
-       ("M-J" symex-shift-forward-most)
-       ("M-K" symex-shift-backward-most))))
+    ;;    ("M-H" symex-collapse)
+    ;;    ("M-J" symex-shift-forward-most)
+    ;;    ("M-K" symex-shift-backward-most)))
+    )
   (use-package! symex-ide
     :after symex
     :config

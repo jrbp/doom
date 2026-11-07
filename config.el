@@ -855,14 +855,146 @@ jupyter kernels after pyenv env is changed"
 ;;       "]" nil
 ;;       "}" nil)
 
+(progn ;; jrb/treesit (WIP)
+  ;; may or may not replace symex
+  ;; at least extending symex functionality in treesitter modes
+  (defun jrb/treesit-info (&optional arg)
+    "Just for hacking/exporing the datastructure when making other functions"
+    (interactive "P")
+    (let* ((curr-node (treesit-node-at (point)))
+           (parent-node (treesit-node-parent curr-node))
+           (close-delim-node (treesit-node-child parent-node -1))
+           (close-delim-text (treesit-node-text close-delim-node))
+           (close-delim-start (treesit-node-start close-delim-node))
+           (close-delim-length (treesit--node-length close-delim-node)))
+      (message (format "%s" parent-node))
+      (message (format "%s" (treesit-node-type parent-node)))
+      (message (format "%s" (treesit-node-check parent-node 'named)))
+      (message (format "%s" (treesit-node-field-name-for-child parent-node -1)))
+      (message (format "%s" (treesit-node-child-count parent-node)))
+      (message (format "%s" (jrb/treesit-open-delim-dat parent-node)))))
+
+  ;; here for janet-ts-mode, decide on better mechanism
+  (setq jrb/treesit-prefix-node-types
+        '("qq_lit" "quote_lit" "unquote_lit" "splice_lit" "short_fn_lit"))
+
+  (defun jrb/treesit-is-prefix (node)
+    (member (treesit-node-type node) jrb/treesit-prefix-node-types))
+
+  (defun jrb/treesit-node-skip-prefix (node)
+    (let ((parent (treesit-node-parent node)))
+      (if (not (jrb/treesit-is-prefix parent))
+          node
+        (jrb/treesit-node-skip-prefix parent))))
+
+  (defun jrb/treesit--child-node-dat (node ind)
+    "helper function to get node info"
+    (let ((child (treesit-node-child node ind)))
+      (list (treesit-node-start child)
+            (treesit--node-length child)
+            (treesit-node-text child))))
+
+  (defun jrb/treesit-open-delim-dat (node &optional rvar)
+    "helper function to get node info"
+    (pcase-let ((`(,start ,lngth ,txt) (jrb/treesit--child-node-dat node 0))
+                (parent (treesit-node-parent node))
+                (`(,_ ,ilngth ,itxt) (or rvar '(nil 0 ""))))
+      (let ((dat (list start (+ lngth ilngth) (concat txt itxt))))
+        (if (not (jrb/treesit-is-prefix parent))
+            dat
+          (jrb/treesit-open-delim-dat parent dat)))))
+
+  (defun jrb/treesit-close-delim-dat (node)
+    (jrb/treesit--child-node-dat node -1))
+
+  (defun jrb/treesit-node-nth-sibling (inode n)
+    (let* ((node (jrb/treesit-node-skip-prefix inode))
+           (parent-node (treesit-node-parent node))
+           (node-ind (treesit-node-index node))
+           (sibling-ind (+ node-ind n)))
+      (when (and (> sibling-ind 0)
+                 (< (+ 1 sibling-ind) (treesit-node-child-count parent-node)))
+        (treesit-node-child parent-node sibling-ind))))
+  
+  ;; TODO: handle spacing edge cases?
+  ;; (following examples are for capture forward)
+  ;; 1. When parent is only open/close delims
+  ;;     e.g. [] 2 -> [2] instead of current [] 2 -> [ 2]
+  ;; 2. When there is no space between parent and next sibling
+  ;;     e.g. [1]2 -> [1 2] instead of current [1] 2 -> [1 2]
+  ;; maybe the way is to always do some autoformat
+  ;; and handle 2 by replacing the deleted delim with space
+  (defun jrb/treesit-capture-forward (&optional argument)
+    (interactive "P")
+    (when-let* ((curr-node (treesit-node-at (point)))
+                (parent-node (treesit-node-parent curr-node))
+                (right-node (jrb/treesit-node-nth-sibling parent-node (or argument 1))))
+      (pcase-let ((`(,close-delim-start ,close-delim-length ,close-delim-text)
+                   (jrb/treesit-close-delim-dat parent-node)))
+        (save-excursion
+          (goto-char (treesit-node-end right-node))
+          (insert close-delim-text)
+          (goto-char close-delim-start)
+          (delete-char close-delim-length)))))
+
+  (defun jrb/treesit-emit-forward (&optional argument)
+    (interactive "P")
+    (when-let* ((start-pt (point))
+                (curr-node (treesit-node-at start-pt))
+                (parent-node (treesit-node-parent curr-node))
+                (right-node-ind (- (treesit-node-child-count parent-node) (or argument 1) 2))
+                (right-node (treesit-node-child parent-node right-node-ind))
+                (right-node-end (treesit-node-end right-node)))
+      (pcase-let ((`(,close-delim-start ,close-delim-length ,close-delim-text)
+                   (jrb/treesit-close-delim-dat parent-node)))
+        (goto-char close-delim-start)
+        (delete-char close-delim-length)
+        (goto-char right-node-end)
+        (insert close-delim-text)
+        (goto-char (min right-node-end start-pt)))))
+
+  (defun jrb/treesit-capture-backward (&optional argument)
+    (interactive "P")
+    (when-let* ((curr-node (treesit-node-at (point)))
+                (parent-node (treesit-node-parent curr-node))
+                (left-node (jrb/treesit-node-nth-sibling parent-node (- (or argument 1)))))
+      (pcase-let ((`(,open-delim-start ,open-delim-length ,open-delim-text)
+                   (jrb/treesit-open-delim-dat parent-node)))
+        (save-excursion
+          (goto-char open-delim-start)
+          (delete-char open-delim-length)
+          (goto-char (treesit-node-start left-node))
+          (insert open-delim-text)))))
+
+  (defun jrb/treesit-emit-backward (&optional argument)
+    (interactive "P")
+    (when-let* ((start-pt (point))
+                (curr-node (treesit-node-at start-pt))
+                (parent-node (treesit-node-parent curr-node))
+                (left-node (treesit-node-child parent-node (+ (or argument 1) 1)))
+                (left-node-start (treesit-node-start left-node)))
+      (pcase-let ((`(,open-delim-start ,open-delim-length ,open-delim-text)
+                   (jrb/treesit-open-delim-dat parent-node)))
+        (goto-char left-node-start)
+        (insert open-delim-text)
+        (goto-char open-delim-start)
+        (delete-char open-delim-length)
+        (goto-char (max (- left-node-start 1) start-pt)))))
+
+  ;; more for debugging vs the symex implementation
+  ;; (map! :leader :prefix ("l" . "structural editing")
+  ;;       (:n "h" #'jrb/treesit-capture-backward
+  ;;        :n "j" #'jrb/treesit-emit-backward
+  ;;        :n "k" #'jrb/treesit-emit-forward
+  ;;        :n "l" #'jrb/treesit-capture-forward))
+  )
 (progn ;symex
   (use-package! symex-core)
   (use-package! symex
     :after symex-core
     :config
     (symex-mode 1)
-    ; TODO: better key for this:
-    (global-set-key (kbd "M-[") #'symex-mode-interface)
+    (map! :leader :n "ESC" #'symex-mode-interface)
     (defvar-local entered-insert-from-symex nil
       "Did buffer's most recent entry into insert state come from symex state?")
     (add-hook 'evil-insert-state-entry-hook
@@ -874,34 +1006,40 @@ jupyter kernels after pyenv env is changed"
                   (when (and (eq evil-previous-state 'insert) entered-insert-from-symex) ; when we're coming from insert state, and got their from symex state
                     ;; (setq entered-insert-from-symex nil) ; this seems to be redundant, but would make doubly sure it's just a one-shot
                     (symex-mode-interface))))
-    ;; Thought I wanted something more lispy-like, but think I might try the defaults for a bit
-    ;; (lithium-define-keys symex-editing-mode
-    ;;   (("h" symex-go-down)
-    ;;    ("j" symex-go-forward)
-    ;;    ("k" symex-go-backward)
-    ;;    ("l" symex-go-up)
-    
-    ;;    ("H" symex-join-lines)
-    ;;    ("J" symex-shift-forward)
-    ;;    ("K" symex-shift-backward)
-    ;;    ("L" symex-raise) ; revisit kb
-    
-    ;;    ("C-h" symex-descend-branch)
-    ;;    ("C-l" symex-climb-branch)
+    ;; redefining the following to use my treesit functions:
+    (symex-define-command symex-emit-backward (count)
+      "Emit backward, COUNT times."
+      (interactive "p")
+      (if (symex-ts-available-p)
+          (jrb/treesit-emit-backward count)
+        (symex-lisp-emit-backward count)))
 
-    ;;    ("C-S-h" symex-emit-backward)
-    ;;    ("C-S-j" symex-capture-forward)
-    ;;    ("C-S-k" symex-capture-backward)
-    ;;    ("C-S-l" symex-emit-forward)
-    
-    ;;    ("M-h" symex-goto-lowest)
-    ;;    ("M-j" symex-goto-last)
-    ;;    ("M-k" symex-goto-first)
-    ;;    ("M-l" symex-goto-highest)
+    (symex-define-command symex-emit-forward (count)
+      "Emit forward, COUNT times."
+      (interactive "p")
+      (if (symex-ts-available-p)
+          (jrb/treesit-emit-forward count)
+        (symex-lisp-emit-forward count)))
 
-    ;;    ("M-H" symex-collapse)
-    ;;    ("M-J" symex-shift-forward-most)
-    ;;    ("M-K" symex-shift-backward-most)))
+    (symex-define-command symex-capture-backward (count)
+      "Capture backward, COUNT times."
+      (interactive "p")
+      (if (symex-ts-available-p)
+          (jrb/treesit-capture-backward count)
+        (symex-lisp-capture-backward count)))
+
+    (symex-define-command symex-capture-forward (count)
+      "Capture forward, COUNT times."
+      (interactive "p")
+      (if (symex-ts-available-p)
+          (jrb/treesit-capture-forward count)
+        (symex-lisp-capture-forward count)))
+
+    ;; the following have no conflicts, use them w/o symex mode
+    (map! (:ni "C-S-h" #'symex-capture-backward
+           :ni "C-S-j" #'symex-emit-backward
+           :ni "C-S-k" #'symex-emit-forward
+           :ni "C-S-l" #'symex-capture-forward))
     )
   (use-package! symex-ide
     :after symex
@@ -910,7 +1048,8 @@ jupyter kernels after pyenv env is changed"
   (use-package! symex-evil
     :after symex
     :config
-    (symex-evil-mode 1)))
+    (symex-evil-mode 1))
+  )
 
 (if (modulep! :private frames-only)
     (setq org-src-window-setup 'other-frame) ;; other-window doesn't close as I'd like on exit
@@ -1004,16 +1143,16 @@ jupyter kernels after pyenv env is changed"
               (selected-window))
             (window-list)))
     (gptel-make-preset 'visible-buffers
-                       :description "Include the full text of all buffers visible in the frame."
-                       :context
-                       '(:eval (mapcar #'window-buffer (jrb/gptel-windows-on-frame))))
+      :description "Include the full text of all buffers visible in the frame."
+      :context
+      '(:eval (mapcar #'window-buffer (jrb/gptel-windows-on-frame))))
     (gptel-make-preset 'visible-text
-                       :description "Include visible text from all windows in the frame."
-                       :context
-                       '(:eval (mapcar (lambda (win) ;; Create (<buffer> :bounds ((start . end)))
-                                         `(,(window-buffer win)
-                                           :bounds ((,(window-start win) . ,(window-end win)))))
-                                       (jrb/gptel-windows-on-frame))))))
+      :description "Include visible text from all windows in the frame."
+      :context
+      '(:eval (mapcar (lambda (win) ;; Create (<buffer> :bounds ((start . end)))
+                        `(,(window-buffer win)
+                          :bounds ((,(window-start win) . ,(window-end win)))))
+                      (jrb/gptel-windows-on-frame))))))
 
 (progn ; eca
   (with-eval-after-load 'evil-collection-eca

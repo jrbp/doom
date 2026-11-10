@@ -1249,6 +1249,8 @@ jupyter kernels after pyenv env is changed"
             (call-process "hyprctl" nil nil nil "dispatch" (format cmd-templ "resize" w h))
             (call-process "hyprctl" nil nil nil "dispatch" (format cmd-templ "move" x y))))))
   (add-hook 'emacs-everywhere-init-hooks #'jrb/float-on-parent)
+
+  ;; TODO next 2 exprs can be removed after updating doom (it's in the module)
   (defun emacs-everywhere--app-info-linux-hyprland ()
     "Return information on the current active window, on a Linux Sway session."
     (let* ((activewindow (json-read-from-string
@@ -1261,11 +1263,14 @@ jupyter kernels after pyenv env is changed"
        :class (alist-get 'class activewindow)
        :title (alist-get 'title activewindow)
        :geometry geometry)))
+  ;; the non-lua config from doom is used if we "add-to-list" so instead:
+  (cl-dolist (sysconf emacs-everywhere-system-configs)
+    (when (equal (car sysconf) '(wayland . Hyprland))
+      (setf (cdr sysconf)
+            '(:focus-command ("hyprctl" "dispatch" "hl.dsp.focus({window = \"address:%w\"})")
+              :info-function emacs-everywhere--app-info-linux-hyprland))
+      (cl-return t)))
 
-  (add-to-list 'emacs-everywhere-system-configs
-               '((wayland . Hyprland)
-                 :focus-command ("hyprctl" "dispatch" "hl.dsp.focus({address = %w})")
-                 :info-function emacs-everywhere--app-info-linux-hyprland)) 
   ;; (defun jrb/emacs-everywhere-write ()
   ;;     "Copy buffer content, maybe (paste,  select all), refocus emacs.
   ;; Must only be called within a emacs-everywhere buffer. "

@@ -1236,7 +1236,6 @@ jupyter kernels after pyenv env is changed"
     (if (eq 'Hyprland (cdr (emacs-everywhere--system-compositor)))
         (let* (
                (geometry (emacs-everywhere-app-geometry emacs-everywhere-current-app))
-               ;; (geometry '(3708 2180 1273 1381))
                (ox (car geometry))
                (oy (cadr geometry))
                (ow (caddr geometry))
@@ -1245,11 +1244,10 @@ jupyter kernels after pyenv env is changed"
                (w ow)
                (h (* oh 0.618))
                (y (- oy (- h oh))))
-          ;; It seems the order of the following starts to matter for the multi-monitor case
-          (call-process "hyprctl" nil nil nil "dispatch" "resizewindowpixel" "exact"
-                        (int-to-string w) (format "%d,initialtitle:emacs\-everywhere" h))
-          (call-process "hyprctl" nil nil nil "dispatch" "movewindowpixel" "exact"
-                        (int-to-string x) (format "%d,initialtitle:emacs\-everywhere" y)))))
+          (let ((cmd-templ "hl.dsp.window.%s({x = %d, y = %d, window=\"initialtitle:emacs-everywhere\"})"))
+            ;; It seems the order of the following matters in the multi-monitor case
+            (call-process "hyprctl" nil nil nil "dispatch" (format cmd-templ "resize" w h))
+            (call-process "hyprctl" nil nil nil "dispatch" (format cmd-templ "move" x y))))))
   (add-hook 'emacs-everywhere-init-hooks #'jrb/float-on-parent)
   (defun emacs-everywhere--app-info-linux-hyprland ()
     "Return information on the current active window, on a Linux Sway session."
@@ -1266,7 +1264,7 @@ jupyter kernels after pyenv env is changed"
 
   (add-to-list 'emacs-everywhere-system-configs
                '((wayland . Hyprland)
-                 :focus-command ("hyprctl" "dispatch" "focuswindow" "address:%w")
+                 :focus-command ("hyprctl" "dispatch" "hl.dsp.focus({address = %w})")
                  :info-function emacs-everywhere--app-info-linux-hyprland)) 
   ;; (defun jrb/emacs-everywhere-write ()
   ;;     "Copy buffer content, maybe (paste,  select all), refocus emacs.

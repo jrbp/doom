@@ -65,7 +65,6 @@
     (add-hook 'janet-ts-mode-local-vars-hook #'lsp! 'append))
 
   (after! apheleia
-    ;; TODO: janet-format comes with spork, should sort out nix installation
     (add-to-list 'apheleia-mode-alist '(janet-mode . janet-format))
     (add-to-list 'apheleia-mode-alist '(janet-ts-mode . janet-format))
     (add-to-list 'apheleia-formatters '(janet-format "janet-format")))
@@ -458,50 +457,6 @@ Then run FUN with ARGS."
          "E" #'ghostel-copy-mode
          "l" #'ghostel-line-mode
          "t" #'evil-ghostel-toggle-send-escape)))
-
-;; +make it so that by default ESC is sent to vterm+ disabled -> C-c C-z to toggle this
-;; (add-hook! 'vterm-mode-hook #'evil-collection-vterm-toggle-send-escape)
-;; (defun jrb/vterm-execute-current-line ()
-;;   "Insert text of current line in vterm and execute."
-;;   (interactive)
-;;   (require 'vterm)
-;;   (eval-when-compile (require 'subr-x))
-;;   (let ((command (string-trim (buffer-substring
-;;                                (save-excursion
-;;                                  (beginning-of-line)
-;;                                  (point))
-;;                                (save-excursion
-;;                                  (end-of-line)
-;;                                  (point))))))
-;;     (let ((buf (current-buffer)))
-;;       (if-let (vwin (get-buffer-window
-;;                      (format "*doom:vterm-popup:%s*"
-;;                              (if (bound-and-true-p persp-mode)
-;;                                  (safe-persp-name (get-current-persp))
-;;                                "main"))))
-;;           (select-window vwin)
-;;         (+vterm/toggle nil))
-;;       (vterm--goto-line -1)
-;;       (message command)
-;;       (vterm-send-string command)
-;;       (vterm-send-return)
-;;       (switch-to-buffer-other-window buf))))
-
-                                        ; never did the google developers steps
-                                        ; (defun my-open-calendar ()
-                                        ;   (interactive)
-                                        ;   (cfw:open-calendar-buffer
-                                        ;    :contents-sources
-                                        ;    (list
-                                        ;     (cfw:org-create-source "Green")  ; orgmode source
-                                        ;     ;; (cfw:ical-create-source "gcal" "https://..../basic.ics" "IndianRed") ; google calendar ICS
-                                        ;    )))
-                                        ;
-                                        ; (defun cfw:open-org-calendar-with-cal1 ()
-                                        ;   (interactive)
-                                        ;   (let ((org-agenda-files '("/Users/jbonini/Dropbox_simons/org/gcal.org"))) ;;can use directory
-                                        ;     (call-interactively #'+calendar/open-calendar)))
-                                        ;
 (add-hook! 'elfeed-search-mode-hook 'elfeed-update)
 
 (after! org
@@ -826,34 +781,6 @@ jupyter kernels after pyenv env is changed"
         (message "Line %d: %d chars" (line-number-at-pos) len-found)
       (forward-line (- start-line (line-number-at-pos))) ;(goto-line start-line)
       (message "Not found"))))
-
-;; (after! lispyville
-;;   (lispyville-set-key-theme ;; so that it applies when executed interactively
-;;    (setq lispyville-key-theme
-;;          '((operators normal) ;; safe version of evil normal ops
-;;            c-w                ;; safe version of delete prev word
-;;            (prettify insert)  ;; tab will format
-;;            text-objects ;; experimental (a)tom (l)ist se(x)p (f)unction (c)omment (S)tring
-;;            (atom-movement t) ;; evil B/W/E(g E) movement over atoms instead of words
-;;            commentary          ;; gc, gy followed by motion
-;;            slurp/barf-lispy
-;;            additional
-;;            additional-insert))))
-
-;; (map! :after (lispyville)
-;;       :map lispyville-mode-map
-;;       ;; add a subset of  the additional-movement theme
-;;       :m "(" #'lispyville-backward-up-list
-;;       :m ")" #'lispyville-up-list
-;;       :m "{" #'lispyville-previous-opening
-;;       :m "}" #'lispyville-next-opening)
-
-;; (map! :after (lispy)
-;;       :map lispy-mode-map-lispy
-;;       ;; unbind individual bracket keys (annoying for writing strings containing brackets)
-;;       "[" nil
-;;       "]" nil
-;;       "}" nil)
 
 (progn ;; jrb/treesit (WIP)
   ;; may or may not replace symex
